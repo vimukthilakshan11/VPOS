@@ -9,12 +9,12 @@ package v.solution;
  *
  * @author Vimukthi Lakshan
  */
-public class customer extends javax.swing.JPanel {
+public class Customer extends javax.swing.JPanel {
 
     /**
      * Creates new form customer
      */
-    public customer() {
+    public Customer() {
         initComponents();
     }
 
@@ -289,7 +289,6 @@ public class customer extends javax.swing.JPanel {
         ));
         jTable1.setGridColor(new java.awt.Color(93, 167, 219));
         jTable1.setSelectionBackground(new java.awt.Color(93, 167, 219));
-        jTable1.setSelectionForeground(new java.awt.Color(0, 0, 0));
         jScrollPane2.setViewportView(jTable1);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
@@ -348,7 +347,7 @@ public class customer extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())

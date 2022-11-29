@@ -52,6 +52,11 @@ public class Home extends javax.swing.JFrame {
         jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/supplier.png"))); // NOI18N
         jToggleButton2.setText("Supplier");
         jToggleButton2.setIconTextGap(10);
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
 
         jToggleButton3.setBackground(new java.awt.Color(93, 167, 219));
         home_btn_grp.add(jToggleButton3);
@@ -71,6 +76,11 @@ public class Home extends javax.swing.JFrame {
         jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/employee.png"))); // NOI18N
         jToggleButton4.setText("Employee");
         jToggleButton4.setIconTextGap(10);
+        jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton4ActionPerformed(evt);
+            }
+        });
 
         jToggleButton5.setBackground(new java.awt.Color(93, 167, 219));
         home_btn_grp.add(jToggleButton5);
@@ -185,7 +195,7 @@ public class Home extends javax.swing.JFrame {
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
       
-        customer cus = new customer();
+        Customer cus = new Customer();
         jpanelload.jPanelLoader(panel_load, cus);
         
     }//GEN-LAST:event_jToggleButton1ActionPerformed
@@ -193,6 +203,18 @@ public class Home extends javax.swing.JFrame {
     private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton3ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        // TODO add your handling code here:
+         Supplier sup = new Supplier();
+        jpanelload.jPanelLoader(panel_load, sup);
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
+        // TODO add your handling code here:
+        Employee emp = new Employee();
+        jpanelload.jPanelLoader(panel_load, emp);
+    }//GEN-LAST:event_jToggleButton4ActionPerformed
 
 
     public static void main(String args[]) {
