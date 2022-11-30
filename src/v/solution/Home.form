@@ -74,7 +74,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jToggleButton1" alignment="0" pref="202" max="32767" attributes="0"/>
+                      <Component id="jToggleButton1" alignment="0" max="32767" attributes="0"/>
                       <Component id="jToggleButton2" max="32767" attributes="0"/>
                       <Component id="jToggleButton3" max="32767" attributes="0"/>
                       <Component id="jToggleButton4" alignment="0" max="32767" attributes="0"/>
@@ -164,7 +164,7 @@
               <Font name="Tahoma" size="16" style="1"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/v/solution/image/product.png"/>
+              <Image iconType="3" name="/v/solution/image/product2.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Product"/>
             <Property name="iconTextGap" type="int" value="10"/>
@@ -262,7 +262,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="1232" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="1277" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
