@@ -81,6 +81,7 @@
                       <Component id="jToggleButton5" alignment="0" max="32767" attributes="0"/>
                       <Component id="jToggleButton7" max="32767" attributes="0"/>
                       <Component id="jToggleButton8" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jToggleButton6" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -98,12 +99,14 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jToggleButton3" min="-2" pref="51" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jToggleButton6" min="-2" pref="51" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jToggleButton8" min="-2" pref="51" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jToggleButton7" min="-2" pref="51" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jToggleButton5" min="-2" pref="51" max="-2" attributes="0"/>
-                  <EmptySpace pref="292" max="32767" attributes="0"/>
+                  <EmptySpace pref="235" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -247,6 +250,27 @@
             <Property name="text" type="java.lang.String" value="Sales"/>
             <Property name="iconTextGap" type="int" value="10"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JToggleButton" name="jToggleButton6">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="db" green="a7" red="5d" type="rgb"/>
+            </Property>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="home_btn_grp"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="16" style="1"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/v/solution/image/item.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Item"/>
+            <Property name="iconTextGap" type="int" value="10"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton6ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

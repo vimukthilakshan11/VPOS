@@ -25,6 +25,7 @@ public class Home extends javax.swing.JFrame {
         jToggleButton5 = new javax.swing.JToggleButton();
         jToggleButton7 = new javax.swing.JToggleButton();
         jToggleButton8 = new javax.swing.JToggleButton();
+        jToggleButton6 = new javax.swing.JToggleButton();
         panel_load = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
 
@@ -103,6 +104,18 @@ public class Home extends javax.swing.JFrame {
         jToggleButton8.setText("Sales");
         jToggleButton8.setIconTextGap(10);
 
+        jToggleButton6.setBackground(new java.awt.Color(93, 167, 219));
+        home_btn_grp.add(jToggleButton6);
+        jToggleButton6.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jToggleButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/item.png"))); // NOI18N
+        jToggleButton6.setText("Item");
+        jToggleButton6.setIconTextGap(10);
+        jToggleButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -116,7 +129,8 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(jToggleButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jToggleButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jToggleButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jToggleButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jToggleButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jToggleButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -131,12 +145,14 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(292, Short.MAX_VALUE))
+                .addContainerGap(235, Short.MAX_VALUE))
         );
 
         panel_load.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -218,6 +234,10 @@ public class Home extends javax.swing.JFrame {
         jpanelload.jPanelLoader(panel_load, emp);
     }//GEN-LAST:event_jToggleButton4ActionPerformed
 
+    private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton6ActionPerformed
+
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -260,6 +280,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JToggleButton jToggleButton3;
     private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JToggleButton jToggleButton5;
+    private javax.swing.JToggleButton jToggleButton6;
     private javax.swing.JToggleButton jToggleButton7;
     private javax.swing.JToggleButton jToggleButton8;
     private javax.swing.JPanel panel_load;
