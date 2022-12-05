@@ -103,6 +103,11 @@ public class Home extends javax.swing.JFrame {
         jToggleButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/sale.png"))); // NOI18N
         jToggleButton8.setText("Sales");
         jToggleButton8.setIconTextGap(10);
+        jToggleButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton8ActionPerformed(evt);
+            }
+        });
 
         jToggleButton6.setBackground(new java.awt.Color(93, 167, 219));
         home_btn_grp.add(jToggleButton6);
@@ -240,6 +245,12 @@ public class Home extends javax.swing.JFrame {
         jpanelload.jPanelLoader(panel_load, item);
         
     }//GEN-LAST:event_jToggleButton6ActionPerformed
+
+    private void jToggleButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton8ActionPerformed
+        // TODO add your handling code here:
+        Sale sale =  new Sale();
+        jpanelload.jPanelLoader(panel_load, sale);
+    }//GEN-LAST:event_jToggleButton8ActionPerformed
 
 
     public static void main(String args[]) {
