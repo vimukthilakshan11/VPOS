@@ -5,6 +5,19 @@
  */
 package v.solution;
 
+import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import v.DB.DB;
+
 /**
  *
  * @author Vimukthi Lakshan
@@ -16,7 +29,10 @@ public class Customer extends javax.swing.JPanel {
      */
     public Customer() {
         initComponents();
+        customerdata();
     }
+    ResultSet rs;
+    DefaultTableModel dtm;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,10 +50,10 @@ public class Customer extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txt_fname = new javax.swing.JTextField();
+        txt_lname = new javax.swing.JTextField();
+        txt_mobile = new javax.swing.JTextField();
+        txt_address = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -45,26 +61,27 @@ public class Customer extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        txt_balance = new javax.swing.JTextField();
+        txt_email = new javax.swing.JTextField();
+        txt_nic = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txt_note = new javax.swing.JTextArea();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rad_active = new javax.swing.JRadioButton();
+        rad_inactive = new javax.swing.JRadioButton();
+        txt_joingdate = new rojeru_san.componentes.RSDateChooser();
+        jButton4 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jTextField9 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table_customer = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        txt_search = new javax.swing.JTextField();
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -80,30 +97,48 @@ public class Customer extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Address :");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_fname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txt_lname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_lname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txt_lnameActionPerformed(evt);
             }
         });
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_mobile.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        jTextField4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_address.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
+        jButton1.setBackground(new java.awt.Color(93, 167, 219));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/save.png"))); // NOI18N
-        jButton1.setText("Save");
+        jButton1.setText("Add Customer");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
+        jButton2.setBackground(new java.awt.Color(93, 167, 219));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/update.png"))); // NOI18N
         jButton2.setText("Update");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
+        jButton3.setBackground(new java.awt.Color(93, 167, 219));
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
-        jButton3.setText("Delete");
+        jButton3.setText("Delete Selected");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Balance :");
@@ -112,23 +147,21 @@ public class Customer extends javax.swing.JPanel {
         jLabel6.setText("E-Mail :");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel7.setText("Joing Date :");
+        jLabel7.setText("Joined Date :");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("NIC :");
 
-        jTextField5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextField5.setText("0");
+        txt_balance.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_balance.setText("0");
 
-        jTextField6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_email.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        jTextField7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_nic.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        jTextField8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txt_note.setColumns(20);
+        txt_note.setRows(5);
+        jScrollPane1.setViewportView(txt_note);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setText("Note :");
@@ -136,55 +169,73 @@ public class Customer extends javax.swing.JPanel {
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Status :");
 
-        grp_status.add(jRadioButton1);
-        jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Active");
+        grp_status.add(rad_active);
+        rad_active.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        rad_active.setSelected(true);
+        rad_active.setText("Active");
 
-        grp_status.add(jRadioButton2);
-        jRadioButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jRadioButton2.setText("Inactive");
+        grp_status.add(rad_inactive);
+        rad_inactive.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        rad_inactive.setText("Inactive");
+
+        txt_joingdate.setPlaceholder("Select joined Date");
+
+        jButton4.setBackground(new java.awt.Color(93, 167, 219));
+        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/cleaning.png"))); // NOI18N
+        jButton4.setText("Clear");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField5)
-                            .addComponent(jTextField6)
-                            .addComponent(jTextField7)
-                            .addComponent(jTextField8)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
-                                .addGap(10, 10, 10)
-                                .addComponent(jRadioButton2))))
+                            .addComponent(txt_fname, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+                            .addComponent(txt_lname)
+                            .addComponent(txt_mobile)
+                            .addComponent(txt_address)
+                            .addComponent(txt_nic)
+                            .addComponent(txt_joingdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txt_balance)
+                                    .addComponent(txt_email)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(rad_active)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(rad_inactive)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -193,49 +244,52 @@ public class Customer extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_fname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_lname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_nic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(txt_joingdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_balance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addGap(13, 13, 13)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(rad_active)
+                    .addComponent(rad_inactive))
                 .addGap(27, 27, 27)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -278,18 +332,23 @@ public class Customer extends javax.swing.JPanel {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_customer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        table_customer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {"1", null, null, null, null, null, null, null, null}
             },
             new String [] {
                 "Cus. Id", "Name", "Address", "Mobile", "NIC", "Joing Date", "E-Mail", "Balance", "Status"
             }
         ));
-        jTable1.setGridColor(new java.awt.Color(93, 167, 219));
-        jTable1.setSelectionBackground(new java.awt.Color(93, 167, 219));
-        jScrollPane2.setViewportView(jTable1);
+        table_customer.setGridColor(new java.awt.Color(93, 167, 219));
+        table_customer.setSelectionBackground(new java.awt.Color(93, 167, 219));
+        table_customer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_customerMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(table_customer);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/satisfaction.png"))); // NOI18N
@@ -299,7 +358,12 @@ public class Customer extends javax.swing.JPanel {
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Search Customer :");
 
-        jTextField10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txt_search.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_searchKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -310,7 +374,7 @@ public class Customer extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -319,7 +383,7 @@ public class Customer extends javax.swing.JPanel {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -381,9 +445,176 @@ public class Customer extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txt_lnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_lnameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txt_lnameActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String query = "SELECT * FROM customer WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
+        int alreadyStatus = 0;
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                alreadyStatus = 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (alreadyStatus == 0) {
+            if (txt_address.getText().equals("") || txt_balance.getText().equals("") || txt_email.getText().equals("") || txt_fname.getText().equals("") || txt_lname.getText().equals("") || txt_mobile.getText().equals("") || txt_nic.getText().equals("") || txt_joingdate.getPlaceholder().equals("Select joined Date")) {
+                JOptionPane.showMessageDialog(this, "Missiong Details");
+            } else {
+
+                String activeStatus = "";
+                if (rad_active.isSelected()) {
+                    activeStatus = "1";
+                } else {
+                    activeStatus = "0";
+                }
+                String query2 = "INSERT INTO `customer`(`FName`, `LName`, `Address`, `TelephoneNo`, `NIC`, `JoinedDate`, `Email`, `Balance`, `Note`, `ActiveStatus`) VALUES ("
+                        + "'" + txt_fname.getText() + "',"
+                        + "'" + txt_lname.getText() + "','" + txt_address.getText() + "',"
+                        + "'" + txt_mobile.getText() + "','" + txt_nic.getText() + "',"
+                        + "'" + txt_joingdate.currentYear + "-" + txt_joingdate.currentMonth + "-" + txt_joingdate.realDay + "','" + txt_email.getText() + "',"
+                        + "'" + txt_balance.getText() + "','" + txt_note.getText() + "',"
+                        + "'" + activeStatus + "')";
+                try {
+                    DB.push(query2);
+                    JOptionPane.showMessageDialog(this, "successfully saved");
+                    clear();
+                } catch (Exception ex) {
+                    Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "This Customer is Already Exists");
+        }
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String query = "SELECT * FROM customer WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
+        int alreadyStatus = 0;
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                alreadyStatus = 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (alreadyStatus == 1) {
+
+            int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+            String activeStatus = null;
+            if (rad_active.isSelected()) {
+                activeStatus = "1";
+            } else {
+                activeStatus = "0";
+            }
+
+            if (option == 0) {
+
+                String query3 = "UPDATE `customer` SET "
+                        + "`FName`='" + txt_fname.getText() + "',"
+                        + "`LName`='" + txt_lname.getText() + "',"
+                        + "`Address`='" + txt_address.getText() + "',"
+                        + "`TelephoneNo`='" + txt_mobile.getText() + "',"
+                        + "`NIC`='" + txt_nic.getText() + "',"
+                        + "`JoinedDate`='" + txt_joingdate.currentYear + "-" + txt_joingdate.currentMonth + "-" + txt_joingdate.realDay + "',"
+                        + "`Email`='" + txt_email.getText() + "',"
+                        + "`Balance`='" + txt_balance.getText() + "',"
+                        + "`Note`='" + txt_note.getText() + "',"
+                        + "`ActiveStatus`='" + activeStatus + "' "
+                        + "WHERE nic = '" + txt_nic.getText() + "'";
+
+                try {
+                    DB.push(query3);
+                    JOptionPane.showMessageDialog(this, "Successfully Updated");
+                    customerdata();
+                    clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Nothing To Update");
+        }
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void table_customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_customerMouseClicked
+        // TODO add your handling code here:
+        String activeStatus = "";
+        String cId = "";
+        int selectedRow = table_customer.getSelectedRow();
+        dtm = (DefaultTableModel) table_customer.getModel();
+        cId = dtm.getValueAt(selectedRow, 0).toString();
+        String query = "SELECT * FROM customer WHERE Id = '" + cId + "' AND status= '1'";
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                txt_fname.setText(rs.getString("FName"));
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("JoinedDate"));
+                txt_joingdate.setDatoFecha(date);
+                txt_lname.setText(rs.getString("LName"));
+                txt_address.setText(rs.getString("Address"));
+                txt_balance.setText(rs.getString("Balance"));
+                txt_email.setText(rs.getString("Email"));
+                txt_mobile.setText(rs.getString("TelephoneNo"));
+                txt_nic.setText(rs.getString("NIC"));
+                txt_note.setText(rs.getString("Note"));
+                activeStatus = rs.getString("ActiveStatus");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (activeStatus.equals("1")) {
+            rad_active.doClick();
+        } else {
+            rad_inactive.doClick();
+        }
+    }//GEN-LAST:event_table_customerMouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txt_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyReleased
+        // TODO add your handling code here:
+        String query = txt_search.getText();
+        filtertablesubCat(query);
+    }//GEN-LAST:event_txt_searchKeyReleased
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+
+        if (option == 0) {
+            String cId = null;
+            int selectedRow = table_customer.getSelectedRow();
+            dtm = (DefaultTableModel) table_customer.getModel();
+            cId = dtm.getValueAt(selectedRow, 0).toString();
+
+            String query = "UPDATE customer SET status = '0' WHERE Id = " + cId + "";
+            try {
+                DB.push(query);
+                JOptionPane.showMessageDialog(this, "Successfully Deleted");
+                customerdata();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -391,6 +622,7 @@ public class Customer extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -409,21 +641,83 @@ public class Customer extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JRadioButton rad_active;
+    private javax.swing.JRadioButton rad_inactive;
+    private javax.swing.JTable table_customer;
+    private javax.swing.JTextField txt_address;
+    private javax.swing.JTextField txt_balance;
+    private javax.swing.JTextField txt_email;
+    private javax.swing.JTextField txt_fname;
+    private rojeru_san.componentes.RSDateChooser txt_joingdate;
+    private javax.swing.JTextField txt_lname;
+    private javax.swing.JTextField txt_mobile;
+    private javax.swing.JTextField txt_nic;
+    private javax.swing.JTextArea txt_note;
+    private javax.swing.JTextField txt_search;
     // End of variables declaration//GEN-END:variables
+
+    private void clear() {
+        txt_fname.setText(null);
+        txt_joingdate.setPlaceholder("Select joined Date");
+        txt_lname.setText(null);
+        txt_address.setText(null);
+        txt_balance.setText("0");
+        txt_email.setText(null);
+        txt_mobile.setText(null);
+        txt_nic.setText(null);
+        txt_note.setText(null);
+        rad_active.doClick();
+    }
+
+    private void customerdata() {
+
+        dtm = (DefaultTableModel) table_customer.getModel();
+        dtm.setRowCount(0);
+        try {
+
+            String query = "SELECT * FROM customer WHERE status = '1'";
+            ResultSet rs = DB.search(query);
+            while (rs.next()) {
+
+                Vector v = new Vector();
+                String ccode = rs.getString("Id");
+                String fname = rs.getString("FName");
+                String lname = rs.getString("LName");
+                String address = rs.getString("address");
+                String nic = rs.getString("nic");
+                String mobile = rs.getString("TelephoneNo");
+                String email = rs.getString("Email");
+                String balance = rs.getString("Balance");
+                String activestatus = rs.getString("ActiveStatus");
+
+                v.add(ccode);
+                v.add(fname + " " + lname);
+
+                v.add(address);
+                v.add(nic);
+                v.add(mobile);
+                v.add(email);
+                v.add(mobile);
+                v.add(balance);
+                v.add(activestatus);
+
+                dtm.addRow(v);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void filtertablesubCat(String query) {
+        dtm = (DefaultTableModel) table_customer.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dtm);
+        table_customer.setRowSorter(tr);
+
+        tr.setRowFilter(RowFilter.regexFilter(query));
+    }
 }
