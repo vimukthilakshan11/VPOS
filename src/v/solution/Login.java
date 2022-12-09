@@ -3,6 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package v.solution;
+import java.sql.*;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import v.DB.DB;
+import v.Encryption.Encryption;
 
 /**
  *
@@ -16,6 +23,8 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
     }
+
+    ResultSet rs;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -194,16 +203,63 @@ public class Login extends javax.swing.JFrame {
 
     private void checkbox_showpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkbox_showpasswordActionPerformed
 
+        if (checkbox_showpassword.isSelected()) {
+            txt_password.setEchoChar((char) 0);
+        } else {
+            txt_password.setEchoChar('*');
+        }
     }//GEN-LAST:event_checkbox_showpasswordActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-       
+
+        String userName = txt_username.getText();
+        String password = txt_password.getText();
+        String dbusername = "";
+        String dbpassword = "";
+
+        if (txt_password.getText().equals("") || txt_username.getText().equals("")) {
+
+            JOptionPane.showMessageDialog(this, "userame password required");
+
+        } else {
+
+            String encrpp = Encryption.getMd5(password);
+
+
+            try {
+                String query = "SELECT * FROM userprofile WHERE Username=? AND Password=?";
+                PreparedStatement  checkps= DB.getDBConnection().prepareStatement(query);
+                
+                checkps.setString(1, userName);
+                checkps.setString(2, encrpp);
+                
+                rs = checkps.executeQuery();
+                if (rs.next()) {
+                    dbusername = rs.getString("Username");
+                    dbpassword = rs.getString("Password");
+                }else{
+                            JOptionPane.showMessageDialog(this, "userame or password doesn't match");
+                }
+                
+                
+                if(userName.equals(dbusername) && encrpp.equals(dbpassword) ){
+                Home home = new Home();
+                home.setVisible(true);
+                this.dispose();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
 
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

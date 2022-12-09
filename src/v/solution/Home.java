@@ -1,6 +1,13 @@
 
 package v.solution;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import javax.swing.Timer;
+
 
 public class Home extends javax.swing.JFrame {
 
@@ -9,8 +16,24 @@ public class Home extends javax.swing.JFrame {
     public Home() {
         initComponents();
         this.setExtendedState(Home.MAXIMIZED_BOTH);
+        displyaTime();
     }
 
+     public void displyaTime() {
+
+        new Timer(10, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("HH:mm:ss");
+                String displaytime = simpleDateFormat.format(new Date());
+                String displaydate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date());
+
+                lbl_date.setText(displaydate);
+                lbl_time.setText(displaytime);
+
+            }
+
+        }).start();
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -27,6 +50,10 @@ public class Home extends javax.swing.JFrame {
         jToggleButton8 = new javax.swing.JToggleButton();
         jToggleButton6 = new javax.swing.JToggleButton();
         jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lbl_time = new javax.swing.JLabel();
+        lbl_date = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         panel_load = new javax.swing.JPanel();
 
@@ -163,20 +190,53 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(241, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel3.setBackground(new java.awt.Color(23, 70, 162));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(95, 157, 247));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/calendar.png"))); // NOI18N
+        jLabel2.setText("DATE   :");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(95, 157, 247));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/time.png"))); // NOI18N
+        jLabel3.setText("TIME   :");
+
+        lbl_time.setFont(new java.awt.Font("Serif", 1, 30)); // NOI18N
+        lbl_time.setForeground(new java.awt.Color(95, 157, 247));
+
+        lbl_date.setFont(new java.awt.Font("Serif", 1, 30)); // NOI18N
+        lbl_date.setForeground(new java.awt.Color(95, 157, 247));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(573, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl_time, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 65, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_date, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_time, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         panel_load.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -185,11 +245,11 @@ public class Home extends javax.swing.JFrame {
         panel_load.setLayout(panel_loadLayout);
         panel_loadLayout.setHorizontalGroup(
             panel_loadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1275, Short.MAX_VALUE)
+            .addGap(0, 1304, Short.MAX_VALUE)
         );
         panel_loadLayout.setVerticalGroup(
             panel_loadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 772, Short.MAX_VALUE)
+            .addGap(0, 745, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(panel_load);
@@ -205,7 +265,7 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
@@ -217,7 +277,7 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
-                    .addComponent(jScrollPane1)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE)))
         );
 
         pack();
@@ -302,6 +362,8 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup home_btn_grp;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -313,6 +375,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JToggleButton jToggleButton6;
     private javax.swing.JToggleButton jToggleButton7;
     private javax.swing.JToggleButton jToggleButton8;
+    private javax.swing.JLabel lbl_date;
+    private javax.swing.JLabel lbl_time;
     private javax.swing.JPanel panel_load;
     // End of variables declaration//GEN-END:variables
 }
