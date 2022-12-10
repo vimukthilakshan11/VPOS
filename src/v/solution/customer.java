@@ -54,9 +54,9 @@ public class Customer extends javax.swing.JPanel {
         txt_lname = new javax.swing.JTextField();
         txt_mobile = new javax.swing.JTextField();
         txt_address = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btn_add = new javax.swing.JButton();
+        btn_update = new javax.swing.JButton();
+        btn_delete = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -71,10 +71,8 @@ public class Customer extends javax.swing.JPanel {
         rad_active = new javax.swing.JRadioButton();
         rad_inactive = new javax.swing.JRadioButton();
         txt_joingdate = new rojeru_san.componentes.RSDateChooser();
-        jButton4 = new javax.swing.JButton();
+        btn_clear = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jTextField9 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         table_customer = new javax.swing.JTable();
@@ -110,33 +108,33 @@ public class Customer extends javax.swing.JPanel {
 
         txt_address.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(93, 167, 219));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/save.png"))); // NOI18N
-        jButton1.setText("Add Customer");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_add.setBackground(new java.awt.Color(93, 167, 219));
+        btn_add.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btn_add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/save.png"))); // NOI18N
+        btn_add.setText("Add Customer");
+        btn_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_addActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(93, 167, 219));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/update.png"))); // NOI18N
-        jButton2.setText("Update");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_update.setBackground(new java.awt.Color(93, 167, 219));
+        btn_update.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btn_update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/update.png"))); // NOI18N
+        btn_update.setText("Update");
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_updateActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(93, 167, 219));
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
-        jButton3.setText("Delete Selected");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btn_delete.setBackground(new java.awt.Color(93, 167, 219));
+        btn_delete.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btn_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
+        btn_delete.setText("Delete Selected");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btn_deleteActionPerformed(evt);
             }
         });
 
@@ -180,13 +178,13 @@ public class Customer extends javax.swing.JPanel {
 
         txt_joingdate.setPlaceholder("Select joined Date");
 
-        jButton4.setBackground(new java.awt.Color(93, 167, 219));
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/cleaning.png"))); // NOI18N
-        jButton4.setText("Clear");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btn_clear.setBackground(new java.awt.Color(93, 167, 219));
+        btn_clear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btn_clear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/cleaning.png"))); // NOI18N
+        btn_clear.setText("Clear");
+        btn_clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btn_clearActionPerformed(evt);
             }
         });
 
@@ -216,7 +214,7 @@ public class Customer extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -233,9 +231,9 @@ public class Customer extends javax.swing.JPanel {
                                         .addGap(10, 10, 10)
                                         .addComponent(rad_inactive)
                                         .addGap(0, 0, Short.MAX_VALUE))))
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btn_update, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -283,51 +281,28 @@ public class Customer extends javax.swing.JPanel {
                     .addComponent(rad_active)
                     .addComponent(rad_inactive))
                 .addGap(27, 27, 27)
-                .addComponent(jButton1)
+                .addComponent(btn_add)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btn_update)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(btn_delete)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
+                .addComponent(btn_clear)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(93, 167, 219));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jButton5.setBackground(new java.awt.Color(93, 167, 219));
-        jButton5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/search.png"))); // NOI18N
-        jButton5.setText("Search By Nic");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jTextField9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextField9.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+            .addGap(0, 460, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17))
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -411,7 +386,7 @@ public class Customer extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 464, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -423,7 +398,7 @@ public class Customer extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -441,15 +416,11 @@ public class Customer extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void txt_lnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_lnameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_lnameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
         // TODO add your handling code here:
         String query = "SELECT * FROM customer WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
         int alreadyStatus = 0;
@@ -493,9 +464,9 @@ public class Customer extends javax.swing.JPanel {
         }
 
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btn_addActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
         // TODO add your handling code here:
         String query = "SELECT * FROM customer WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
         int alreadyStatus = 0;
@@ -548,7 +519,7 @@ public class Customer extends javax.swing.JPanel {
         }
 
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btn_updateActionPerformed
 
     private void table_customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_customerMouseClicked
         // TODO add your handling code here:
@@ -584,10 +555,10 @@ public class Customer extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_table_customerMouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btn_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearActionPerformed
         // TODO add your handling code here:
         clear();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btn_clearActionPerformed
 
     private void txt_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyReleased
         // TODO add your handling code here:
@@ -595,7 +566,7 @@ public class Customer extends javax.swing.JPanel {
         filtertablesubCat(query);
     }//GEN-LAST:event_txt_searchKeyReleased
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         int option = JOptionPane.showConfirmDialog(this, "SURE ?");
 
         if (option == 0) {
@@ -614,16 +585,15 @@ public class Customer extends javax.swing.JPanel {
             }
         }
 
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btn_deleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_add;
+    private javax.swing.JButton btn_clear;
+    private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_update;
     private javax.swing.ButtonGroup grp_status;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -643,7 +613,6 @@ public class Customer extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JRadioButton rad_active;
     private javax.swing.JRadioButton rad_inactive;
     private javax.swing.JTable table_customer;
