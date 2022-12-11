@@ -567,6 +567,14 @@ public class Customer extends javax.swing.JPanel {
     }//GEN-LAST:event_txt_searchKeyReleased
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        
+         dtm = (DefaultTableModel) table_customer.getModel();
+        int r = -1;
+        r = table_customer.getSelectedRow();
+        if (r == -1) {
+            JOptionPane.showMessageDialog(this, "First Select A Customer In A Table");
+        } else {
+        
         int option = JOptionPane.showConfirmDialog(this, "SURE ?");
 
         if (option == 0) {
@@ -584,7 +592,7 @@ public class Customer extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         }
-
+        }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
 

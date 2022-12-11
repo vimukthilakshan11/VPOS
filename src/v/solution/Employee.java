@@ -491,6 +491,18 @@ public class Employee extends javax.swing.JPanel {
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
         // TODO add your handling code here:
+                String query3 = "SELECT * FROM employee WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
+        int alreadyStatus = 0;
+        try {
+            rs = DB.search(query3);
+            if (rs.next()) {
+                alreadyStatus = 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (alreadyStatus == 0) {
         String activeStatus = "";
         String gender = txt_gender.getSelectedItem().toString();
         String position = combo_posisiton.getSelectedItem().toString();
@@ -534,6 +546,7 @@ public class Employee extends javax.swing.JPanel {
                 }
             }
         }
+        }else{ JOptionPane.showMessageDialog(this, "This Employee is Already Exists");}
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
@@ -562,7 +575,7 @@ public class Employee extends javax.swing.JPanel {
                 }
             }
         }
-
+    
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void tbl_employeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_employeeMouseClicked
