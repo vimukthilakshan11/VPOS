@@ -4,6 +4,16 @@
  */
 package v.solution;
 
+import java.sql.ResultSet;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import v.DB.DB;
+
 /**
  *
  * @author Administrator
@@ -13,8 +23,11 @@ public class Brand extends javax.swing.JFrame {
     /**
      * Creates new form Brand
      */
+    ResultSet rs;
+    DefaultTableModel dtm;
     public Brand() {
         initComponents();
+        brandTable();
     }
 
     /**
@@ -80,15 +93,30 @@ public class Brand extends javax.swing.JFrame {
 
         btn_save.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/save.png"))); // NOI18N
-        btn_save.setText("Save");
+        btn_save.setText("Add Brand");
+        btn_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_saveActionPerformed(evt);
+            }
+        });
 
         btn_update.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/update.png"))); // NOI18N
         btn_update.setText("Update");
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateActionPerformed(evt);
+            }
+        });
 
         btn_select.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_select.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
         btn_select.setText("Delete Selected");
+        btn_select.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_selectActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Brand Name             :");
@@ -123,6 +151,11 @@ public class Brand extends javax.swing.JFrame {
         btn_clear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_clear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/cleaning.png"))); // NOI18N
         btn_clear.setText("Clear");
+        btn_clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_clearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -209,6 +242,11 @@ public class Brand extends javax.swing.JFrame {
         ));
         table_brand.setGridColor(new java.awt.Color(93, 167, 219));
         table_brand.setSelectionBackground(new java.awt.Color(93, 167, 219));
+        table_brand.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_brandMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(table_brand);
         if (table_brand.getColumnModel().getColumnCount() > 0) {
             table_brand.getColumnModel().getColumn(5).setResizable(false);
@@ -218,6 +256,11 @@ public class Brand extends javax.swing.JFrame {
         jLabel11.setText("Search Brand :");
 
         txt_search.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_searchKeyReleased(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/close.png"))); // NOI18N
         jButton1.setBorder(null);
@@ -232,16 +275,14 @@ public class Brand extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(246, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(220, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addContainerGap())))
+                        .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
+                .addContainerGap())
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addContainerGap()
@@ -292,6 +333,152 @@ public class Brand extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        // TODO add your handling code here:
+         String query = "SELECT * FROM brand WHERE BrandName = '" + txt_brandname.getText() + "' AND status = '1'";
+        int alreadyStatus = 0;
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                alreadyStatus = 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (alreadyStatus == 0) {
+            if (txt_brandname.getText().equals("") || txt_companyaddres.getText().equals("") || txt_companyname.getText().equals("") || txt_regNumber.getText().equals("") || txt_mobile.getText().equals("") || txt_mail.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Missiong Details");
+            } else {
+
+                String query2 = "INSERT INTO `brand`(`BrandName`, `CompanyName`, `CompanyAddress`, `CompanyRegNo`, `Email`, `Mobile`) VALUES ("
+                        + "'" + txt_brandname.getText() + "',"
+                        + "'" + txt_companyname.getText() + "','" + txt_companyaddres.getText() + "',"
+                        + "'" + txt_regNumber.getText() + "','" + txt_mail.getText() + "',"
+                        + "'" + txt_mobile.getText() + "')";
+                try {
+                    DB.push(query2);
+                    JOptionPane.showMessageDialog(this, "successfully saved");
+                    brandTable();
+                    clear();
+                } catch (Exception ex) {
+                    Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "This Brand is Already Exists");
+        }
+
+    }//GEN-LAST:event_btn_saveActionPerformed
+
+    private void txt_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyReleased
+        // TODO add your handling code here:
+        String query = txt_search.getText();
+        filtertablesubCat(query);
+    }//GEN-LAST:event_txt_searchKeyReleased
+
+    private void btn_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_btn_clearActionPerformed
+
+    private void btn_selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_selectActionPerformed
+        // TODO add your handling code here:
+          dtm = (DefaultTableModel) table_brand.getModel();
+        int r = -1;
+        r = table_brand.getSelectedRow();
+        if (r == -1) {
+            JOptionPane.showMessageDialog(this, "First Select A Brand In A Table");
+        } else {
+         int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+
+        if (option == 0) {
+            String brandId = null;
+            int selectedRow = table_brand.getSelectedRow();
+            dtm = (DefaultTableModel) table_brand.getModel();
+            brandId = dtm.getValueAt(selectedRow, 0).toString();
+
+            String query = "UPDATE brand SET status = '0' WHERE Id = " + brandId + "";
+            try {
+                DB.push(query);
+                JOptionPane.showMessageDialog(this, "Successfully Deleted");
+                brandTable();
+                clear();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }}
+    }//GEN-LAST:event_btn_selectActionPerformed
+
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
+        // TODO add your handling code here:
+          String query = "SELECT * FROM brand WHERE BrandName = '" + txt_brandname.getText() + "' AND status = '1'";
+        int alreadyStatus = 0;
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                alreadyStatus = 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (alreadyStatus == 1) {
+
+            int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+
+            if (option == 0) {
+
+                String query3 = "UPDATE `brand` SET "
+                        
+                        + "`CompanyName`='" + txt_companyname.getText() + "',"
+                        + "`CompanyAddress`='" + txt_companyaddres.getText() + "',"
+                        + "`CompanyRegNo`='" + txt_regNumber.getText() + "',"
+                        + "`Email`='" + txt_mail.getText() + "',"
+                        + "`Mobile`='" +txt_mobile.getText()+ "'"
+                        + "WHERE BrandName = '" + txt_brandname.getText() + "'";
+
+                try {
+                    DB.push(query3);
+                    JOptionPane.showMessageDialog(this, "Successfully Updated");
+                    brandTable();
+                    clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Nothing To Update");
+        }
+
+    }//GEN-LAST:event_btn_updateActionPerformed
+
+    private void table_brandMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_brandMouseClicked
+        // TODO add your handling code here:
+                      
+        String brandName = "";
+        int selectedRow = table_brand.getSelectedRow();
+        dtm = (DefaultTableModel) table_brand.getModel();
+        brandName = dtm.getValueAt(selectedRow, 0).toString();
+        String query = "SELECT * FROM brand WHERE BrandName = '" + brandName+ "' AND status= '1'";
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                txt_brandname.setText(rs.getString("BrandName"));
+                txt_companyname.setText(rs.getString("CompanyName"));
+                txt_companyaddres.setText(rs.getString("CompanyAddress"));
+                txt_regNumber.setText(rs.getString("CompanyRegNo"));
+                txt_mail.setText(rs.getString("Email"));
+                txt_mobile.setText(rs.getString("Mobile"));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+       
+    }//GEN-LAST:event_table_brandMouseClicked
 
     /**
      * @param args the command line arguments
@@ -355,4 +542,59 @@ public class Brand extends javax.swing.JFrame {
     private javax.swing.JTextField txt_regNumber;
     private javax.swing.JTextField txt_search;
     // End of variables declaration//GEN-END:variables
+
+    private void brandTable() {
+        dtm = (DefaultTableModel) table_brand.getModel();
+        dtm.setRowCount(0);
+        try {
+
+            String query = "SELECT * FROM brand WHERE status = '1'";
+            rs = DB.search(query);
+
+            while (rs.next()) {
+
+                Vector v = new Vector();
+                String brandName = rs.getString("BrandName");
+                String companyName = rs.getString("CompanyName");
+                String companyAddress = rs.getString("CompanyAddress");
+                String regNo = rs.getString("CompanyRegNo");
+                String mail = rs.getString("Email");
+                String mobile = rs.getString("Mobile");
+               
+                
+
+
+                v.add(brandName);
+                v.add(companyName);
+                v.add(companyAddress);
+                v.add(regNo);
+                v.add(mail);
+                v.add(mobile);
+               
+
+                dtm.addRow(v);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clear() {
+        txt_brandname.setText("");
+        txt_companyaddres.setText("");
+        txt_companyname.setText("");
+        txt_mail.setText("");
+        txt_mobile.setText("");
+        txt_regNumber.setText("");
+        txt_search.setText("");
+    }
+    
+      private void filtertablesubCat(String query) {
+        dtm = (DefaultTableModel) table_brand.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dtm);
+        table_brand.setRowSorter(tr);
+
+        tr.setRowFilter(RowFilter.regexFilter(query));
+    }
 }
