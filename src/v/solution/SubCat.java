@@ -4,6 +4,16 @@
  */
 package v.solution;
 
+import java.sql.ResultSet;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import v.DB.DB;
+
 /**
  *
  * @author Administrator
@@ -13,8 +23,12 @@ public class SubCat extends javax.swing.JFrame {
     /**
      * Creates new form Brand
      */
+    ResultSet rs;
+    DefaultTableModel dtm;
+
     public SubCat() {
         initComponents();
+        categoryTable();
     }
 
     /**
@@ -60,7 +74,9 @@ public class SubCat extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,13 +99,23 @@ public class SubCat extends javax.swing.JFrame {
         btn_update.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/update.png"))); // NOI18N
         btn_update.setText("Update");
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateActionPerformed(evt);
+            }
+        });
 
         btn_delete.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
         btn_delete.setText("Delete Selected");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setText("Category Name             :");
+        jLabel2.setText("Sub Category Name             :");
 
         txt_subcatname.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
@@ -103,6 +129,11 @@ public class SubCat extends javax.swing.JFrame {
         btn_clear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_clear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/cleaning.png"))); // NOI18N
         btn_clear.setText("Clear");
+        btn_clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_clearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -112,6 +143,13 @@ public class SubCat extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btn_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_update, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                            .addComponent(btn_clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(4, 4, 4)
                         .addComponent(txt_subcatname, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -119,15 +157,8 @@ public class SubCat extends javax.swing.JFrame {
                         .addGap(4, 4, 4)
                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btn_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_update, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
-                            .addComponent(btn_clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(27, 27, 27))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(23, 23, 23))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,12 +195,22 @@ public class SubCat extends javax.swing.JFrame {
         ));
         table_subcat.setGridColor(new java.awt.Color(93, 167, 219));
         table_subcat.setSelectionBackground(new java.awt.Color(93, 167, 219));
+        table_subcat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_subcatMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(table_subcat);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Search SubCategory :");
 
         txt_search.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_searchKeyReleased(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/close.png"))); // NOI18N
         jButton1.setBorder(null);
@@ -184,7 +225,7 @@ public class SubCat extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(225, Short.MAX_VALUE)
+                .addContainerGap(174, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -196,9 +237,9 @@ public class SubCat extends javax.swing.JFrame {
                         .addContainerGap())))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
-                    .addContainerGap()))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(19, 19, 19)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,11 +262,13 @@ public class SubCat extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 389, Short.MAX_VALUE))
-                .addGap(0, 0, 0)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,7 +290,133 @@ public class SubCat extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
+        String query = "SELECT * FROM sub_cat WHERE Description = '" + txt_subcatname.getText() + "' AND status = '1'";
+        int alreadyStatus = 0;
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                alreadyStatus = 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (alreadyStatus == 0) {
+            if (txt_subcatname.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Missiong Details");
+            } else {
+
+                String query2 = "INSERT INTO `sub_cat`(`Description`, `Note`) VALUES ("
+                        + "'" + txt_subcatname.getText() + "',"
+                        + "'" + txt_note.getText() + "')";
+                try {
+                    DB.push(query2);
+                    JOptionPane.showMessageDialog(this, "successfully saved");
+                    categoryTable();
+                    clear();
+                } catch (Exception ex) {
+                    Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "This Category is Already Exists");
+        }
     }//GEN-LAST:event_btn_saveActionPerformed
+
+    private void txt_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyReleased
+        // TODO add your handling code here:
+        String quary = txt_search.getText();
+        filtertableCat(quary);
+    }//GEN-LAST:event_txt_searchKeyReleased
+
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
+        // TODO add your handling code here:
+                          String query = "SELECT * FROM sub_cat WHERE Description = '" + txt_subcatname.getText() + "' AND status = '1'";
+        int alreadyStatus = 0;
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                alreadyStatus = 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (alreadyStatus == 1) {
+
+            int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+
+            if (option == 0) {
+
+                String query3 = "UPDATE `sub_cat` SET `Note`='"+txt_note.getText()+"' WHERE `Description` = '"+txt_subcatname.getText()+"'";
+
+                try {
+                    DB.push(query3);
+                    JOptionPane.showMessageDialog(this, "Successfully Updated");
+                    categoryTable();
+                    clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Nothing To Update");
+        }
+    }//GEN-LAST:event_btn_updateActionPerformed
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        // TODO add your handling code here:
+          dtm = (DefaultTableModel) table_subcat.getModel();
+        int r = -1;
+        r = table_subcat.getSelectedRow();
+        if (r == -1) {
+            JOptionPane.showMessageDialog(this, "First Select A Category In A Table");
+        } else {
+         int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+
+        if (option == 0) {
+            String categoryId = null;
+            int selectedRow = table_subcat.getSelectedRow();
+            dtm = (DefaultTableModel) table_subcat.getModel();
+            categoryId = dtm.getValueAt(selectedRow, 0).toString();
+
+            
+            String query = "UPDATE `sub_cat` SET `Status`='0' WHERE Description = '"+categoryId+"'";
+            try {
+                DB.push(query);
+                JOptionPane.showMessageDialog(this, "Successfully Deleted");
+                categoryTable();
+                clear();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }}
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void btn_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearActionPerformed
+        // TODO add your handling code here:
+         clear();
+    }//GEN-LAST:event_btn_clearActionPerformed
+
+    private void table_subcatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_subcatMouseClicked
+        // TODO add your handling code here:
+           String catName = "";
+        int selectedRow = table_subcat.getSelectedRow();
+        dtm = (DefaultTableModel) table_subcat.getModel();
+        catName = dtm.getValueAt(selectedRow, 0).toString();
+        String query = "SELECT * FROM sub_cat WHERE Description = '" + catName+ "' AND status= '1'";
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                txt_subcatname.setText(rs.getString("Description"));
+                txt_note.setText(rs.getString("Note"));
+               
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_table_subcatMouseClicked
 
     /**
      * @param args the command line arguments
@@ -307,4 +476,43 @@ public class SubCat extends javax.swing.JFrame {
     private javax.swing.JTextField txt_search;
     private javax.swing.JTextField txt_subcatname;
     // End of variables declaration//GEN-END:variables
+
+    private void categoryTable() {
+       
+        dtm = (DefaultTableModel) table_subcat.getModel();
+        dtm.setRowCount(0);
+        try {
+
+            String query = "SELECT * FROM sub_cat WHERE status = '1'";
+            rs = DB.search(query);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                String catName = rs.getString("Description");
+                String Note = rs.getString("Note");
+                
+                v.add(catName);
+                v.add(Note);
+
+                dtm.addRow(v);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clear() {
+        txt_subcatname.setText("");
+        txt_note.setText("");
+        txt_search.setText("");
+    }
+
+    private void filtertableCat(String query) {
+        dtm = (DefaultTableModel) table_subcat.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dtm);
+        table_subcat.setRowSorter(tr);
+
+        tr.setRowFilter(RowFilter.regexFilter(query));
+    }
 }
