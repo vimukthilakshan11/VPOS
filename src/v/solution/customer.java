@@ -434,7 +434,10 @@ public class Customer extends javax.swing.JPanel {
         }
 
         if (alreadyStatus == 0) {
-            if (txt_address.getText().equals("") || txt_balance.getText().equals("") || txt_email.getText().equals("") || txt_fname.getText().equals("") || txt_lname.getText().equals("") || txt_mobile.getText().equals("") || txt_nic.getText().equals("") || txt_joingdate.getPlaceholder().equals("Select joined Date")) {
+            if (txt_address.getText().equals("") || txt_balance.getText().equals("") ||
+                    txt_email.getText().equals("") || txt_fname.getText().equals("") ||
+                    txt_lname.getText().equals("") || txt_mobile.getText().equals("") || 
+                    txt_nic.getText().equals("") ) {
                 JOptionPane.showMessageDialog(this, "Missiong Details");
             } else {
 

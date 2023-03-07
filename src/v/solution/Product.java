@@ -13,7 +13,9 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import v.DB.DB;
 
 public class Product extends javax.swing.JPanel {
@@ -194,10 +196,9 @@ public class Product extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(checkbox_subcat, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(checkbox_cate, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -279,6 +280,11 @@ public class Product extends javax.swing.JPanel {
         jScrollPane2.setViewportView(table_product);
 
         txt_search.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_searchKeyReleased(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Search Product :");
@@ -432,9 +438,10 @@ public class Product extends javax.swing.JPanel {
         // TODO add your handling code here:
         String pName = txt_product.getText();
         int bId = 0;
-        int fcatId = 0;
-        int fsubcatId = 0;
+        int fcatId =14;
+        int fsubcatId =13;
 
+        
         String brand = combo_brand.getSelectedItem().toString();
         if (!combo_brand.getSelectedItem().toString().equals("Brand")) {
             String brandId[] = brand.split("-", 0);
@@ -498,8 +505,7 @@ public class Product extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "First enter product name or brand");
         } else {
 
-            System.out.println(fcatId);
-            System.out.println(fsubcatId);
+ 
             String query = "INSERT INTO `product`(`Brand_Id`, `Category_Id`, `Description`, `sub_cat_Id`) VALUES "
                     + "('" + bId + "','" + fcatId + "','" + txt_product.getText().trim() + "','" + fsubcatId + "')";
 
@@ -533,6 +539,12 @@ public class Product extends javax.swing.JPanel {
             combo_subcat.setSelectedIndex(0);
         }
     }//GEN-LAST:event_checkbox_subcatMouseClicked
+
+    private void txt_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyReleased
+        // TODO add your handling code here:
+        String query = txt_search.getText();
+        filtertablesubCat(query);
+    }//GEN-LAST:event_txt_searchKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -660,5 +672,13 @@ public class Product extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+            private void filtertablesubCat(String query) {
+        dtm = (DefaultTableModel) table_product.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dtm);
+        table_product.setRowSorter(tr);
+
+        tr.setRowFilter(RowFilter.regexFilter(query));
     }
 }

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package v.solution;
+
 import java.sql.*;
 import java.sql.ResultSet;
 import java.util.logging.Level;
@@ -10,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import v.DB.DB;
 import v.Encryption.Encryption;
+import v.SystemUserDetails.SystemUserDetails;
 
 /**
  *
@@ -216,6 +218,7 @@ public class Login extends javax.swing.JFrame {
         String password = txt_password.getText();
         String dbusername = "";
         String dbpassword = "";
+        String userProfileId = "";
 
         if (txt_password.getText().equals("") || txt_username.getText().equals("")) {
 
@@ -225,33 +228,37 @@ public class Login extends javax.swing.JFrame {
 
             String encrpp = Encryption.getMd5(password);
 
-
             try {
                 String query = "SELECT * FROM userprofile WHERE Username=? AND Password=?";
-                PreparedStatement  checkps= DB.getDBConnection().prepareStatement(query);
-                
+                PreparedStatement checkps = DB.getDBConnection().prepareStatement(query);
+
                 checkps.setString(1, userName);
                 checkps.setString(2, encrpp);
-                
+
                 rs = checkps.executeQuery();
                 if (rs.next()) {
                     dbusername = rs.getString("Username");
                     dbpassword = rs.getString("Password");
-                }else{
-                            JOptionPane.showMessageDialog(this, "userame or password doesn't match");
+                    userProfileId = rs.getString("Id");
+
+                } else {
+
+                    JOptionPane.showMessageDialog(this, "userame or password doesn't match");
                 }
-                
-                
-                if(userName.equals(dbusername) && encrpp.equals(dbpassword) ){
-                Home home = new Home();
-                home.setVisible(true);
-                this.dispose();
+
+                if (userName.equals(dbusername) && encrpp.equals(dbpassword)) {
+                    Home home = new Home(userProfileId);
+                    home.setVisible(true);
+
+
+                    this.dispose();
                 }
 
             } catch (Exception e) {
+                
                 e.printStackTrace();
+                
             }
-
 
         }
 
@@ -273,7 +280,7 @@ public class Login extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

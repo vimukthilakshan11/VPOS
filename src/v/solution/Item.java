@@ -8,14 +8,32 @@ package v.solution;
  *
  * @author Administrator
  */
+
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import v.DB.DB;
+
 public class Item extends javax.swing.JPanel {
 
     /**
      * Creates new form Product
      */
+        DefaultTableModel dtm;
+    ResultSet rs;
     public Item() {
         initComponents();
+        product();
         jPanel6.setVisible(false);
+        
+        tableProduct();
     }
 
     /**
@@ -28,21 +46,22 @@ public class Item extends javax.swing.JPanel {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        product_combo = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        txt_sellingprice = new javax.swing.JTextField();
+        save_btn = new javax.swing.JButton();
+        update_btn = new javax.swing.JButton();
+        delete_btn = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jTextField2 = new javax.swing.JTextField();
+        rad_active = new javax.swing.JRadioButton();
+        rad_inactive = new javax.swing.JRadioButton();
+        txt_barcode = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txt_warrenty = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jPanel6 = new javax.swing.JPanel();
@@ -52,14 +71,14 @@ public class Item extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_item = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jTextField9 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jTextField10 = new javax.swing.JTextField();
+        psearch = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -68,47 +87,58 @@ public class Item extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Barcode                :");
 
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CAmera" }));
-        jComboBox1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        product_combo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        product_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product" }));
+        product_combo.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        product_combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                product_comboActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Selling Price          :");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        txt_sellingprice.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txt_sellingprice.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/save.png"))); // NOI18N
-        jButton4.setText("Save");
+        save_btn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        save_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/save.png"))); // NOI18N
+        save_btn.setText("Save");
+        save_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                save_btnActionPerformed(evt);
+            }
+        });
 
-        jButton6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/update.png"))); // NOI18N
-        jButton6.setText("Update");
+        update_btn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        update_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/update.png"))); // NOI18N
+        update_btn.setText("Update");
 
-        jButton7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
-        jButton7.setText("Delete");
+        delete_btn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        delete_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
+        delete_btn.setText("Delete");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Status                   :");
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Active");
+        buttonGroup1.add(rad_active);
+        rad_active.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        rad_active.setSelected(true);
+        rad_active.setText("Active");
 
-        jRadioButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jRadioButton2.setText("Inactive");
+        buttonGroup1.add(rad_inactive);
+        rad_inactive.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        rad_inactive.setText("Inactive");
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), new java.awt.Color(0, 153, 204)));
+        txt_barcode.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txt_barcode.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), new java.awt.Color(0, 153, 204)));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Warrenty              :");
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTextField3.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        txt_warrenty.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txt_warrenty.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Month");
@@ -182,33 +212,33 @@ public class Item extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
+                                .addComponent(rad_active)
                                 .addGap(10, 10, 10)
-                                .addComponent(jRadioButton2))
+                                .addComponent(rad_inactive))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_warrenty, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)))
+                            .addComponent(txt_sellingprice)
+                            .addComponent(txt_barcode)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(4, 4, 4)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(product_combo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jCheckBox1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(75, 75, 75)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(save_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton7)
+                        .addComponent(delete_btn)
                         .addGap(47, 47, 47)))
                 .addContainerGap())
         );
@@ -217,40 +247,40 @@ public class Item extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1)
+                    .addComponent(product_combo)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_barcode, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_sellingprice, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_warrenty, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(rad_active)
+                    .addComponent(rad_inactive))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCheckBox1)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7))
+                    .addComponent(save_btn)
+                    .addComponent(update_btn)
+                    .addComponent(delete_btn))
                 .addGap(167, 167, 167))
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_item.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        tbl_item.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -258,9 +288,9 @@ public class Item extends javax.swing.JPanel {
                 "Product", "Barcode", "Selling Price", "Warrenty ", "Status", "Manuf. Date", "Expire Date"
             }
         ));
-        jTable1.setGridColor(new java.awt.Color(93, 167, 219));
-        jTable1.setSelectionBackground(new java.awt.Color(93, 167, 219));
-        jScrollPane2.setViewportView(jTable1);
+        tbl_item.setGridColor(new java.awt.Color(93, 167, 219));
+        tbl_item.setSelectionBackground(new java.awt.Color(93, 167, 219));
+        jScrollPane2.setViewportView(tbl_item);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -328,7 +358,12 @@ public class Item extends javax.swing.JPanel {
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jTextField10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        psearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        psearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                psearchKeyReleased(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Search Product :");
@@ -341,7 +376,7 @@ public class Item extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(psearch, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -349,7 +384,7 @@ public class Item extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(90, 90, 90)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(psearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -402,16 +437,67 @@ public class Item extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jCheckBox1MouseClicked
 
+    private void product_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_comboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_product_comboActionPerformed
+
+    private void save_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_btnActionPerformed
+        int pId = 0;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        
+
+        
+                String brand = product_combo.getSelectedItem().toString();
+        if (!product_combo.getSelectedItem().toString().equals("Product")) {
+            String brandId[] = brand.split("-", 0);
+
+            pId = Integer.parseInt(brandId[0]);
+            
+            String barCode = txt_barcode.getText();
+        String sellingPrice = txt_sellingprice.getText();
+        String warrenty = txt_warrenty.getText();
+        
+
+        String fmanuDate = formatter.format(manudate.getDatoFecha());
+        String fexDate = formatter.format(exdate.getDatoFecha());
+
+        
+                int status = 1;
+        if (rad_active.isSelected()) {
+        } else {
+            status = 0;
+        }
+        
+        String query = "INSERT INTO `item`(`Product_Id`, `Barcode`, `Selling_Price`, `warrenty`, `ManufactureDate`, `ExpireDate`, `updateStatus`) VALUES ('"+pId+"','"+barCode+"','"+sellingPrice+"','"+warrenty+"','"+fmanuDate+"','"+fexDate+"','"+status+"')";
+
+
+        try {
+            DB.push(query);
+            JOptionPane.showMessageDialog(this, "Success");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        }else{
+        JOptionPane.showMessageDialog(this, "Fiest Select A Product");
+        }
+        
+        
+    }//GEN-LAST:event_save_btnActionPerformed
+
+    private void psearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_psearchKeyReleased
+        // TODO add your handling code here:
+        String query = psearch.getText();
+        filtertablesubCat(query);
+    }//GEN-LAST:event_psearchKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JButton delete_btn;
     private rojeru_san.componentes.RSDateChooser exdate;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -428,15 +514,77 @@ public class Item extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField9;
     private rojeru_san.componentes.RSDateChooser manudate;
+    private javax.swing.JComboBox<String> product_combo;
+    private javax.swing.JTextField psearch;
+    private javax.swing.JRadioButton rad_active;
+    private javax.swing.JRadioButton rad_inactive;
+    private javax.swing.JButton save_btn;
+    private javax.swing.JTable tbl_item;
+    private javax.swing.JTextField txt_barcode;
+    private javax.swing.JTextField txt_sellingprice;
+    private javax.swing.JTextField txt_warrenty;
+    private javax.swing.JButton update_btn;
     // End of variables declaration//GEN-END:variables
+
+    private void product(){
+        String product = "";
+        int pId = 0 ;
+        String query = "SELECT Description,id FROM product WHERE status= '1'";
+        try {
+                    rs = DB.search(query);
+                    while(rs.next()){
+                    product = rs.getString("Description");
+                    pId = rs.getInt("id");
+                    product_combo.addItem(pId + "-"+ product);
+                    }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        
+    }
+    
+    private void tableProduct(){
+        dtm = (DefaultTableModel) tbl_item.getModel();
+        dtm.setRowCount(0);
+        
+        String query = "SELECT `Id`, `Product_Id`, `Barcode`, `Selling_Price`, `warrenty`, `ManufactureDate`, `ExpireDate`, `updateStatus`, `Status` FROM `item` WHERE status = '1'";
+        try {
+            ResultSet rs = DB.search(query);
+            Vector v = new Vector();
+            while (rs.next()){
+                
+                                String pCode = rs.getString("Product_Id");
+                String barCode = rs.getString("Barcode");
+                String sellingPrice = rs.getString("Selling_Price");
+                String warrenty = rs.getString("warrenty");
+                String ManufactureDate = rs.getString("ManufactureDate");
+                String ExpireDate = rs.getString("ExpireDate");
+
+                String Status = rs.getString("updateStatus");
+                            
+                            v.add(pCode);
+                             v.add(barCode);
+                              v.add(sellingPrice);
+                               v.add(warrenty);
+                                v.add(ManufactureDate);
+                                 v.add(ExpireDate);
+                                  v.add(Status);
+                                
+                                   dtm.addRow(v);
+            }
+            
+        } catch (Exception e) {
+        }
+    }
+        private void filtertablesubCat(String query) {
+        dtm = (DefaultTableModel) tbl_item.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dtm);
+        tbl_item.setRowSorter(tr);
+
+        tr.setRowFilter(RowFilter.regexFilter(query));
+    }
 }
