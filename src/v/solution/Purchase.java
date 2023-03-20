@@ -685,7 +685,7 @@ public class Purchase extends javax.swing.JPanel {
 
     private void btn_purchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_purchaseActionPerformed
         // insert data to purchase:
-        
+
         if (combo_supplier.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(this, "First You Select A Customer...");
         } else {
@@ -707,17 +707,50 @@ public class Purchase extends javax.swing.JPanel {
 
             try {
                 DB.push(query);
-                
-                
-                
-                
+                String queryGetPId = "SELECT id FROM purchase";
+                String pId = "";
+                rs = DB.search(queryGetPId);
+                while (rs.next()) {
+                    pId = rs.getString("Id");
+                }
+
+                int tableItemCount = tble_product.getRowCount();
+                dtm = (DefaultTableModel) tble_product.getModel();
+                int i = 0;
+                double pPrice = 0.0;
+                int qty = 0;
+                double totalPrice2 = 0.0;
+                int productId = 0;
+                if (tble_product.getRowCount() != 0) {
+                    while (tableItemCount > i) {
+                        pPrice = Double.parseDouble(dtm.getValueAt(i, 4).toString());
+                        qty = Integer.parseInt(dtm.getValueAt(i, 5).toString());
+
+                        totalPrice2 = Double.parseDouble(dtm.getValueAt(i, 6).toString());
+                        productId = Integer.parseInt(dtm.getValueAt(i, 7).toString());
+
+                        String queryPItem = "INSERT INTO `purchaseitem`"
+                                + "(`Purchase_Id`, `PurchasePrice`, `Quantity`, `TotalPrice`, `product_Id`) "
+                                + "VALUES ('" + pId + "','" + pPrice + "','" + qty + "','" + totalPrice2 + "','" + productId + "')";
+ 
+
+                        DB.push(queryPItem);
+
+                        i++;
+
+                    }
+                    String pPriceString = String.valueOf(pPrice);
+                    txt_nettotal.setText(pPriceString);
+                }
+                calcPDiscount();
+
                 JOptionPane.showMessageDialog(this, "Purchased...");
                 clear();
                 clear2();
-                
+                dtm.setRowCount(0);
             } catch (Exception e) {
-               e.printStackTrace();
-                
+                e.printStackTrace();
+
             }
         }
 
@@ -990,5 +1023,6 @@ private void productTable() {
         txt_nettotal.setText("");
         txt_discount1.setText("0");
         txt_amount.setText("");
+
     }
 }
