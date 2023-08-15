@@ -229,7 +229,7 @@ public class Login extends javax.swing.JFrame {
             String encrpp = Encryption.getMd5(password);
 
             try {
-                String query = "SELECT * FROM userprofile WHERE Username=? AND Password=?";
+                String query = "SELECT * FROM userprofile WHERE UserName=? AND Password=?";
                 PreparedStatement checkps = DB.getDBConnection().prepareStatement(query);
 
                 checkps.setString(1, userName);
@@ -237,7 +237,7 @@ public class Login extends javax.swing.JFrame {
 
                 rs = checkps.executeQuery();
                 if (rs.next()) {
-                    dbusername = rs.getString("Username");
+                    dbusername = rs.getString("UserName");
                     dbpassword = rs.getString("Password");
                     userProfileId = rs.getString("Id");
 

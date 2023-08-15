@@ -20,7 +20,7 @@ public class DB {
     private static void Init_DB() throws ClassNotFoundException, SQLException{
     
     Class.forName("com.mysql.cj.jdbc.Driver");
-    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/v-solution","root","");
+    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/v-pos","root","1234");
     
     }
     

@@ -25,6 +25,7 @@ public class Brand extends javax.swing.JFrame {
      */
     ResultSet rs;
     DefaultTableModel dtm;
+
     public Brand() {
         initComponents();
         brandTable();
@@ -68,7 +69,6 @@ public class Brand extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 102, 0));
         setForeground(new java.awt.Color(204, 0, 51));
-        setUndecorated(true);
 
         jLabel1.setBackground(new java.awt.Color(153, 153, 153));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -237,7 +237,7 @@ public class Brand extends javax.swing.JFrame {
 
             },
             new String [] {
-                "B. Name", "C.Name", "C.Address", " C.Reg.No", "E-Mail", "Mobile"
+                "ID", "B. Name", "C.Name", "C.Address", " C.Reg.No", "E-Mail", "Mobile"
             }
         ));
         table_brand.setGridColor(new java.awt.Color(93, 167, 219));
@@ -249,7 +249,7 @@ public class Brand extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(table_brand);
         if (table_brand.getColumnModel().getColumnCount() > 0) {
-            table_brand.getColumnModel().getColumn(5).setResizable(false);
+            table_brand.getColumnModel().getColumn(6).setResizable(false);
         }
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -325,7 +325,7 @@ public class Brand extends javax.swing.JFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(1009, 553));
+        setSize(new java.awt.Dimension(1025, 561));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -336,7 +336,7 @@ public class Brand extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-         String query = "SELECT * FROM brand WHERE BrandName = '" + txt_brandname.getText() + "' AND status = '1'";
+        String query = "SELECT * FROM brand WHERE BrandName = '" + txt_brandname.getText() + "' AND status = '1'";
         int alreadyStatus = 0;
         try {
             rs = DB.search(query);
@@ -385,35 +385,36 @@ public class Brand extends javax.swing.JFrame {
 
     private void btn_selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_selectActionPerformed
         // TODO add your handling code here:
-          dtm = (DefaultTableModel) table_brand.getModel();
+        dtm = (DefaultTableModel) table_brand.getModel();
         int r = -1;
         r = table_brand.getSelectedRow();
         if (r == -1) {
             JOptionPane.showMessageDialog(this, "First Select A Brand In A Table");
         } else {
-         int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+            int option = JOptionPane.showConfirmDialog(this, "SURE ?");
 
-        if (option == 0) {
-            String brandId = null;
-            int selectedRow = table_brand.getSelectedRow();
-            dtm = (DefaultTableModel) table_brand.getModel();
-            brandId = dtm.getValueAt(selectedRow, 0).toString();
+            if (option == 0) {
+                String brandId = null;
+                int selectedRow = table_brand.getSelectedRow();
+                dtm = (DefaultTableModel) table_brand.getModel();
+                brandId = dtm.getValueAt(selectedRow, 0).toString();
 
-            String query = "UPDATE brand SET status = '0' WHERE Id = " + brandId + "";
-            try {
-                DB.push(query);
-                JOptionPane.showMessageDialog(this, "Successfully Deleted");
-                brandTable();
-                clear();
-            } catch (Exception e) {
-                e.printStackTrace();
+                String query = "UPDATE brand SET status = '0' WHERE Id = " + brandId + "";
+                try {
+                    DB.push(query);
+                    JOptionPane.showMessageDialog(this, "Successfully Deleted");
+                    brandTable();
+                    clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }}
+        }
     }//GEN-LAST:event_btn_selectActionPerformed
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
         // TODO add your handling code here:
-          String query = "SELECT * FROM brand WHERE BrandName = '" + txt_brandname.getText() + "' AND status = '1'";
+        String query = "SELECT * FROM brand WHERE BrandName = '" + txt_brandname.getText() + "' AND status = '1'";
         int alreadyStatus = 0;
         try {
             rs = DB.search(query);
@@ -431,12 +432,11 @@ public class Brand extends javax.swing.JFrame {
             if (option == 0) {
 
                 String query3 = "UPDATE `brand` SET "
-                        
                         + "`CompanyName`='" + txt_companyname.getText() + "',"
                         + "`CompanyAddress`='" + txt_companyaddres.getText() + "',"
                         + "`CompanyRegNo`='" + txt_regNumber.getText() + "',"
                         + "`Email`='" + txt_mail.getText() + "',"
-                        + "`Mobile`='" +txt_mobile.getText()+ "'"
+                        + "`Mobile`='" + txt_mobile.getText() + "'"
                         + "WHERE BrandName = '" + txt_brandname.getText() + "'";
 
                 try {
@@ -457,12 +457,12 @@ public class Brand extends javax.swing.JFrame {
 
     private void table_brandMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_brandMouseClicked
         // TODO add your handling code here:
-                      
+
         String brandName = "";
         int selectedRow = table_brand.getSelectedRow();
         dtm = (DefaultTableModel) table_brand.getModel();
         brandName = dtm.getValueAt(selectedRow, 0).toString();
-        String query = "SELECT * FROM brand WHERE BrandName = '" + brandName+ "' AND status= '1'";
+        String query = "SELECT * FROM brand WHERE BrandName = '" + brandName + "' AND status= '1'";
         try {
             rs = DB.search(query);
             if (rs.next()) {
@@ -477,7 +477,7 @@ public class Brand extends javax.swing.JFrame {
             Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-       
+
     }//GEN-LAST:event_table_brandMouseClicked
 
     /**
@@ -554,23 +554,21 @@ public class Brand extends javax.swing.JFrame {
             while (rs.next()) {
 
                 Vector v = new Vector();
+                String id = rs.getString("Id");
                 String brandName = rs.getString("BrandName");
                 String companyName = rs.getString("CompanyName");
                 String companyAddress = rs.getString("CompanyAddress");
                 String regNo = rs.getString("CompanyRegNo");
                 String mail = rs.getString("Email");
                 String mobile = rs.getString("Mobile");
-               
-                
 
-
+                v.add(id);
                 v.add(brandName);
                 v.add(companyName);
                 v.add(companyAddress);
                 v.add(regNo);
                 v.add(mail);
                 v.add(mobile);
-               
 
                 dtm.addRow(v);
             }
@@ -589,8 +587,8 @@ public class Brand extends javax.swing.JFrame {
         txt_regNumber.setText("");
         txt_search.setText("");
     }
-    
-      private void filtertablesubCat(String query) {
+
+    private void filtertablesubCat(String query) {
         dtm = (DefaultTableModel) table_brand.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dtm);
         table_brand.setRowSorter(tr);

@@ -29,6 +29,7 @@ public class Purchase extends javax.swing.JPanel {
         initComponents();
         productTable();
         getSupplier();
+        
         lable_userid.setText(userID);
     }
 
@@ -104,7 +105,7 @@ public class Purchase extends javax.swing.JPanel {
         jLabel3.setText("Date      :");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel4.setText("Item      :");
+        jLabel4.setText("Product      :");
 
         txt_itemId.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txt_itemId.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -277,7 +278,7 @@ public class Purchase extends javax.swing.JPanel {
         jScrollPane1.setViewportView(table_product);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel11.setText("Search Item :");
+        jLabel11.setText("Search Product :");
 
         txt_search.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -950,10 +951,12 @@ private void productTable() {
     }
 
     private void getSupplier() {
+      
         String query = "SELECT `Id`, `Name` FROM `supplier` WHERE activeStatus = '1'";
         try {
             rs = DB.search(query);
             while (rs.next()) {
+                System.out.println("aaa");
                 String sId;
                 String sName;
                 combo_supplier.removeAllItems();

@@ -50,7 +50,7 @@ public class Invoice extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(93, 167, 219));
         jLabel2.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Total Invoices                                              :");
+        jLabel2.setText("Total Invoices                                      :");
         jLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 153, 153), null));
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jLabel2.setOpaque(true);
@@ -58,7 +58,7 @@ public class Invoice extends javax.swing.JPanel {
         jLabel3.setBackground(new java.awt.Color(93, 167, 219));
         jLabel3.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("The Total Amount Of All Invoices  (Rs.)  :");
+        jLabel3.setText("Total Amount Of All Invoices  (Rs.)  :");
         jLabel3.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 153, 153), null));
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jLabel3.setOpaque(true);

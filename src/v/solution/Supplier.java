@@ -383,7 +383,7 @@ public class Supplier extends javax.swing.JPanel {
                 } else {
                     activeStatus = "0";
                 }
-                String query2 = "INSERT INTO `supplier`(`Name`, `Address`, `TelephoneNo`, `CompanyName`, `RegisterNo`,`activeStatus`, `mail`) VALUES ("
+                String query2 = "INSERT INTO `supplier`(`Name`, `Address`, `TelephoneNo`, `CompanyName`, `RegisterNo`,`activeStatus`, `Email`) VALUES ("
                         + "'" + txt_name.getText() + "',"
                         + "'" + txt_address.getText() + "','" + txt_mobile.getText() + "',"
                         + "'" + txt_companyName.getText() + "','" + txt_registerNumber.getText() + "',"
@@ -460,7 +460,7 @@ public class Supplier extends javax.swing.JPanel {
                 txt_companyName.setText(rs.getString("CompanyName"));
                 txt_address.setText(rs.getString("Address"));
                 txt_registerNumber.setText(rs.getString("RegisterNo"));
-                txt_email.setText(rs.getString("mail"));
+                txt_email.setText(rs.getString("Email"));
                 txt_mobile.setText(rs.getString("TelephoneNo"));
                 activeStatus = rs.getString("ActiveStatus");
             }
@@ -507,7 +507,7 @@ public class Supplier extends javax.swing.JPanel {
                         + "`CompanyName`='" + txt_companyName.getText() + "',"
                         + "`RegisterNo`='" + txt_registerNumber.getText() + "',"
                         + "`activeStatus`='" +activeStatus+ "',"
-                        + "`mail`='" + txt_email.getText() + "'"
+                        + "`Email`='" + txt_email.getText() + "'"
                         + "WHERE RegisterNo = '" + txt_registerNumber.getText() + "'";
 
                 try {
@@ -585,7 +585,7 @@ private void clear() {
                 String name = rs.getString("Name");
                 String companyName = rs.getString("CompanyName");
                 String address = rs.getString("Address");
-                String mail = rs.getString("mail");
+                String mail = rs.getString("Email");
                 String mobile = rs.getString("TelephoneNo");
                 String activeStatus = rs.getString("activeStatus");
                 String regNumber = rs.getString("RegisterNo");

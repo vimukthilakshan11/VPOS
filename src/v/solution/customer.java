@@ -307,7 +307,7 @@ public class Customer extends javax.swing.JPanel {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        table_customer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        table_customer.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         table_customer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", null, null, null, null, null, null, null, null}
@@ -317,6 +317,7 @@ public class Customer extends javax.swing.JPanel {
             }
         ));
         table_customer.setGridColor(new java.awt.Color(93, 167, 219));
+        table_customer.setRowHeight(40);
         table_customer.setSelectionBackground(new java.awt.Color(93, 167, 219));
         table_customer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -457,7 +458,9 @@ public class Customer extends javax.swing.JPanel {
                 try {
                     DB.push(query2);
                     JOptionPane.showMessageDialog(this, "successfully saved");
+                    
                     clear();
+                    customerdata();
                 } catch (Exception ex) {
                     Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -672,15 +675,17 @@ public class Customer extends javax.swing.JPanel {
                 String email = rs.getString("Email");
                 String balance = rs.getString("Balance");
                 String activestatus = rs.getString("ActiveStatus");
+                String JDate = rs.getString("JoinedDate");
 
                 v.add(ccode);
                 v.add(fname + " " + lname);
 
                 v.add(address);
+                v.add(mobile);
                 v.add(nic);
-                v.add(mobile);
+                 v.add(JDate);
                 v.add(email);
-                v.add(mobile);
+               
                 v.add(balance);
                 v.add(activestatus);
 

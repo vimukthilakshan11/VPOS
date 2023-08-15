@@ -9,6 +9,8 @@ package v.solution;
  * @author Administrator
  */
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +36,7 @@ public class Product extends javax.swing.JPanel {
         combo_category.disable();
         combo_subcat.disable();
         productTable();
+        supplier();
     }
 
     /**
@@ -68,6 +71,8 @@ public class Product extends javax.swing.JPanel {
         btn_clear = new javax.swing.JButton();
         checkbox_cate = new javax.swing.JCheckBox();
         checkbox_subcat = new javax.swing.JCheckBox();
+        jLabel6 = new javax.swing.JLabel();
+        combo_supplier = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         table_product = new javax.swing.JTable();
@@ -76,6 +81,7 @@ public class Product extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jTextField9 = new javax.swing.JTextField();
+        lblId = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -89,16 +95,21 @@ public class Product extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Sub Category     :");
 
-        combo_brand.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        combo_brand.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        combo_brand.setForeground(new java.awt.Color(0, 102, 153));
         combo_brand.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Brand" }));
 
-        combo_category.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        combo_category.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        combo_category.setForeground(new java.awt.Color(0, 102, 153));
         combo_category.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Category" }));
 
-        combo_subcat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        combo_subcat.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        combo_subcat.setForeground(new java.awt.Color(0, 102, 153));
         combo_subcat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sub Category" }));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setBackground(new java.awt.Color(0, 102, 102));
+        jButton1.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Add New Brand");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,16 +117,22 @@ public class Product extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setBackground(new java.awt.Color(0, 102, 102));
+        jButton2.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Add New Category");
+        jButton2.setPreferredSize(new java.awt.Dimension(145, 26));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton3.setBackground(new java.awt.Color(0, 102, 102));
+        jButton3.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Add New SubCategory");
+        jButton3.setPreferredSize(new java.awt.Dimension(194, 26));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -139,10 +156,20 @@ public class Product extends javax.swing.JPanel {
         btn_update.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/update.png"))); // NOI18N
         btn_update.setText("Update");
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateActionPerformed(evt);
+            }
+        });
 
         btn_delete.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
         btn_delete.setText("Delete Selected");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Status :");
@@ -159,6 +186,11 @@ public class Product extends javax.swing.JPanel {
         btn_clear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_clear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/cleaning.png"))); // NOI18N
         btn_clear.setText("Clear");
+        btn_clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_clearActionPerformed(evt);
+            }
+        });
 
         checkbox_cate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         checkbox_cate.setForeground(new java.awt.Color(204, 0, 51));
@@ -175,6 +207,20 @@ public class Product extends javax.swing.JPanel {
         checkbox_subcat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 checkbox_subcatMouseClicked(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setText("Supplier     :");
+
+        combo_supplier.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        combo_supplier.setForeground(new java.awt.Color(0, 102, 153));
+        combo_supplier.setMaximumRowCount(100);
+        combo_supplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SUPPLIER" }));
+        combo_supplier.setPreferredSize(new java.awt.Dimension(157, 40));
+        combo_supplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combo_supplierActionPerformed(evt);
             }
         });
 
@@ -197,7 +243,7 @@ public class Product extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(checkbox_subcat, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(checkbox_cate, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,23 +251,26 @@ public class Product extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(rad_active)
-                                .addGap(10, 10, 10)
+                                .addComponent(rad_active, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(rad_inactive))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txt_product)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(combo_subcat, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(combo_brand, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(combo_category, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addComponent(txt_product)))))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(combo_subcat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(combo_category, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(combo_brand, 0, 240, Short.MAX_VALUE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(combo_supplier, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -232,30 +281,46 @@ public class Product extends javax.swing.JPanel {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txt_product, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(combo_brand)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(combo_brand)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkbox_cate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(checkbox_cate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(combo_category))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(checkbox_subcat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(combo_subcat))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(rad_active)
+                                    .addComponent(rad_inactive)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(combo_category)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(checkbox_subcat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(combo_subcat)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rad_active)
-                    .addComponent(rad_inactive))
-                .addGap(64, 64, 64)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combo_supplier, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(109, 109, 109)
                 .addComponent(btn_save)
                 .addGap(18, 18, 18)
                 .addComponent(btn_update)
@@ -263,23 +328,32 @@ public class Product extends javax.swing.JPanel {
                 .addComponent(btn_delete)
                 .addGap(18, 18, 18)
                 .addComponent(btn_clear)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(39, 39, 39))
         );
 
-        table_product.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        table_product.setBackground(new java.awt.Color(0, 102, 102));
+        table_product.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        table_product.setForeground(new java.awt.Color(255, 255, 255));
         table_product.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Product", "Brand", "Category", "Sub Category"
+                "ID", "Product", "Brand", "Category", "Sub Category", "Supplier", "Active Status"
             }
         ));
         table_product.setGridColor(new java.awt.Color(93, 167, 219));
+        table_product.setRowHeight(30);
         table_product.setSelectionBackground(new java.awt.Color(93, 167, 219));
+        table_product.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_productMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(table_product);
 
         txt_search.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txt_search.setPreferredSize(new java.awt.Dimension(64, 30));
         txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_searchKeyReleased(evt);
@@ -294,14 +368,14 @@ public class Product extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1076, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -333,8 +407,10 @@ public class Product extends javax.swing.JPanel {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(67, Short.MAX_VALUE)
-                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(lblId, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton5)
                 .addGap(35, 35, 35))
@@ -345,7 +421,8 @@ public class Product extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField9))
+                    .addComponent(jTextField9)
+                    .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -396,7 +473,9 @@ public class Product extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -436,87 +515,102 @@ public class Product extends javax.swing.JPanel {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-        String pName = txt_product.getText();
-        int bId = 0;
-        int fcatId =14;
-        int fsubcatId =13;
+        long lastInsertId = -1;
+        String productName = txt_product.getText();
 
-        
+//           Brand id
         String brand = combo_brand.getSelectedItem().toString();
-        if (!combo_brand.getSelectedItem().toString().equals("Brand")) {
-            String brandId[] = brand.split("-", 0);
+        String[] brandId = brand.split("-");
+        String brandId2 = brandId[0];
 
-            bId = Integer.parseInt(brandId[0]);
-        }
-
+//        cat id
         String cat = combo_category.getSelectedItem().toString();
+        String[] catId = cat.split("-");
+        String catId2 = catId[0];
+
+//        subcat id
         String subcat = combo_subcat.getSelectedItem().toString();
-        int catid = 0;
-        int subCatId = 0;
-        if (cat.equals("Category")) {
-            cat = "nocategory";
-        }
-        if (subcat.equals("Sub Category")) {
-            subcat = "nosubcat";
-        }
-        String query1 = "SELECT `Id` FROM `category` WHERE Description = '" + cat + "' ";
-        String query2 = "SELECT `Id` FROM `sub_cat` WHERE Description = '" + subcat + "'";
+        String[] subcatId = subcat.split("-");
+        String subcatId2 = subcatId[0];
 
-        try {
-            rs = DB.search(query1);
+//        supplier id
+        String supplier = combo_supplier.getSelectedItem().toString();
+        String[] supplierId = supplier.split("-");
+        String supplierId2 = supplierId[0];
 
-            while (rs.next()) {
-                String id = rs.getString("Id");
-                catid = Integer.parseInt(id);
-            }
+        String activeStatus = "";
 
-            rs = DB.search(query2);
-
-            while (rs.next()) {
-                String id = rs.getString("Id");
-                subCatId = Integer.parseInt(id);
-            }
-
-            // category id from category combo
-            if (!combo_category.getSelectedItem().toString().equals("Category")) {
-                String categId[] = cat.split("-", 0);
-
-                fcatId = Integer.parseInt(categId[0]);
-            }
-
-            // subcategory id from subcategory combo
-            if (!combo_subcat.getSelectedItem().toString().equals("Sub Category")) {
-                String subcatId[] = subcat.split("-", 0);
-
-                fsubcatId = Integer.parseInt(subcatId[0]);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        int status = 1;
         if (rad_active.isSelected()) {
+            activeStatus = "1";
         } else {
-            status = 0;
+            activeStatus = "0";
         }
 
-        if (txt_product.equals("") && combo_brand.getSelectedItem().equals("Brand")) {
-            JOptionPane.showMessageDialog(this, "First enter product name or brand");
-        } else {
+        if (!productName.equals("") && !brandId2.equals("Brand")) {
 
- 
-            String query = "INSERT INTO `product`(`Brand_Id`, `Category_Id`, `Description`, `sub_cat_Id`) VALUES "
-                    + "('" + bId + "','" + fcatId + "','" + txt_product.getText().trim() + "','" + fsubcatId + "')";
+            if (!supplierId2.equals("SUPPLIER")) {
 
-            try {
-                DB.push(query);
-                JOptionPane.showMessageDialog(this, "Successfull added");
-            } catch (Exception e) {
-                e.printStackTrace();
+                if (catId2.equals("Category") && subcatId2.equals("Sub Category")) {
+
+                    String query = "INSERT INTO `product`(`BrandId`,`Description`, `ActiveStatus`) VALUES ('" + brandId2 + "','" + productName + "','" + activeStatus + "')";
+
+                    try {
+
+                        DB.push(query);
+
+                        query = "SELECT LAST_INSERT_ID()";
+
+                        ResultSet rs = DB.search(query);
+
+                        if (rs.next()) {
+                            lastInsertId = rs.getLong(1);
+                            String supplierHasProductQuery = "INSERT INTO `supplier_has_product`(`supplier_Id`, `product_Id`) VALUES ('" + supplierId2 + "','" + lastInsertId + "')";
+                            DB.push(supplierHasProductQuery);
+                            JOptionPane.showMessageDialog(this, "New Product Is Saved");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    String query = "INSERT INTO `product`(`BrandId`,`CatId`, `SubCatId`, `Description`, `ActiveStatus`) VALUES ('" + brandId2 + "','" + catId2 + "','" + subcatId2 + "','" + productName + "','" + activeStatus + "')";
+
+                    if (!catId2.equals("Category") && subcatId2.equals("Sub Category")) {
+                        query = "INSERT INTO `product`(`BrandId`,`CatId`,`Description`, `ActiveStatus`) VALUES ('" + brandId2 + "','" + catId2 + "','" + productName + "','" + activeStatus + "')";
+                    }
+                    if (catId2.equals("Category") && !subcatId2.equals("Sub Category")) {
+                        query = "INSERT INTO `product`(`BrandId`, `SubCatId`,`Description`, `ActiveStatus`) VALUES ('" + brandId2 + "','" + subcatId2 + "','" + productName + "','" + activeStatus + "')";
+                    }
+
+                    try {
+
+                        DB.push(query);
+                        query = "SELECT LAST_INSERT_ID()";
+
+                        ResultSet rs = DB.search(query);
+
+                        if (rs.next()) {
+                            lastInsertId = rs.getLong(1);
+                            String supplierHasProductQuery = "INSERT INTO `supplier_has_product`(`supplier_Id`, `product_Id`) VALUES ('" + supplierId2 + "','" + lastInsertId + "')";
+                            DB.push(supplierHasProductQuery);
+                            JOptionPane.showMessageDialog(this, "New Product Is Saved");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Please Choose A Supplier");
             }
-        }
 
+        } else {
+            JOptionPane.showMessageDialog(this, "Product Name Or Brand Missing");
+        }
+        productTable();
+clear();
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void checkbox_cateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkbox_cateMouseClicked
@@ -546,6 +640,257 @@ public class Product extends javax.swing.JPanel {
         filtertablesubCat(query);
     }//GEN-LAST:event_txt_searchKeyReleased
 
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
+        // TODO add your handling code here:
+
+        String id = lblId.getText();
+        long lastInsertId = -1;
+        String productName = txt_product.getText();
+
+//           Brand id
+        String brand = combo_brand.getSelectedItem().toString();
+        String[] brandId = brand.split("-");
+        String brandId2 = brandId[0];
+
+//        cat id
+        String cat = combo_category.getSelectedItem().toString();
+        String[] catId = cat.split("-");
+        String catId2 = catId[0];
+
+//        subcat id
+        String subcat = combo_subcat.getSelectedItem().toString();
+        String[] subcatId = subcat.split("-");
+        String subcatId2 = subcatId[0];
+
+//        supplier id
+        String supplier = combo_supplier.getSelectedItem().toString();
+        String[] supplierId = supplier.split("-");
+        String supplierId2 = supplierId[0];
+
+        String activeStatus = "";
+
+        if (rad_active.isSelected()) {
+            activeStatus = "1";
+        } else {
+            activeStatus = "0";
+        }
+
+        if (!productName.equals("") && !brandId2.equals("Brand")) {
+
+            if (!supplierId2.equals("SUPPLIER")) {
+
+                if (catId2.equals("Category") && subcatId2.equals("Sub Category")) {
+
+                    String query = "UPDATE `product` SET `BrandId`='" + brandId2 + "',`Description`='" + productName + "',`ActiveStatus`='" + activeStatus + "' WHERE Id = '" + id + "'";
+
+                    try {
+
+                        DB.push(query);
+
+                        query = "SELECT LAST_INSERT_ID()";
+
+                        ResultSet rs = DB.search(query);
+
+                        if (rs.next()) {
+                            lastInsertId = rs.getLong(1);
+                            String supplierHasProductQuery = "UPDATE `supplier_has_product` SET `supplier_Id`='" + supplierId2 + "' WHERE `product_Id`='" + id + "'";
+                            DB.push(supplierHasProductQuery);
+                            JOptionPane.showMessageDialog(this, "Product Update Is Success");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+
+                    String query = "UPDATE `product` SET `BrandId`='" + brandId2 + "',`CatId`='" + catId2 + "', `SubCatId`='" + subcatId2 + "',`Description`='" + productName + "',`ActiveStatus`='" + activeStatus + "' WHERE Id = '" + id + "'";
+                    if (!catId2.equals("Category") && subcatId2.equals("Sub Category")) {
+
+                        query = "UPDATE `product` SET `BrandId`='" + brandId2 + "',`CatId`='" + catId2 + "', `Description`='" + productName + "',`ActiveStatus`='" + activeStatus + "' WHERE Id = '" + id + "'";
+                    }
+                    if (catId2.equals("Category") && !subcatId2.equals("Sub Category")) {
+
+                        query = "UPDATE `product` SET `BrandId`='" + brandId2 + "', `SubCatId`='" + subcatId2 + "',`Description`='" + productName + "',`ActiveStatus`='" + activeStatus + "' WHERE Id = '" + id + "'";
+                    }
+
+                    try {
+
+                        DB.push(query);
+                        query = "SELECT LAST_INSERT_ID()";
+
+                        ResultSet rs = DB.search(query);
+
+                        if (rs.next()) {
+                            lastInsertId = rs.getLong(1);
+
+                            String supplierHasProductQuery = "UPDATE `supplier_has_product` SET `supplier_Id`='" + supplierId2 + "' WHERE `product_Id`='" + id + "'";
+                            DB.push(supplierHasProductQuery);
+                            JOptionPane.showMessageDialog(this, "Product Update Is Success");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Please Choose A Supplier");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Product Name Or Brand Missing");
+        }
+        productTable();
+clear();
+
+    }//GEN-LAST:event_btn_updateActionPerformed
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        // TODO add your handling code here:
+
+        if (lblId.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "First  Choose Product");
+        } else {
+            String id = lblId.getText();
+            String query = "UPDATE product SET Status = '0' WHERE Id = '" + id + "'";
+
+            int option = JOptionPane.showConfirmDialog(this, "Delete Is Sure ?");
+
+            if (option == 0) {
+
+                try {
+                    DB.push(query);
+                    JOptionPane.showMessageDialog(this, "Deleted");
+                    productTable();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void btn_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearActionPerformed
+        // TODO add your handling code here:
+clear();
+        productTable();
+    }//GEN-LAST:event_btn_clearActionPerformed
+
+    private void combo_supplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_supplierActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_combo_supplierActionPerformed
+
+    private void table_productMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_productMouseClicked
+        // TODO add your handling code here:
+
+        String activeStatus = "";
+        String pId = "";
+        int selectedRow = table_product.getSelectedRow();
+        dtm = (DefaultTableModel) table_product.getModel();
+        pId = dtm.getValueAt(selectedRow, 0).toString();
+        String query = "SELECT * FROM product WHERE Id = '" + pId + "' AND status= '1'";
+        String brandId = null;
+        String subCatId = null;
+        String catId = null;
+        try {
+            rs = DB.search(query);
+            if (rs.next()) {
+                txt_product.setText(rs.getString("Description"));
+
+                activeStatus = rs.getString("ActiveStatus");
+                brandId = rs.getString("BrandId");
+                catId = rs.getString("CatId");
+                subCatId = rs.getString("SubCatId");
+                lblId.setText(pId);
+
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (activeStatus.equals("1")) {
+            rad_active.doClick();
+        } else {
+            rad_inactive.doClick();
+        }
+
+        int comboBrand = combo_brand.getItemCount();
+        String valueatIndex = null;
+        for (int i = 0; comboBrand >= i; i++) {
+
+            valueatIndex = combo_brand.getItemAt(i);
+
+            String[] valueatIndex1 = valueatIndex.split("-");
+            String valueatIndex2 = valueatIndex1[0];
+
+            if (valueatIndex2.equals(brandId)) {
+                combo_brand.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        //combo cat select
+        int comboCategory = combo_category.getItemCount();
+        String valueatIndexCat = null;
+        for (int i = 0; comboCategory >= i; i++) {
+
+            valueatIndexCat = combo_category.getItemAt(i);
+
+            String[] valueatIndex1 = valueatIndexCat.split("-");
+            String valueatIndex2 = valueatIndex1[0];
+
+            if (valueatIndex2.equals(catId)) {
+                combo_category.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        //combo subcat select
+        int comboSubcat = combo_subcat.getItemCount();
+        String valueatIndexSubCat = null;
+        for (int i = 0; comboSubcat >= i; i++) {
+
+            valueatIndexSubCat = combo_subcat.getItemAt(i);
+
+            String[] valueatIndex1 = valueatIndexSubCat.split("-");
+            String valueatIndex2 = valueatIndex1[0];
+
+            if (valueatIndex2.equals(subCatId)) {
+                combo_subcat.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        //combo supplier select
+        int comboSupplier = combo_supplier.getItemCount();
+        String valueatIndexSupplier = null;
+        String supplierId = null;
+
+        query = "SELECT `supplier_Id` FROM `supplier_has_product` WHERE `product_Id` = '" + lblId.getText()+"'";
+        try {
+            rs = DB.search(query);
+            if(rs.next()){
+            supplierId = rs.getString("supplier_Id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; comboSupplier >= i; i++) {
+
+            valueatIndexSupplier = combo_supplier.getItemAt(i);
+
+            String[] valueatIndex1 = valueatIndexSupplier.split("-");
+            String valueatIndex2 = valueatIndex1[0];
+
+            if (valueatIndex2.equals(supplierId)) {
+                combo_supplier.setSelectedIndex(i);
+                break;
+            }
+        }
+
+    }//GEN-LAST:event_table_productMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_clear;
@@ -559,6 +904,7 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> combo_brand;
     private javax.swing.JComboBox<String> combo_category;
     private javax.swing.JComboBox<String> combo_subcat;
+    private javax.swing.JComboBox<String> combo_supplier;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -570,6 +916,7 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -577,6 +924,7 @@ public class Product extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JLabel lblId;
     private javax.swing.JRadioButton rad_active;
     private javax.swing.JRadioButton rad_inactive;
     private javax.swing.JTable table_product;
@@ -599,12 +947,12 @@ public class Product extends javax.swing.JPanel {
     }
 
     private void categoryCombo() {
-        String query = "SELECT `Id`, `Description` FROM `Category` WHERE status =  '1'";
+        String query = "SELECT `Id`, `Name` FROM `Category` WHERE status =  '1'";
         try {
             rs = DB.search(query);
             while (rs.next()) {
                 String catId = rs.getString("Id");
-                String catName = rs.getString("Description");
+                String catName = rs.getString("Name");
                 combo_category.addItem(catId + "-" + catName);
             }
         } catch (Exception e) {
@@ -613,12 +961,12 @@ public class Product extends javax.swing.JPanel {
     }
 
     private void subcategoryCombo() {
-        String query = "SELECT `Id`, `Description` FROM `sub_cat` WHERE status =  '1'";
+        String query = "SELECT `Id`, `Name` FROM `subcat` WHERE status =  '1'";
         try {
             rs = DB.search(query);
             while (rs.next()) {
                 String subcId = rs.getString("Id");
-                String subcName = rs.getString("Description");
+                String subcName = rs.getString("Name");
                 combo_subcat.addItem(subcId + "-" + subcName);
             }
         } catch (Exception e) {
@@ -639,13 +987,14 @@ public class Product extends javax.swing.JPanel {
                 Vector v = new Vector();
                 String id = rs1.getString("Id");
                 String Product = rs1.getString("Description");
-                String brand = rs1.getString("Brand_Id");
-                String cat = rs1.getString("Category_Id");
-                String subcat = rs1.getString("sub_cat_Id");
+                String brand = rs1.getString("BrandId");
+                String cat = rs1.getString("CatId");
+                String subcat = rs1.getString("subCatId");
+                String activeStatus = rs1.getString("ActiveStatus");
 
-                String query1 = "SELECT `BrandName` FROM `brand` WHERE status = '1'";
-                String query2 = "SELECT `Description` FROM `category` WHERE status = '1'";
-                String query3 = "SELECT `Description` FROM `sub_cat` WHERE status = '1'";
+                String query1 = "SELECT `BrandName` FROM `brand` WHERE Id = '" + brand + "'";
+                String query2 = "SELECT `Name` FROM `category` WHERE Id = '" + cat + "'";
+                String query3 = "SELECT `Name` FROM `subcat` WHERE Id = '" + subcat + "'";
 
                 rs = DB.search(query1);
                 if (rs.next()) {
@@ -653,11 +1002,18 @@ public class Product extends javax.swing.JPanel {
                 }
                 rs = DB.search(query2);
                 if (rs.next()) {
-                    cat = rs.getString("Description");
+                    cat = rs.getString("Name");
                 }
                 rs = DB.search(query3);
                 if (rs.next()) {
-                    subcat = rs.getString("Description");
+                    subcat = rs.getString("Name");
+                }
+
+                query = "SELECT CompanyName FROM supplier INNER JOIN supplier_has_product ON supplier_has_product.supplier_Id = supplier.Id WHERE supplier_has_product.product_Id = '" + id + "'";
+                rs = DB.search(query);
+                String supplier = null;
+                if (rs.next()) {
+                    supplier = rs.getString("CompanyName");
                 }
 
                 v.add(id);
@@ -665,6 +1021,13 @@ public class Product extends javax.swing.JPanel {
                 v.add(brand);
                 v.add(cat);
                 v.add(subcat);
+                v.add(supplier);
+
+                if (activeStatus.equals("0")) {
+                    v.add("Inactive");
+                } else {
+                    v.add("Active");
+                }
 
                 dtm.addRow(v);
             }
@@ -674,11 +1037,39 @@ public class Product extends javax.swing.JPanel {
         }
     }
 
-            private void filtertablesubCat(String query) {
+    private void filtertablesubCat(String query) {
         dtm = (DefaultTableModel) table_product.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dtm);
         table_product.setRowSorter(tr);
 
         tr.setRowFilter(RowFilter.regexFilter(query));
+    }
+
+    private void supplier() {
+        String companyName = null;
+        String id = null;
+        String query = "SELECT companyName,Id FROM supplier WHERE Status = '1'";
+
+        try {
+            ResultSet rs = DB.search(query);
+
+            while (rs.next()) {
+                companyName = rs.getString("companyName");
+                id = rs.getString("Id");
+                combo_supplier.addItem(id + "-" + companyName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void clear() {
+                txt_product.setText("");
+        combo_supplier.setSelectedIndex(0);
+        combo_subcat.setSelectedIndex(0);
+        combo_brand.setSelectedIndex(0);
+        combo_category.setSelectedIndex(0);
+        rad_active.doClick();
     }
 }
