@@ -23,9 +23,9 @@ public static void main(String[] args) throws SQLException, Exception {
     
     
     ResultSet rs = con.createStatement().executeQuery("SELECT * FROM Customer"); 
-    while (rs.next()){
+
         System.out.println(rs.getString("LName"));
-    }
+    
     
 }
 

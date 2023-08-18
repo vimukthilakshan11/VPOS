@@ -8,6 +8,7 @@ package v.solution;
  *
  * @author Administrator
  */
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,14 +36,6 @@ public class Item extends javax.swing.JPanel {
 
         tableProduct();
 
-        String a = "SELECT Product_Id FROM item";
-        try {
-            rs = DB.search(a);
-            while (rs.next()) {
-                System.out.println(rs.getString("Product_Id"));
-            }
-        } catch (Exception e) {
-        }
     }
 
     /**
@@ -84,12 +77,13 @@ public class Item extends javax.swing.JPanel {
         txt_purchasePrice = new javax.swing.JTextField();
         txt_updateStatus = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        delete_btn1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_item = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jTextField9 = new javax.swing.JTextField();
+        btn_PSearch = new javax.swing.JButton();
+        txt_pSearch = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -138,6 +132,11 @@ public class Item extends javax.swing.JPanel {
         delete_btn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         delete_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
         delete_btn.setText("Delete");
+        delete_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_btnActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Status                   :");
@@ -218,7 +217,21 @@ public class Item extends javax.swing.JPanel {
         jLabel9.setText("Qty                        :");
 
         txt_qty.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txt_qty.setText("0");
         txt_qty.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        txt_qty.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_qtyFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_qtyFocusLost(evt);
+            }
+        });
+        txt_qty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_qtyKeyReleased(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setText("Purchase Price     :");
@@ -232,6 +245,16 @@ public class Item extends javax.swing.JPanel {
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel13.setText("Update Limit        :");
 
+        delete_btn1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        delete_btn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/cleaning.png"))); // NOI18N
+        delete_btn1.setText("Clear");
+        delete_btn1.setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));
+        delete_btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_btn1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -244,7 +267,8 @@ public class Item extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(save_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(update_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
-                            .addComponent(delete_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(delete_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(delete_btn1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,16 +279,16 @@ public class Item extends javax.swing.JPanel {
                                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rad_active)
-                                        .addGap(10, 10, 10)
-                                        .addComponent(rad_inactive)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(103, 103, 103)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txt_updateStatus)
-                                            .addComponent(txt_purchasePrice)))))
+                                            .addComponent(txt_purchasePrice)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rad_active)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rad_inactive)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(4, 4, 4)
@@ -297,40 +321,40 @@ public class Item extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(product_combo)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(product_combo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_barcode, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_barcode, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_sellingprice, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_sellingprice, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_warrenty, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_warrenty, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_qty, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_qty, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_purchasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_purchasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_updateStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_updateStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rad_active)
                     .addComponent(rad_inactive))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCheckBox1)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -340,6 +364,8 @@ public class Item extends javax.swing.JPanel {
                 .addComponent(update_btn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(delete_btn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(delete_btn1)
                 .addContainerGap())
         );
 
@@ -349,11 +375,16 @@ public class Item extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Product", "Barcode", "Selling Price", "Warrenty ", "Status", "Manuf. Date", "Expire Date", "Qty", "Purchase Price"
+                "ID", "Product", "Brand", "Category", "SubCategory", "Selling Price", "Warrenty ", "Manuf. Date", "Expire Date", "Qty"
             }
         ));
         tbl_item.setGridColor(new java.awt.Color(93, 167, 219));
         tbl_item.setSelectionBackground(new java.awt.Color(93, 167, 219));
+        tbl_item.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_itemMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbl_item);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -366,23 +397,28 @@ public class Item extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
         );
 
         jPanel3.setBackground(new java.awt.Color(93, 167, 219));
 
-        jButton5.setBackground(new java.awt.Color(93, 167, 219));
-        jButton5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/search.png"))); // NOI18N
-        jButton5.setText("Search By P.ID");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btn_PSearch.setBackground(new java.awt.Color(93, 167, 219));
+        btn_PSearch.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btn_PSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/search.png"))); // NOI18N
+        btn_PSearch.setText("Search By P.ID");
+        btn_PSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btn_PSearchActionPerformed(evt);
             }
         });
 
-        jTextField9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextField9.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txt_pSearch.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_pSearch.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txt_pSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_pSearchKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -390,18 +426,18 @@ public class Item extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(67, Short.MAX_VALUE)
-                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_pSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5)
+                .addComponent(btn_PSearch)
                 .addGap(35, 35, 35))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField9))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_PSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_pSearch))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -440,7 +476,7 @@ public class Item extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(psearch, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(psearch, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -448,7 +484,7 @@ public class Item extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(90, 90, 90)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(psearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(psearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -488,9 +524,11 @@ public class Item extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btn_PSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_PSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+
+        searchP(txt_pSearch.getText());
+    }//GEN-LAST:event_btn_PSearchActionPerformed
 
     private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
         // TODO add your handling code here:
@@ -511,63 +549,100 @@ public class Item extends javax.swing.JPanel {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         String itemId = "";
+        String barCode = txt_barcode.getText();
+        String sellingPrice = txt_sellingprice.getText();
+        String warrenty = txt_warrenty.getText();
+        int quantity = Integer.parseInt(txt_qty.getText());
+        String updateStatus = txt_updateStatus.getText();
+        String purchasePrice = txt_purchasePrice.getText();
 
-        String brand = product_combo.getSelectedItem().toString();
-        if (!product_combo.getSelectedItem().toString().equals("Product")) {
-            String brandId[] = brand.split("-", 0);
+        long lastInsertId = -1;
 
-            pId = Integer.parseInt(brandId[0]);
+        if (!product_combo.getSelectedItem().toString().equals("Product") && !barCode.equals("") && !sellingPrice.equals("") && !warrenty.equals("") && quantity != 0 && !txt_purchasePrice.getText().equals("")) {
 
-            String barCode = txt_barcode.getText();
-            String sellingPrice = txt_sellingprice.getText();
-            String warrenty = txt_warrenty.getText();
-            int quantity = Integer.parseInt(txt_qty.getText());
+            if (jCheckBox1.isSelected() && manudate.getDatoFecha() != null && exdate.getDatoFecha() != null) {
 
-            String fmanuDate = formatter.format(manudate.getDatoFecha());
-            String fexDate = formatter.format(exdate.getDatoFecha());
+                double profit = Double.parseDouble(sellingPrice) - Double.parseDouble(purchasePrice);
 
-            int status = 1;
-            if (rad_active.isSelected()) {
-            } else {
-                status = 0;
-            }
+                String brand = product_combo.getSelectedItem().toString();
+                String productId[] = brand.split("-", 0);
+                pId = Integer.parseInt(productId[0]);
 
-            String query = "INSERT INTO `item`(`Product_Id`, `Barcode`, `Selling_Price`, `warrenty`, `ManufactureDate`, `ExpireDate`, `updateStatus`, `PurchasingPrice`) VALUES ('" + pId + "','" + barCode + "','" + sellingPrice + "','" + warrenty + "','" + fmanuDate + "','" + fexDate + "','" + status + "','" + txt_purchasePrice.getText() + "')";
+                String fmanuDate = formatter.format(manudate.getDatoFecha());
+                String fexDate = formatter.format(exdate.getDatoFecha());
 
-            try {
-                DB.push(query);
-                String query3 = "SELECT Id FROM item";
-                rs = DB.search(query3);
-                while (rs.next()) {
-                    itemId = rs.getString("Id");
-
-                    // check item id
-                    System.out.println(itemId);
-                    String querycheckquantity = "SELECT `item_Id` FROM `available_quantity` WHERE item_Id= '" + itemId + "'";
-                    rs = DB.search(querycheckquantity);
-                    if (rs.next()) {
-                        System.out.println("ammoooo ");
-                        String queryupdatequantity = "UPDATE `available_quantity` SET `Quantity`= Quantity+'" + quantity + "' WHERE item_Id = '" + itemId + "'";
-                        DB.push(queryupdatequantity);
-                    } else {
-                        System.out.println("ammoooo222222 ");
-
-                        String query2 = "INSERT INTO `available_quantity` (Product_Id,item_Id,Quantity)VALUES ('" + pId + "','" + itemId + "','" + quantity + "')";
-                        DB.push(query2);
-                    }
-
+                int status = 1;
+                if (rad_active.isSelected()) {
+                } else {
+                    status = 0;
                 }
 
-                JOptionPane.showMessageDialog(this, "Success");
-                tableProduct();
-            } catch (Exception e) {
-                e.printStackTrace();
+                String query = "INSERT INTO `item`(`Product_Id`, `Barcode`, `SellingPrice`, `Warrenty`, `ManufactureDate`, `ExpireDate`, `UpdateStatus`, `PurchasingPrice`,`Profit`, `Status`) VALUES ('" + pId + "','" + barCode + "','" + sellingPrice + "','" + warrenty + "','" + fmanuDate + "','" + fexDate + "','" + updateStatus + "','" + txt_purchasePrice.getText() + "' ,'" + profit + "','" + status + "')";
+
+                try {
+
+                    DB.push(query);
+
+                    query = "select Id from item where Id=(SELECT LAST_INSERT_ID());";
+
+                    ResultSet rs = DB.search(query);
+
+                    if (rs.next()) {
+                        lastInsertId = rs.getLong("Id");
+
+                    }
+
+                    query = "INSERT INTO available_quantity (Quantity, item_Id) VALUES ('" + quantity + "','" + lastInsertId + "')";
+                    DB.push(query);
+
+                    JOptionPane.showMessageDialog(this, "Saved...");
+                    clear();
+                    tableProduct();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                double profit = Double.parseDouble(sellingPrice) - Double.parseDouble(purchasePrice);
+
+                String brand = product_combo.getSelectedItem().toString();
+                String productId[] = brand.split("-", 0);
+                pId = Integer.parseInt(productId[0]);
+
+                int status = 1;
+                if (rad_active.isSelected()) {
+                } else {
+                    status = 0;
+                }
+
+                String query = "INSERT INTO `item`(`Product_Id`, `Barcode`, `SellingPrice`, `Warrenty`, `UpdateStatus`, `PurchasingPrice`,`Profit`, `Status`) VALUES ('" + pId + "','" + barCode + "','" + sellingPrice + "','" + warrenty + "','" + updateStatus + "','" + txt_purchasePrice.getText() + "' ,'" + profit + "','" + status + "')";
+
+                try {
+
+                    DB.push(query);
+
+                    query = "select Id from item where Id=(SELECT LAST_INSERT_ID());";
+
+                    ResultSet rs = DB.search(query);
+
+                    if (rs.next()) {
+                        lastInsertId = rs.getLong("Id");
+
+                    }
+
+                    query = "INSERT INTO available_quantity (Quantity, item_Id) VALUES ('" + quantity + "','" + lastInsertId + "')";
+                    DB.push(query);
+
+                    JOptionPane.showMessageDialog(this, "Saved...");
+                    tableProduct();
+                    clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
         } else {
-            JOptionPane.showMessageDialog(this, "Fiest Select A Product");
+            JOptionPane.showMessageDialog(this, "Missing Details...");
         }
-
-
     }//GEN-LAST:event_save_btnActionPerformed
 
     private void psearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_psearchKeyReleased
@@ -580,13 +655,173 @@ public class Item extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_update_btnActionPerformed
 
+    private void txt_pSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_pSearchKeyReleased
+        // TODO add your handling code here:
+
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            searchP(txt_pSearch.getText());
+        }
+    }//GEN-LAST:event_txt_pSearchKeyReleased
+
+    private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_btnActionPerformed
+        // TODO add your handling code here:
+        
+         int option = JOptionPane.showConfirmDialog(this, "Delete Is Sure ?");
+
+            if (option == 0) {
+        String itemId = "";
+
+        int selectedRow = tbl_item.getSelectedRow();
+
+        if (selectedRow != -1) {
+
+            dtm = (DefaultTableModel) tbl_item.getModel();
+            itemId = dtm.getValueAt(selectedRow, 0).toString();
+
+            try {
+
+                String query = "UPDATE `item` SET Status = '0' WHERE Id= '" + itemId + "'";
+                DB.push(query);
+                query = "UPDATE `available_quantity` SET Quantity = '0' WHERE item_Id= '" + itemId + "'";
+                DB.push(query);
+                JOptionPane.showMessageDialog(this, "Deleted...");
+                tableProduct();
+                clear();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "First Select A Item On The Table...");
+        }
+
+            }
+    }//GEN-LAST:event_delete_btnActionPerformed
+
+    private void txt_qtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_qtyKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txt_qtyKeyReleased
+
+    private void txt_qtyFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_qtyFocusLost
+        // TODO add your handling code here:
+        if (txt_qty.getText().equals("")) {
+            txt_qty.setText("0");
+        }
+    }//GEN-LAST:event_txt_qtyFocusLost
+
+    private void tbl_itemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_itemMouseClicked
+        // TODO add your handling code here:
+
+        String activeStatus = "";
+        String itemId = "";
+        int selectedRow = tbl_item.getSelectedRow();
+        dtm = (DefaultTableModel) tbl_item.getModel();
+        itemId = dtm.getValueAt(selectedRow, 0).toString();
+
+        String pCode = "";
+        String barCode = "";
+        String sellingPrice = "";
+        String warrenty = "";
+
+        String purchasePrice = "";
+        String uStatus = "";
+
+        String pId = null;
+        String bId = null;
+        String catId = null;
+        String scId = null;
+        String desc = null;
+
+        String bName = null;
+        String cName = null;
+        String scName = null;
+
+        String query = "SELECT * FROM `item` WHERE status = '1'";
+        try {
+            ResultSet rs = DB.search(query);
+            String quantity = "";
+            if (rs.next()) {
+                Vector v = new Vector();
+                itemId = rs.getString("Id");
+                pCode = rs.getString("Product_Id");
+                barCode = rs.getString("Barcode");
+                sellingPrice = rs.getString("SellingPrice");
+                warrenty = rs.getString("Warrenty");
+                Date ManufactureDate = rs.getDate("ManufactureDate");
+                Date ExpireDate = rs.getDate("ExpireDate");
+                purchasePrice = rs.getString("PurchasingPrice");
+                uStatus = rs.getString("updateStatus");
+                activeStatus = rs.getString("Status");
+
+                String g = "10";
+                searchP(g);
+
+                String query2 = "SELECT `Quantity` FROM `available_quantity` WHERE item_Id = '" + rs.getString("Id") + "'";
+                ResultSet rs2 = DB.search(query2);
+                if (rs2.next()) {
+                    quantity = rs2.getString("Quantity");
+
+                    if (!quantity.equals("0")) {
+
+                        // Set value after click table
+                        pId = product_combo.getSelectedItem().toString();
+                        String[] supplierId = pId.split("-");
+                        pId = supplierId[0];
+
+                        searchP(pId);
+                        txt_barcode.setText(barCode);
+                        txt_sellingprice.setText(sellingPrice);
+                        txt_warrenty.setText(warrenty);
+                        txt_qty.setText(quantity);
+                        txt_purchasePrice.setText(purchasePrice);
+                        txt_updateStatus.setText(uStatus);
+
+                        if (activeStatus.equals("1")) {
+                            rad_active.doClick();
+                        } else {
+                            rad_inactive.doClick();
+                        }
+
+                        manudate.setDatoFecha(ManufactureDate);
+                        exdate.setDatoFecha(ExpireDate);
+
+                    }
+                }
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_tbl_itemMouseClicked
+
+    private void delete_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_btn1ActionPerformed
+        // TODO add your handling code here:
+
+        clear();
+        tableProduct();
+
+
+    }//GEN-LAST:event_delete_btn1ActionPerformed
+
+    private void txt_qtyFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_qtyFocusGained
+        // TODO add your handling code here:
+
+        if (txt_qty.getText().equals("0")) {
+            txt_qty.setText("");
+        }
+
+    }//GEN-LAST:event_txt_qtyFocusGained
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_PSearch;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton delete_btn;
+    private javax.swing.JButton delete_btn1;
     private rojeru_san.componentes.RSDateChooser exdate;
-    private javax.swing.JButton jButton5;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -608,7 +843,6 @@ public class Item extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField9;
     private rojeru_san.componentes.RSDateChooser manudate;
     private javax.swing.JComboBox<String> product_combo;
     private javax.swing.JTextField psearch;
@@ -617,6 +851,7 @@ public class Item extends javax.swing.JPanel {
     private javax.swing.JButton save_btn;
     private javax.swing.JTable tbl_item;
     private javax.swing.JTextField txt_barcode;
+    private javax.swing.JTextField txt_pSearch;
     private javax.swing.JTextField txt_purchasePrice;
     private javax.swing.JTextField txt_qty;
     private javax.swing.JTextField txt_sellingprice;
@@ -628,13 +863,36 @@ public class Item extends javax.swing.JPanel {
     private void product() {
         String product = "";
         int pId = 0;
-        String query = "SELECT Description,id FROM product WHERE status= '1'";
+        String bId = "";
+        String cId = "";
+        String sCId = "";
+
+        String query = "SELECT Description,id,BrandId,CatId,SubCatId FROM product WHERE status= '1'";
         try {
-            rs = DB.search(query);
+            ResultSet rs = DB.search(query);
             while (rs.next()) {
+
                 product = rs.getString("Description");
                 pId = rs.getInt("id");
-                product_combo.addItem(pId + "-" + product);
+                bId = rs.getString("BrandId");
+                cId = rs.getString("CatId");
+                sCId = rs.getString("SubCatId");
+
+                query = "SELECT BrandName FROM brand WHERE Id= '" + bId + "'";
+                ResultSet rs1 = DB.search(query);
+                query = "SELECT Name FROM category WHERE Id= '" + cId + "'";
+                ResultSet rs2 = DB.search(query);
+                query = "SELECT Name FROM subcat WHERE Id= '" + sCId + "'";
+                ResultSet rs3 = DB.search(query);
+
+                if (rs1.next() && rs2.next() && rs3.next()) {
+                    bId = rs1.getString("BrandName");
+                    cId = rs2.getString("Name");
+                    sCId = rs3.getString("Name");
+
+                }
+
+                product_combo.addItem(pId + "-" + product + " " + bId + " " + cId + " " + sCId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -646,41 +904,92 @@ public class Item extends javax.swing.JPanel {
         dtm = (DefaultTableModel) tbl_item.getModel();
         dtm.setRowCount(0);
 
-        String query = "SELECT `Id`, `Product_Id`, `Barcode`, `Selling_Price`, `warrenty`, `ManufactureDate`, `ExpireDate`, `updateStatus`, `Status`,`PurchasingPrice` FROM `item` WHERE status = '1'";
+        String pCode = "";
+        String barCode = "";
+        String sellingPrice = "";
+        String warrenty = "";
+        String ManufactureDate = "";
+        String ExpireDate = "";
+        String purchasePrice = "";
+        String Status = "";
+        String itemId = null;
+
+        String pId = null;
+        String bId = null;
+        String catId = null;
+        String scId = null;
+        String desc = null;
+
+        String bName = null;
+        String cName = null;
+        String scName = null;
+
+        String query = "SELECT * FROM `item` WHERE status = '1'";
         try {
             ResultSet rs = DB.search(query);
             String quantity = "";
             while (rs.next()) {
                 Vector v = new Vector();
-                String pCode = rs.getString("Product_Id");
-                String barCode = rs.getString("Barcode");
-                String sellingPrice = rs.getString("Selling_Price");
-                String warrenty = rs.getString("warrenty");
-                String ManufactureDate = rs.getString("ManufactureDate");
-                String ExpireDate = rs.getString("ExpireDate");
-                String purchasePrice = rs.getString("PurchasingPrice");
-
-                String Status = rs.getString("updateStatus");
-                System.out.println("awa1");
+                itemId = rs.getString("Id");
+                pCode = rs.getString("Product_Id");
+                barCode = rs.getString("Barcode");
+                sellingPrice = rs.getString("SellingPrice");
+                warrenty = rs.getString("Warrenty");
+                ManufactureDate = rs.getString("ManufactureDate");
+                ExpireDate = rs.getString("ExpireDate");
+                purchasePrice = rs.getString("PurchasingPrice");
+                Status = rs.getString("updateStatus");
 
                 String query2 = "SELECT `Quantity` FROM `available_quantity` WHERE item_Id = '" + rs.getString("Id") + "'";
                 ResultSet rs2 = DB.search(query2);
                 if (rs2.next()) {
                     quantity = rs2.getString("Quantity");
+
+                    if (!quantity.equals("0")) {
+
+                        query2 = "SELECT `BrandId`, `CatId`, `SubCatId`, `Description` FROM `product` WHERE Id = '" + pCode + "'";
+                        ResultSet rs3 = DB.search(query2);
+                        if (rs3.next()) {
+                            bId = rs3.getString("BrandId");
+                            catId = rs3.getString("CatId");
+                            scId = rs3.getString("SubCatId");
+                            desc = rs3.getString("Description");
+                        }
+
+                        query2 = "SELECT `BrandName` FROM `brand` WHERE Id = '" + bId + "'";
+                        ResultSet rs4 = DB.search(query2);
+                        if (rs4.next()) {
+                            bName = rs4.getString("BrandName");
+                        }
+
+                        query2 = "SELECT `Name` FROM `category` WHERE Id = '" + catId + "'";
+                        ResultSet rs5 = DB.search(query2);
+                        if (rs5.next()) {
+                            cName = rs5.getString("Name");
+                        }
+
+                        query2 = "SELECT `Name` FROM `subcat` WHERE Id = '" + scId + "'";
+                        ResultSet rs6 = DB.search(query2);
+                        if (rs6.next()) {
+                            scName = rs6.getString("Name");
+                        }
+
+                        v.add(itemId);
+                        v.add(pCode + "-" + desc);
+                        v.add(bName);
+                        v.add(cName);
+                        v.add(scName);
+                        v.add(sellingPrice);
+                        v.add(warrenty + " " + "Months");
+                        v.add(ManufactureDate);
+                        v.add(ExpireDate);
+                        v.add(quantity);
+
+                        dtm.addRow(v);
+
+                    }
                 }
 
-                System.out.println("awa2");
-                v.add(pCode);
-                v.add(barCode);
-                v.add(sellingPrice);
-                v.add(warrenty);
-                v.add(ManufactureDate);
-                v.add(ExpireDate);
-                v.add(Status);
-                v.add(quantity);
-                v.add(purchasePrice);
-
-                dtm.addRow(v);
             }
 
         } catch (Exception e) {
@@ -694,5 +1003,65 @@ public class Item extends javax.swing.JPanel {
         tbl_item.setRowSorter(tr);
 
         tr.setRowFilter(RowFilter.regexFilter(query));
+    }
+
+    private void searchP(String key) {
+        String product = "";
+        int pId = 0;
+        String bId = "";
+        String cId = "";
+        String sCId = "";
+
+        String query = "SELECT Description,Id,BrandId,CatId,SubCatId FROM product WHERE Id= '" + key + "'";
+        try {
+            ResultSet rs = DB.search(query);
+            if (rs.next()) {
+
+                product = rs.getString("Description");
+                pId = rs.getInt("id");
+                bId = rs.getString("BrandId");
+                cId = rs.getString("CatId");
+                sCId = rs.getString("SubCatId");
+
+                query = "SELECT BrandName FROM brand WHERE Id= '" + bId + "'";
+                ResultSet rs1 = DB.search(query);
+                query = "SELECT Name FROM category WHERE Id= '" + cId + "'";
+                ResultSet rs2 = DB.search(query);
+                query = "SELECT Name FROM subcat WHERE Id= '" + sCId + "'";
+                ResultSet rs3 = DB.search(query);
+
+                int productCombo = product_combo.getItemCount();
+                String valueatIndex = null;
+                for (int i = 0; productCombo >= i; i++) {
+
+                    valueatIndex = product_combo.getItemAt(i);
+
+                    String[] valueatIndex1 = valueatIndex.split("-");
+                    String valueatIndex2 = valueatIndex1[0];
+
+                    if (valueatIndex2.equals(key)) {
+                        product_combo.setSelectedIndex(i);
+                        break;
+                    }
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Nothing To search");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clear() {
+        txt_barcode.setText("");
+        txt_pSearch.setText("");
+        txt_purchasePrice.setText("");
+        txt_qty.setText("");
+        txt_sellingprice.setText("");
+        txt_updateStatus.setText("");
+        txt_warrenty.setText("0");
+        rad_active.doClick();
+        product_combo.setSelectedIndex(0);
     }
 }

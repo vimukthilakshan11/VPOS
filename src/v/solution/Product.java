@@ -132,7 +132,6 @@ public class Product extends javax.swing.JPanel {
         jButton3.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Add New SubCategory");
-        jButton3.setPreferredSize(new java.awt.Dimension(194, 26));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -383,8 +382,9 @@ public class Product extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
 
         jPanel3.setBackground(new java.awt.Color(93, 167, 219));
@@ -558,12 +558,12 @@ public class Product extends javax.swing.JPanel {
 
                         DB.push(query);
 
-                        query = "SELECT LAST_INSERT_ID()";
+                                query = "select *from product where Id=(SELECT LAST_INSERT_ID());";
 
                         ResultSet rs = DB.search(query);
 
                         if (rs.next()) {
-                            lastInsertId = rs.getLong(1);
+                            lastInsertId = rs.getLong("Id");
                             String supplierHasProductQuery = "INSERT INTO `supplier_has_product`(`supplier_Id`, `product_Id`) VALUES ('" + supplierId2 + "','" + lastInsertId + "')";
                             DB.push(supplierHasProductQuery);
                             JOptionPane.showMessageDialog(this, "New Product Is Saved");
