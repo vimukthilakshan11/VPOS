@@ -4,19 +4,42 @@
  */
 package v.solution;
 
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
+
 import v.DB.DB;
 
 /**
@@ -30,11 +53,16 @@ public class Sale extends javax.swing.JPanel {
      */
     DefaultTableModel dtm;
     ResultSet rs;
+    private ChangeEvent e;
+    String userId;
 
-    public Sale() {
+    public Sale(String Id) {
+        userId = Id;
         initComponents();
         coutomerTable();
         itemTable();
+        txt_userId.setText(userId);
+
     }
 
     /**
@@ -68,35 +96,38 @@ public class Sale extends javax.swing.JPanel {
         rSButtonHover3 = new rojeru_san.complementos.RSButtonHover();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table_item = new rojeru_san.complementos.RSTableMetro();
+        tbl_item = new rojeru_san.complementos.RSTableMetro();
         jLabel4 = new javax.swing.JLabel();
         txt_searchProduct = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
-        jTextField7 = new javax.swing.JTextField();
+        txtx_inv_amount = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        txt_inv_discount = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        txt_inv_tot = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        txt_inv_paid = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        txt_inv_balance = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
+        rad_inv_perc = new javax.swing.JRadioButton();
+        rad_inv_price = new javax.swing.JRadioButton();
+        txt_inv_profit = new javax.swing.JLabel();
+        btn_billPrint = new rojeru_san.complementos.RSButtonHover();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         table_purchaseitem = new rojeru_san.complementos.RSTableMetro();
         rSButtonHover1 = new rojeru_san.complementos.RSButtonHover();
-        rSButtonHover2 = new rojeru_san.complementos.RSButtonHover();
+        jLabel1 = new javax.swing.JLabel();
+        txt_userId = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         table_customer = new rojeru_san.complementos.RSTableMetro();
         jLabel10 = new javax.swing.JLabel();
         txt_searchCustomer = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
+        txt_customer = new javax.swing.JLabel();
+        btn_noCustomer = new rojeru_san.complementos.RSButtonHover();
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("BarCode  :");
@@ -106,6 +137,9 @@ public class Sale extends javax.swing.JPanel {
         txt_barCode.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_barCodeKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_barCodeKeyReleased(evt);
             }
         });
 
@@ -128,7 +162,18 @@ public class Sale extends javax.swing.JPanel {
         txt_discount.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         txt_discount.setText("0");
         txt_discount.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 0, 51), new java.awt.Color(0, 102, 204)));
+        txt_discount.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_discountFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_discountFocusLost(evt);
+            }
+        });
         txt_discount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_discountKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_discountKeyReleased(evt);
             }
@@ -143,7 +188,7 @@ public class Sale extends javax.swing.JPanel {
         txt_price.setBackground(new java.awt.Color(102, 102, 102));
         txt_price.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         txt_price.setForeground(new java.awt.Color(204, 204, 204));
-        txt_price.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 0, 51), new java.awt.Color(0, 102, 204)));
+        txt_price.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Rs:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         txt_price.setEnabled(false);
 
         buttonGroup1.add(rad_price);
@@ -172,7 +217,7 @@ public class Sale extends javax.swing.JPanel {
 
         txt_amount.setEditable(false);
         txt_amount.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        txt_amount.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 0, 51), new java.awt.Color(0, 102, 204)));
+        txt_amount.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Rs:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel19.setText("Amount  :");
@@ -186,7 +231,12 @@ public class Sale extends javax.swing.JPanel {
         });
 
         rSButtonHover3.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 0, 51), new java.awt.Color(204, 0, 51)));
-        rSButtonHover3.setText("UPDATE");
+        rSButtonHover3.setText("ADD");
+        rSButtonHover3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonHover3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -238,7 +288,7 @@ public class Sale extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txt_barCode, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                    .addComponent(txt_barCode)
                     .addComponent(txt_avbqty)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_itemcode)
@@ -263,37 +313,37 @@ public class Sale extends javax.swing.JPanel {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 4, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_amount, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(rSButtonHover3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(rSButtonHover3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txt_amount, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Item", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
-        table_item.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_item.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Item Id", "Name", "Brand", "Price", "Qty", "Barcode"
+                "Item Id", "Name", "Brand", "Catg", "SubCat", "Price", "Qty", "Warrenty", "MF.Date", "Ex.Date", "BarCode"
             }
         ));
-        table_item.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_item.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                table_itemMouseClicked(evt);
+                tbl_itemMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                table_itemMouseEntered(evt);
+                tbl_itemMouseEntered(evt);
             }
         });
-        jScrollPane1.setViewportView(table_item);
+        jScrollPane1.setViewportView(tbl_item);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel4.setText("Search Product :");
@@ -334,52 +384,104 @@ public class Sale extends javax.swing.JPanel {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "BILL", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
-        jTextField7.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jTextField7.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 102, 153), null));
+        txtx_inv_amount.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        txtx_inv_amount.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true), "Rs:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        txtx_inv_amount.setOpaque(true);
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel11.setText("Discount");
 
-        jTextField8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jTextField8.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        txt_inv_discount.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        txt_inv_discount.setText("0");
+        txt_inv_discount.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        txt_inv_discount.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_inv_discountFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_inv_discountFocusLost(evt);
+            }
+        });
+        txt_inv_discount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_inv_discountKeyReleased(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel12.setText("Profit    :");
 
-        jTextField9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel13.setText("Total Amount");
 
-        jTextField10.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jTextField10.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        txt_inv_tot.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        txt_inv_tot.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true), "Rs:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        txt_inv_tot.setOpaque(true);
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel14.setText("Paid");
 
-        jTextField11.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jTextField11.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        txt_inv_paid.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        txt_inv_paid.setText("0");
+        txt_inv_paid.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true), "Rs:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        txt_inv_paid.setOpaque(true);
+        txt_inv_paid.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_inv_paidFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_inv_paidFocusLost(evt);
+            }
+        });
+        txt_inv_paid.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_inv_paidKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_inv_paidKeyReleased(evt);
+            }
+        });
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         jLabel15.setText("BALANCE");
 
-        jTextField12.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jTextField12.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 153, 204), null));
+        txt_inv_balance.setEditable(false);
+        txt_inv_balance.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        txt_inv_balance.setText("-0");
+        txt_inv_balance.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Rs:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel16.setText("Amount");
 
-        buttonGroup2.add(jRadioButton3);
-        jRadioButton3.setFont(new java.awt.Font("Sitka Small", 1, 14)); // NOI18N
-        jRadioButton3.setText("%");
+        buttonGroup2.add(rad_inv_perc);
+        rad_inv_perc.setFont(new java.awt.Font("Sitka Small", 1, 14)); // NOI18N
+        rad_inv_perc.setText("%");
+        rad_inv_perc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rad_inv_percMouseClicked(evt);
+            }
+        });
 
-        buttonGroup2.add(jRadioButton4);
-        jRadioButton4.setFont(new java.awt.Font("SimSun-ExtB", 1, 12)); // NOI18N
-        jRadioButton4.setSelected(true);
-        jRadioButton4.setText("Price");
-        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup2.add(rad_inv_price);
+        rad_inv_price.setFont(new java.awt.Font("SimSun-ExtB", 1, 12)); // NOI18N
+        rad_inv_price.setSelected(true);
+        rad_inv_price.setText("Price");
+        rad_inv_price.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rad_inv_priceMouseClicked(evt);
+            }
+        });
+        rad_inv_price.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton4ActionPerformed(evt);
+                rad_inv_priceActionPerformed(evt);
+            }
+        });
+
+        btn_billPrint.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 0, 51), new java.awt.Color(204, 0, 51)));
+        btn_billPrint.setText("Print Bill");
+        btn_billPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_billPrintActionPerformed(evt);
             }
         });
 
@@ -393,90 +495,119 @@ public class Sale extends javax.swing.JPanel {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
-                            .addComponent(jLabel14))
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField12, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                            .addComponent(jTextField11)))
+                            .addComponent(txt_inv_balance, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                            .addComponent(txt_inv_paid)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txt_inv_tot, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtx_inv_amount, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txt_inv_profit, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_inv_discount, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jRadioButton3)
-                                    .addComponent(jRadioButton4))))))
+                                    .addComponent(rad_inv_perc)
+                                    .addComponent(rad_inv_price))))))
                 .addContainerGap())
+            .addComponent(btn_billPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(txtx_inv_amount, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jRadioButton4)
+                        .addComponent(rad_inv_price)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton3))
-                    .addComponent(jTextField8))
+                        .addComponent(rad_inv_perc))
+                    .addComponent(txt_inv_discount))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
+                    .addComponent(txt_inv_tot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                    .addComponent(txt_inv_paid, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel15)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(txt_inv_balance, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_inv_profit, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_billPrint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(11, 11, 11))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Invoice Item", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
         table_purchaseitem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Item Id", "Name", "Price", "Brand", "Qty", "Amount", "Profit", "Discount"
+                "Item Id", "Price", "Qty", "Amount", "Profit", "Discount", "Name", "Brand", "Cat", "Sub Cat", "Warrenty"
             }
         ));
+        table_purchaseitem.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                table_purchaseitemComponentAdded(evt);
+            }
+        });
+        table_purchaseitem.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                table_purchaseitemFocusLost(evt);
+            }
+        });
+        table_purchaseitem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_purchaseitemMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                table_purchaseitemMouseReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(table_purchaseitem);
 
         rSButtonHover1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 51, 51), new java.awt.Color(255, 0, 51)));
         rSButtonHover1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/remove.png"))); // NOI18N
         rSButtonHover1.setText("Remove Selected Item");
+        rSButtonHover1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonHover1ActionPerformed(evt);
+            }
+        });
 
-        rSButtonHover2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 0, 51), new java.awt.Color(204, 0, 51)));
-        rSButtonHover2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/arrow (1).png"))); // NOI18N
-        rSButtonHover2.setText("Reduction Selection Item Qty");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("User ID :");
+
+        txt_userId.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -485,22 +616,25 @@ public class Sale extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(rSButtonHover1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rSButtonHover2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 996, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(txt_userId, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(rSButtonHover1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rSButtonHover2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rSButtonHover1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(rSButtonHover1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txt_userId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -518,6 +652,11 @@ public class Sale extends javax.swing.JPanel {
             }
         ));
         table_customer.setAltoHead(40);
+        table_customer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_customerMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(table_customer);
 
         jLabel10.setFont(new java.awt.Font("SimSun", 1, 16)); // NOI18N
@@ -531,23 +670,35 @@ public class Sale extends javax.swing.JPanel {
             }
         });
 
-        jLabel9.setText("0-Cash Customer");
-        jLabel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Customer"));
+        txt_customer.setText("0-Cash Customer");
+        txt_customer.setBorder(javax.swing.BorderFactory.createTitledBorder("Customer"));
+
+        btn_noCustomer.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 0, 51), new java.awt.Color(204, 0, 51)));
+        btn_noCustomer.setText("No Customer");
+        btn_noCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_noCustomerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_searchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_searchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btn_noCustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addComponent(txt_customer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -556,9 +707,11 @@ public class Sale extends javax.swing.JPanel {
                     .addComponent(txt_searchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addComponent(btn_noCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txt_customer, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -599,33 +752,34 @@ public class Sale extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_rad_priceActionPerformed
 
-    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+    private void rad_inv_priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rad_inv_priceActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton4ActionPerformed
+    }//GEN-LAST:event_rad_inv_priceActionPerformed
 
     private void txt_searchCustomerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchCustomerKeyReleased
         // TODO add your handling code here:
-        filtertablesubCat(txt_searchCustomer.getText());
+        filtertableItem(txt_searchCustomer.getText());
     }//GEN-LAST:event_txt_searchCustomerKeyReleased
 
     private void txt_searchProductKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchProductKeyReleased
         // TODO add your handling code here:
-        filtertablesearchProduct(txt_searchProduct.getText());
+        filtertableItem(txt_searchProduct.getText());
     }//GEN-LAST:event_txt_searchProductKeyReleased
 
-    private void table_itemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_itemMouseClicked
-        // TODO add your handling code here:
-        dtm = (DefaultTableModel) table_item.getModel();
-        int selectedtableRow = table_item.getSelectedRow();
+    private void tbl_itemMouseClicked(java.awt.event.MouseEvent evt) {
 
-        txt_barCode.setText(dtm.getValueAt(selectedtableRow, 5).toString());
-        txt_avbqty.setText(dtm.getValueAt(selectedtableRow, 4).toString());
+        dtm = (DefaultTableModel) tbl_item.getModel();
+        int selectedtableRow = tbl_item.getSelectedRow();
+
+        txt_avbqty.setText(dtm.getValueAt(selectedtableRow, 6).toString());
         txt_itemcode.setText(dtm.getValueAt(selectedtableRow, 0).toString());
-        txt_price.setText(dtm.getValueAt(selectedtableRow, 3).toString());
+        txt_price.setText(dtm.getValueAt(selectedtableRow, 5).toString());
+        txt_barCode.setText(dtm.getValueAt(selectedtableRow, 10).toString());
 
         txt_qty.setText("1");
         calc();
-    }//GEN-LAST:event_table_itemMouseClicked
+
+    }
 
     private void txt_discountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_discountKeyReleased
         // TODO add your handling code here:
@@ -649,10 +803,17 @@ public class Sale extends javax.swing.JPanel {
 
     private void txt_barCodeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_barCodeKeyPressed
         // TODO add your handling code here:
+
+        if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+            txt_inv_paid.requestFocusInWindow();
+
+        }
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
+            txt_qty.setText("1");
+
             String barcode = txt_barCode.getText();
-            String query = "SELECT `Id`, `Product_Id`,`Selling_Price` FROM `item` WHERE Barcode = '" + barcode + "'";
+            String query = "SELECT `Id`, `Product_Id`,`SellingPrice` FROM `item` WHERE Barcode = '" + barcode + "'";
 
             try {
                 rs = DB.search(query);
@@ -661,23 +822,24 @@ public class Sale extends javax.swing.JPanel {
                 String qty = "";
                 if (rs.next()) {
                     id = rs.getString("Id");
-                    price = rs.getString("Selling_Price");
+                    price = rs.getString("SellingPrice");
+
+                    txt_price.setText(price);
+                    txt_itemcode.setText(id);
+
+                    query = "SELECT `Quantity` FROM `available_quantity` WHERE item_Id = '" + id + "'";
+                    rs = DB.search(query);
+                    if (rs.next()) {
+                        qty = rs.getString("Quantity");
+                        txt_avbqty.setText(qty);
+                        txt_qty.setText("1");
+                        calc();
+                        rowRepeat();
+                    }
+
                 } else {
                     JOptionPane.showMessageDialog(this, "No Item");
 
-                }
-
-                txt_price.setText(price);
-                txt_itemcode.setText(id);
-
-                query = "SELECT `Quantity` FROM `available_quantity` WHERE item_Id = '" + id + "'";
-                rs = DB.search(query);
-                if (rs.next()) {
-                    qty = rs.getString("Quantity");
-                    txt_avbqty.setText(qty);
-                    txt_qty.setText("1");
-                    calc();
-                    purchaseItemTable();
                 }
 
             } catch (Exception e) {
@@ -686,16 +848,201 @@ public class Sale extends javax.swing.JPanel {
 
         }
 
+
     }//GEN-LAST:event_txt_barCodeKeyPressed
 
-    private void table_itemMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_itemMouseEntered
+    private void tbl_itemMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_itemMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_table_itemMouseEntered
+    }//GEN-LAST:event_tbl_itemMouseEntered
+
+    private void rSButtonHover3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonHover3ActionPerformed
+        // TODO add your handling code here:
+
+        rowRepeat();
+
+
+    }//GEN-LAST:event_rSButtonHover3ActionPerformed
+
+    private void txt_barCodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_barCodeKeyReleased
+        // TODO add your handling code here:
+        filtertableItem(txt_barCode.getText());
+
+    }//GEN-LAST:event_txt_barCodeKeyReleased
+
+    private void txt_inv_discountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_inv_discountKeyReleased
+        // TODO add your handling code here:
+        invoiceCalc();
+    }//GEN-LAST:event_txt_inv_discountKeyReleased
+
+    private void rad_inv_priceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_inv_priceMouseClicked
+        // TODO add your handling code here:
+        invoiceCalc();
+    }//GEN-LAST:event_rad_inv_priceMouseClicked
+
+    private void rad_inv_percMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_inv_percMouseClicked
+        // TODO add your handling code here:
+        invoiceCalc();
+    }//GEN-LAST:event_rad_inv_percMouseClicked
+
+    private void txt_discountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_discountKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_discountKeyPressed
+
+    private void txt_discountFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_discountFocusGained
+        // TODO add your handling code here:
+        if (txt_discount.getText().equals("0")) {
+            txt_discount.setText("");
+        }
+    }//GEN-LAST:event_txt_discountFocusGained
+
+    private void txt_discountFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_discountFocusLost
+        // TODO add your handling code here:
+        if (txt_discount.getText().equals("")) {
+            txt_discount.setText("0");
+        }
+    }//GEN-LAST:event_txt_discountFocusLost
+
+    private void txt_inv_discountFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_inv_discountFocusGained
+        // TODO add your handling code here:
+        if (txt_inv_discount.getText().equals("0")) {
+            txt_inv_discount.setText("");
+        }
+        invoiceAmount();
+        invoiceCalc();
+    }//GEN-LAST:event_txt_inv_discountFocusGained
+
+    private void txt_inv_discountFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_inv_discountFocusLost
+        // TODO add your handling code here:
+        if (txt_inv_discount.getText().equals("")) {
+            txt_inv_discount.setText("0");
+        }
+    }//GEN-LAST:event_txt_inv_discountFocusLost
+
+    private void txt_inv_paidKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_inv_paidKeyReleased
+        // TODO add your handling code here:
+        invoiceCalc();
+    }//GEN-LAST:event_txt_inv_paidKeyReleased
+
+    private void txt_inv_paidFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_inv_paidFocusGained
+        // TODO add your handling code here:
+        if (txt_inv_paid.getText().equals("0")) {
+            txt_inv_paid.setText("");
+        }
+        invoiceCalc();
+    }//GEN-LAST:event_txt_inv_paidFocusGained
+
+    private void txt_inv_paidFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_inv_paidFocusLost
+        // TODO add your handling code here:
+        if (txt_inv_paid.getText().equals("")) {
+            txt_inv_paid.setText("0");
+        }
+        invoiceCalc();
+    }//GEN-LAST:event_txt_inv_paidFocusLost
+
+    private void btn_noCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_noCustomerActionPerformed
+        // TODO add your handling code here:
+
+        txt_customer.setText("0-Cash Customer");
+    }//GEN-LAST:event_btn_noCustomerActionPerformed
+
+    private void table_customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_customerMouseClicked
+        // TODO add your handling code here:
+        String cusId = "";
+        String name = "";
+        int selectedRow = table_customer.getSelectedRow();
+        dtm = (DefaultTableModel) table_customer.getModel();
+        cusId = dtm.getValueAt(selectedRow, 0).toString();
+        name = dtm.getValueAt(selectedRow, 1).toString();
+
+        txt_customer.setText(cusId + "-" + name);
+    }//GEN-LAST:event_table_customerMouseClicked
+
+    private void rSButtonHover1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonHover1ActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = table_purchaseitem.getSelectedRow();
+        dtm = (DefaultTableModel) table_purchaseitem.getModel();
+        if (selectedRow != -1) {
+            dtm.removeRow(selectedRow);
+        } else {
+            JOptionPane.showMessageDialog(this, "First Select Row");
+        }
+        invoiceCalc();
+    }//GEN-LAST:event_rSButtonHover1ActionPerformed
+
+    private void table_purchaseitemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_purchaseitemMouseClicked
+        // TODO add your handling code here:
+        invoiceAmount();
+        invoiceCalc();
+    }//GEN-LAST:event_table_purchaseitemMouseClicked
+
+    private void table_purchaseitemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_purchaseitemMouseReleased
+        // TODO add your handling code here:
+        invoiceAmount();
+        invoiceCalc();
+    }//GEN-LAST:event_table_purchaseitemMouseReleased
+
+    private void table_purchaseitemFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_table_purchaseitemFocusLost
+        // TODO add your handling code here:
+        invoiceAmount();
+        invoiceCalc();
+    }//GEN-LAST:event_table_purchaseitemFocusLost
+
+    private void table_purchaseitemComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_table_purchaseitemComponentAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_table_purchaseitemComponentAdded
+
+    private void btn_billPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_billPrintActionPerformed
+        // TODO add your handling code here:
+
+        try {
+            System.out.println("ssss");
+            // Load the compiled .jasper file
+            String reportFilePath = "G:/Jesper Report/MyReports/Invoice.jrxml";
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/v-pos", "root", "1234");
+
+            JasperDesign jasperDesign = JRXmlLoader.load(reportFilePath);
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            HashMap<String, Object> param = new HashMap<>();
+
+            param.put("Name", "pamkaaaa");
+            param.put("Name", "lakkkkk");
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, param, con);
+
+            // Export the report to desired format (PDF, HTML, etc.)
+            JasperViewer.viewReport(jasperPrint);
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "invoice.pdf");
+
+        } catch (JRException e) {
+            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(Sale.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btn_billPrintActionPerformed
+
+    private void txt_inv_paidKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_inv_paidKeyPressed
+        // TODO add your handling code here:
+        
+             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+               
+                 if(!txt_inv_balance.getText().equals("-0")){
+                   sale();
+                 }else{
+                 JOptionPane.showMessageDialog(this, "No To Be The Paid Amount Is Lower Than Total Amount");}
+                   
+             }
+
+    }//GEN-LAST:event_txt_inv_paidKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private rojeru_san.complementos.RSButtonHover btn_billPrint;
+    private rojeru_san.complementos.RSButtonHover btn_noCustomer;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -711,40 +1058,40 @@ public class Sale extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private rojeru_san.complementos.RSButtonHover rSButtonHover1;
-    private rojeru_san.complementos.RSButtonHover rSButtonHover2;
     private rojeru_san.complementos.RSButtonHover rSButtonHover3;
+    private javax.swing.JRadioButton rad_inv_perc;
+    private javax.swing.JRadioButton rad_inv_price;
     private javax.swing.JRadioButton rad_perc;
     private javax.swing.JRadioButton rad_price;
     private rojeru_san.complementos.RSTableMetro table_customer;
-    private rojeru_san.complementos.RSTableMetro table_item;
     private rojeru_san.complementos.RSTableMetro table_purchaseitem;
+    private rojeru_san.complementos.RSTableMetro tbl_item;
     private javax.swing.JTextField txt_amount;
     private javax.swing.JTextField txt_avbqty;
     private javax.swing.JTextField txt_barCode;
+    private javax.swing.JLabel txt_customer;
     private javax.swing.JTextField txt_discount;
+    private javax.swing.JTextField txt_inv_balance;
+    private javax.swing.JTextField txt_inv_discount;
+    private javax.swing.JTextField txt_inv_paid;
+    private javax.swing.JLabel txt_inv_profit;
+    private javax.swing.JTextField txt_inv_tot;
     private javax.swing.JTextField txt_itemcode;
     private javax.swing.JTextField txt_price;
     private javax.swing.JTextField txt_qty;
     private javax.swing.JTextField txt_searchCustomer;
     private javax.swing.JTextField txt_searchProduct;
+    private javax.swing.JLabel txt_userId;
+    private javax.swing.JTextField txtx_inv_amount;
     // End of variables declaration//GEN-END:variables
 
     private void coutomerTable() {
@@ -767,7 +1114,7 @@ public class Sale extends javax.swing.JPanel {
         }
     }
 
-    private void filtertablesubCat(String query) {
+    private void filtertableItem(String query) {
         dtm = (DefaultTableModel) table_customer.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dtm);
         table_customer.setRowSorter(tr);
@@ -776,38 +1123,208 @@ public class Sale extends javax.swing.JPanel {
     }
 
     private void itemTable() {
-        dtm = (DefaultTableModel) table_item.getModel();
 
-        String query = "SELECT item.id as itemid, item.Selling_Price, item.Barcode, product.Description, available_quantity.Quantity, brand.BrandName\n"
-                + "FROM item\n"
-                + "INNER JOIN product ON item.Product_Id = product.Id\n"
-                + "INNER JOIN available_quantity ON item.Id = available_quantity.item_Id  INNER JOIN brand ON brand.Id = product.Brand_Id";
+        dtm = (DefaultTableModel) tbl_item.getModel();
+        dtm.setRowCount(0);
 
+        String pCode = "";
+        String barCode = "";
+        String sellingPrice = "";
+        String warrenty = "";
+        String ManufactureDate = "";
+        String ExpireDate = "";
+        String purchasePrice = "";
+        String Status = "";
+        String itemId = null;
+
+        String pId = null;
+        String bId = null;
+        String catId = null;
+        String scId = null;
+        String desc = null;
+
+        String bName = null;
+        String cName = null;
+        String scName = null;
+
+        String query = "SELECT * FROM `item` WHERE status = '1'";
         try {
-            rs = DB.search(query);
-            dtm.setRowCount(0);
+            ResultSet rs = DB.search(query);
+            String quantity = "";
             while (rs.next()) {
                 Vector v = new Vector();
-                v.add(rs.getString("itemid"));
-                v.add(rs.getString("Description"));
-                v.add(rs.getString("BrandName"));
-                v.add(rs.getString("Selling_Price"));
-                v.add(rs.getString("Quantity"));
-                v.add(rs.getString("Barcode"));
+                itemId = rs.getString("Id");
+                pCode = rs.getString("Product_Id");
+                barCode = rs.getString("Barcode");
+                sellingPrice = rs.getString("SellingPrice");
+                warrenty = rs.getString("Warrenty");
+                ManufactureDate = rs.getString("ManufactureDate");
+                ExpireDate = rs.getString("ExpireDate");
+                purchasePrice = rs.getString("PurchasingPrice");
+                Status = rs.getString("updateStatus");
 
-                dtm.addRow(v);
+                String query2 = "SELECT `Quantity` FROM `available_quantity` WHERE item_Id = '" + rs.getString("Id") + "'";
+                ResultSet rs2 = DB.search(query2);
+                if (rs2.next()) {
+                    quantity = rs2.getString("Quantity");
+
+                    if (!quantity.equals("0")) {
+
+                        query2 = "SELECT `BrandId`, `CatId`, `SubCatId`, `Description` FROM `product` WHERE Id = '" + pCode + "'";
+                        ResultSet rs3 = DB.search(query2);
+                        if (rs3.next()) {
+                            bId = rs3.getString("BrandId");
+                            catId = rs3.getString("CatId");
+                            scId = rs3.getString("SubCatId");
+                            desc = rs3.getString("Description");
+                        }
+
+                        query2 = "SELECT `BrandName` FROM `brand` WHERE Id = '" + bId + "'";
+                        ResultSet rs4 = DB.search(query2);
+                        if (rs4.next()) {
+                            bName = rs4.getString("BrandName");
+                        }
+
+                        query2 = "SELECT `Name` FROM `category` WHERE Id = '" + catId + "'";
+                        ResultSet rs5 = DB.search(query2);
+                        if (rs5.next()) {
+                            cName = rs5.getString("Name");
+                        }
+
+                        query2 = "SELECT `Name` FROM `subcat` WHERE Id = '" + scId + "'";
+                        ResultSet rs6 = DB.search(query2);
+                        if (rs6.next()) {
+                            scName = rs6.getString("Name");
+                        }
+
+                        v.add(itemId);
+                        v.add(pCode + "-" + desc);
+                        v.add(bName);
+                        v.add(cName);
+                        v.add(scName);
+                        v.add(sellingPrice);
+                        v.add(quantity);
+                        v.add(warrenty + " " + "Months");
+                        v.add(ManufactureDate);
+                        v.add(ExpireDate);
+
+                        v.add(barCode);
+
+                        dtm.addRow(v);
+
+                    }
+                }
+
             }
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void filtertablesearchProduct(String query) {
-        dtm = (DefaultTableModel) table_item.getModel();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(dtm);
-        table_item.setRowSorter(tr);
+    private void addInvoicetable(int getQty) {
 
-        tr.setRowFilter(RowFilter.regexFilter(query));
+        String bId = null;
+        String catId = null;
+        String scId = null;
+        String desc = null;
+        int pCode = 0;
+        double profit = 0;
+
+        String bName = null;
+        String cName = null;
+        String scName = null;
+        int warrenty = 0;
+
+        dtm = (DefaultTableModel) table_purchaseitem.getModel();
+        Vector v = new Vector();
+
+        double price = Double.parseDouble(txt_price.getText());
+
+        int qty = Integer.parseInt(txt_qty.getText()) + getQty;
+        price = price * qty;
+        String amount = txt_amount.getText();
+
+        double finalAmount = 0.0;
+        double discount = Double.parseDouble(txt_discount.getText());
+
+        if (rad_price.isSelected()) {
+            finalAmount = price - discount;
+        } else if (rad_perc.isSelected() && Integer.parseInt(txt_discount.getText()) <= 100) {
+            finalAmount = price / 100 * discount;
+            finalAmount = price - finalAmount;
+        } else {
+            finalAmount = -1;
+        }
+
+        String query = "SELECT `PurchasingPrice`,`product_Id`, `Warrenty` FROM `item` WHERE Barcode = '" + txt_barCode.getText() + "'";
+
+        try {
+            rs = DB.search(query);
+
+            double purchasePrice = 0;
+            if (rs.next()) {
+
+                pCode = rs.getInt("product_Id");
+                price = Double.parseDouble(txt_price.getText());
+                profit = 0;
+                purchasePrice = rs.getDouble("PurchasingPrice");
+                profit = price - purchasePrice;
+                profit = profit * qty;
+                profit = profit - discount;
+                warrenty = rs.getInt("Warrenty");
+
+            }
+
+            query = "SELECT `BrandId`, `CatId`, `SubCatId`, `Description` FROM `product` WHERE Id = '" + pCode + "'";
+            ResultSet rs3 = DB.search(query);
+            if (rs3.next()) {
+                bId = rs3.getString("BrandId");
+                catId = rs3.getString("CatId");
+                scId = rs3.getString("SubCatId");
+                desc = rs3.getString("Description");
+            }
+
+            query = "SELECT `BrandName` FROM `brand` WHERE Id = '" + bId + "'";
+            ResultSet rs4 = DB.search(query);
+            if (rs4.next()) {
+                bName = rs4.getString("BrandName");
+            }
+
+            query = "SELECT `Name` FROM `category` WHERE Id = '" + catId + "'";
+            ResultSet rs5 = DB.search(query);
+            if (rs5.next()) {
+                cName = rs5.getString("Name");
+            }
+
+            query = "SELECT `Name` FROM `subcat` WHERE Id = '" + scId + "'";
+            ResultSet rs6 = DB.search(query);
+            if (rs6.next()) {
+                scName = rs6.getString("Name");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        v.add(txt_itemcode.getText());
+        v.add(txt_price.getText());
+        v.add(qty);
+        v.add(finalAmount);
+
+        String pr = Double.toString(profit);
+        v.add(pr);
+        v.add(discount);
+        v.add(desc);
+        v.add(bName);
+        v.add(cName);
+        v.add(scName);
+        v.add(warrenty);
+
+        dtm.addRow(v);
+        invoiceAmount();
+        invoiceCalc();
+
     }
 
     private void calc() {
@@ -842,36 +1359,176 @@ public class Sale extends javax.swing.JPanel {
 
         }
     }
-    
-    private void purchaseItemTable(){
-       dtm = (DefaultTableModel) table_purchaseitem.getModel();
 
-        String query = "SELECT item.id as itemid, item.Selling_Price, item.Barcode, product.Description, available_quantity.Quantity, brand.BrandName\n"
-                + "FROM item\n"
-                + "INNER JOIN product ON item.Product_Id = product.Id\n"
-                + "INNER JOIN available_quantity ON item.Id = available_quantity.item_Id  INNER JOIN brand ON brand.Id = product.Brand_Id WHERE item.id = '"+txt_itemcode.getText()+"'";
+    private void rowRepeat() {
+
+        dtm = (DefaultTableModel) table_purchaseitem.getModel();
+        int rowCount = dtm.getRowCount();
+
+        byte avbStatus = 0;
+
+        if (rowCount != 0) {
+            String tbleQty = null;
+
+            int qty = 0;
+
+            int selectQty = Integer.parseInt(txt_qty.getText());
+            Vector v = new Vector();
+
+            for (int i = 0; rowCount > i; i++) {
+
+                String itemId = dtm.getValueAt(i, 0).toString();
+
+                if (txt_itemcode.getText().equals(itemId)) {
+
+                    avbStatus = 1;
+                    tbleQty = dtm.getValueAt(i, 2).toString();
+                    dtm.removeRow(i);
+                    break;
+                }
+
+            }
+
+            if (avbStatus == 1) {
+                addInvoicetable(Integer.parseInt(tbleQty));
+            } else {
+                addInvoicetable(0);
+            }
+
+        } else {
+            addInvoicetable(0);
+        }
+    }
+
+    private void invoiceAmount() {
+
+        dtm = (DefaultTableModel) table_purchaseitem.getModel();
+        int rowCount = dtm.getRowCount();
+
+        double amount = 0;
+        double profit = 0;
+
+        for (int i = 0; rowCount > i; i++) {
+
+            amount = amount + Double.parseDouble(dtm.getValueAt(i, 3).toString());
+            profit = profit + Double.parseDouble(dtm.getValueAt(i, 4).toString());
+
+        }
+
+        txtx_inv_amount.setText(String.valueOf(amount));
+        txt_inv_profit.setText(String.valueOf(profit));
+
+    }
+
+    private void invoiceCalc() {
+        String famount = "";
+        double finalAmount = 0.0;
+
+        double discount = Double.parseDouble(txt_inv_discount.getText());
+        double amount = Double.parseDouble(txtx_inv_amount.getText());
+        int qty = Integer.parseInt(txt_qty.getText());
+
+        if (rad_inv_price.isSelected()) {
+            finalAmount = amount - discount;
+        } else if (rad_inv_perc.isSelected() && Integer.parseInt(txt_discount.getText()) <= 100) {
+            finalAmount = amount / 100 * discount;
+            finalAmount = amount - finalAmount;
+        } else {
+            finalAmount = -1;
+        }
+
+        if (finalAmount >= 0) {
+            famount = String.valueOf(finalAmount);
+            txt_inv_tot.setText(famount);
+        } else {
+            JOptionPane.showMessageDialog(this, "Discount ???");
+            txt_inv_tot.setText(famount);
+            txt_inv_discount.setText("0");
+        }
+
+        double paidAmount = Double.parseDouble(txt_inv_paid.getText());
+
+        if (paidAmount >= finalAmount) {
+
+            double finalP = paidAmount - finalAmount;
+            String sFimal = String.valueOf(finalP);
+            txt_inv_balance.setText(sFimal);
+
+        } else {
+            txt_inv_balance.setText("-0");
+        }
+
+    }
+
+    private void sale() {
+
+        long lastInsertId = 0;
+        double amount = Double.parseDouble(txtx_inv_amount.getText());
+        double discount = amount - Double.parseDouble(txt_inv_tot.getText());
+        double total = Double.parseDouble(txt_inv_tot.getText());
+        double pay = amount - Double.parseDouble(txt_inv_paid.getText());
+        double profit = Double.parseDouble(txt_inv_profit.getText());
+        int qty = 0;
+        double sellingPrice = 0.00;
+        int warrenty = 0;
+        String product = "";
+        int itemId = 0;
+
+        String customerId = txt_customer.getText();
+
+        String[] valueatIndex1 = customerId.split("-");
+        customerId = valueatIndex1[0];
+
+        String query = "INSERT INTO `sale`(`TotalRetailPrice`, `DiscountByTotal`, `FinalTotal`, `Pay`, `Profit`, `userprofile_Id`, `CustomerId`) VALUES ('" + amount + "','" + discount + "','" + total + "','" + pay + "','" + profit + "','" + userId + "','" + customerId + "')";
 
         try {
-            rs = DB.search(query);
-            dtm.setRowCount(0);
-            if (rs.next()) {
-                Vector v = new Vector();
-                v.add(rs.getString("itemid"));
-                v.add(rs.getString("Description"));
-                v.add(rs.getString("Selling_Price"));
-                v.add(rs.getString("BrandName"));
-                
-                v.add(txt_qty.getText());
-                v.add(txt_amount.getText());
-                v.add("");
-                v.add(txt_discount.getText());
 
-                dtm.addRow(v);
+            Connection con = DB.getDBConnection();
+            if (con == null) {
+                System.out.println("Connection Faild");
+            }else{
+            DB.push(query);
+
+            query = "select Id from sale where Id=(SELECT LAST_INSERT_ID())";
+
+            ResultSet rs = DB.search(query);
+
+            if (rs.next()) {
+                lastInsertId = rs.getLong("Id");
+
+            }
+
+            dtm = (DefaultTableModel) table_purchaseitem.getModel();
+            int rowCount = dtm.getRowCount();
+            int i = 0;
+
+            while (i < rowCount) {
+
+                amount = Double.parseDouble(dtm.getValueAt(i, 1).toString());
+                qty = Integer.parseInt(dtm.getValueAt(i, 2).toString());
+                total = Double.parseDouble(dtm.getValueAt(i, 3).toString());
+                discount = Double.parseDouble(dtm.getValueAt(i, 5).toString());
+                product = dtm.getValueAt(i, 6).toString() + " " + dtm.getValueAt(i, 7).toString() + " " + dtm.getValueAt(i, 8).toString() + " " + dtm.getValueAt(i, 9).toString();
+                sellingPrice = Double.parseDouble(dtm.getValueAt(i, 3).toString());
+                warrenty = Integer.parseInt(dtm.getValueAt(i, 10).toString());
+                itemId = Integer.parseInt(dtm.getValueAt(i, 0).toString());
+
+                query = "INSERT INTO `sold_item`(`RetailPrice`, `Quantity`, `Total`, `DiscountFroItem`, `ProductDescription`, `SellingPrice`, `Warrenty`, `sale_Id`, `item_Id`) "
+                        + "VALUES ('" + amount + "','" + qty + "','" + total + "','" + discount + "','" + product + "','" + sellingPrice + "','" + warrenty + "','" + lastInsertId + "','" + itemId + "')";
+
+                DB.push(query);
+
+                query = "UPDATE `available_quantity` SET `Quantity`= `Quantity`-'" + qty + "' WHERE `item_Id`='" + itemId + "'";
+                DB.push(query);
+
+                i++;
+            }
+            JOptionPane.showMessageDialog(this, "Compleated>>>>>>");
             }
         } catch (Exception e) {
+
             e.printStackTrace();
         }
-        
-        
+
     }
 }

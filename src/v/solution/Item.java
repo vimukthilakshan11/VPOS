@@ -583,7 +583,7 @@ public class Item extends javax.swing.JPanel {
 
                     DB.push(query);
 
-                    query = "select Id from item where Id=(SELECT LAST_INSERT_ID());";
+                    query = "select Id from item where Id=(SELECT LAST_INSERT_ID())";
 
                     ResultSet rs = DB.search(query);
 
@@ -665,37 +665,37 @@ public class Item extends javax.swing.JPanel {
 
     private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_btnActionPerformed
         // TODO add your handling code here:
-        
-         int option = JOptionPane.showConfirmDialog(this, "Delete Is Sure ?");
 
-            if (option == 0) {
-        String itemId = "";
+        int option = JOptionPane.showConfirmDialog(this, "Delete Is Sure ?");
 
-        int selectedRow = tbl_item.getSelectedRow();
+        if (option == 0) {
+            String itemId = "";
 
-        if (selectedRow != -1) {
+            int selectedRow = tbl_item.getSelectedRow();
 
-            dtm = (DefaultTableModel) tbl_item.getModel();
-            itemId = dtm.getValueAt(selectedRow, 0).toString();
+            if (selectedRow != -1) {
 
-            try {
+                dtm = (DefaultTableModel) tbl_item.getModel();
+                itemId = dtm.getValueAt(selectedRow, 0).toString();
 
-                String query = "UPDATE `item` SET Status = '0' WHERE Id= '" + itemId + "'";
-                DB.push(query);
-                query = "UPDATE `available_quantity` SET Quantity = '0' WHERE item_Id= '" + itemId + "'";
-                DB.push(query);
-                JOptionPane.showMessageDialog(this, "Deleted...");
-                tableProduct();
-                clear();
-            } catch (Exception e) {
-                e.printStackTrace();
+                try {
+
+                    String query = "UPDATE `item` SET Status = '0' WHERE Id= '" + itemId + "'";
+                    DB.push(query);
+                    query = "UPDATE `available_quantity` SET Quantity = '0' WHERE item_Id= '" + itemId + "'";
+                    DB.push(query);
+                    JOptionPane.showMessageDialog(this, "Deleted...");
+                    tableProduct();
+                    clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "First Select A Item On The Table...");
             }
 
-        } else {
-            JOptionPane.showMessageDialog(this, "First Select A Item On The Table...");
         }
-
-            }
     }//GEN-LAST:event_delete_btnActionPerformed
 
     private void txt_qtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_qtyKeyReleased

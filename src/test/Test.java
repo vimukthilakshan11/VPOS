@@ -22,9 +22,9 @@ public static void main(String[] args) throws SQLException, Exception {
  }
     
     
-    ResultSet rs = con.createStatement().executeQuery("SELECT * FROM Customer"); 
 
-        System.out.println(rs.getString("LName"));
+                       String query = "UPDATE `test` SET `Qty`= `Qty`-'3' WHERE `Id`='5'";
+                        DB.push(query);
     
     
 }

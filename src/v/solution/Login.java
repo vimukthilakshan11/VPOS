@@ -4,6 +4,7 @@
  */
 package v.solution;
 
+import java.awt.event.KeyEvent;
 import java.sql.*;
 import java.sql.ResultSet;
 import java.util.logging.Level;
@@ -84,6 +85,14 @@ public class Login extends javax.swing.JFrame {
         txt_password.setBackground(new java.awt.Color(0, 0, 0));
         txt_password.setForeground(new java.awt.Color(255, 255, 255));
         txt_password.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_passwordKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_passwordKeyReleased(evt);
+            }
+        });
 
         checkbox_showpassword.setBackground(new java.awt.Color(51, 51, 51));
         checkbox_showpassword.setFont(new java.awt.Font("DialogInput", 1, 12)); // NOI18N
@@ -214,53 +223,7 @@ public class Login extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
-        String userName = txt_username.getText();
-        String password = txt_password.getText();
-        String dbusername = "";
-        String dbpassword = "";
-        String userProfileId = "";
-
-        if (txt_password.getText().equals("") || txt_username.getText().equals("")) {
-
-            JOptionPane.showMessageDialog(this, "userame password required");
-
-        } else {
-
-            String encrpp = Encryption.getMd5(password);
-
-            try {
-                String query = "SELECT * FROM userprofile WHERE UserName=? AND Password=?";
-                PreparedStatement checkps = DB.getDBConnection().prepareStatement(query);
-
-                checkps.setString(1, userName);
-                checkps.setString(2, encrpp);
-
-                rs = checkps.executeQuery();
-                if (rs.next()) {
-                    dbusername = rs.getString("UserName");
-                    dbpassword = rs.getString("Password");
-                    userProfileId = rs.getString("Id");
-
-                } else {
-
-                    JOptionPane.showMessageDialog(this, "userame or password doesn't match");
-                }
-
-                if (userName.equals(dbusername) && encrpp.equals(dbpassword)) {
-                    Home home = new Home(userProfileId);
-                    home.setVisible(true);
-
-
-                    this.dispose();
-                }
-
-            } catch (Exception e) {
-                
-                e.printStackTrace();
-                
-            }
-
-        }
+        log();
 
 
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -268,6 +231,18 @@ public class Login extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txt_passwordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txt_passwordKeyReleased
+
+    private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            log();
+        }
+    }//GEN-LAST:event_txt_passwordKeyPressed
 
     /**
      * @param args the command line arguments
@@ -317,4 +292,53 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField txt_password;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
+
+    private void log() {
+        String userName = txt_username.getText();
+        String password = txt_password.getText();
+        String dbusername = "";
+        String dbpassword = "";
+        String userProfileId = "";
+
+        if (txt_password.getText().equals("") || txt_username.getText().equals("")) {
+
+            JOptionPane.showMessageDialog(this, "userame password required");
+
+        } else {
+
+            String encrpp = Encryption.getMd5(password);
+
+            try {
+                String query = "SELECT * FROM userprofile WHERE UserName=? AND Password=?";
+                PreparedStatement checkps = DB.getDBConnection().prepareStatement(query);
+
+                checkps.setString(1, userName);
+                checkps.setString(2, encrpp);
+
+                rs = checkps.executeQuery();
+                if (rs.next()) {
+                    dbusername = rs.getString("UserName");
+                    dbpassword = rs.getString("Password");
+                    userProfileId = rs.getString("Id");
+
+                } else {
+
+                    JOptionPane.showMessageDialog(this, "userame or password doesn't match");
+                }
+
+                if (userName.equals(dbusername) && encrpp.equals(dbpassword)) {
+                    Home home = new Home(userProfileId);
+                    home.setVisible(true);
+
+                    this.dispose();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+        }
+    }
 }
