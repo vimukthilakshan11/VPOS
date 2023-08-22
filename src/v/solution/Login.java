@@ -7,12 +7,11 @@ package v.solution;
 import java.awt.event.KeyEvent;
 import java.sql.*;
 import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+import org.apache.log4j.Logger;
 import v.DB.DB;
 import v.Encryption.Encryption;
-import v.SystemUserDetails.SystemUserDetails;
 
 /**
  *
@@ -23,8 +22,13 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    static final Logger log = Logger.getLogger(Login.class);
+
     public Login() {
+
         initComponents();
+
+        log.info("Entering application.");
     }
 
     ResultSet rs;
@@ -229,7 +233,9 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
         this.dispose();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txt_passwordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyReleased
@@ -274,9 +280,12 @@ public class Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                log.trace("Entering application.");
                 new Login().setVisible(true);
+
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -322,7 +331,7 @@ public class Login extends javax.swing.JFrame {
                     userProfileId = rs.getString("Id");
 
                 } else {
-
+                    log.error("Wrong username Password.");
                     JOptionPane.showMessageDialog(this, "userame or password doesn't match");
                 }
 
@@ -334,11 +343,13 @@ public class Login extends javax.swing.JFrame {
                 }
 
             } catch (Exception e) {
-
+                log.error("Didn't do it.", e);
                 e.printStackTrace();
 
             }
 
         }
+
     }
+
 }

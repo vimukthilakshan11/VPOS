@@ -35,6 +35,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -55,6 +56,9 @@ public class Sale extends javax.swing.JPanel {
     ResultSet rs;
     private ChangeEvent e;
     String userId;
+    String displaytime;
+    String displaydate;
+    String dateTime;
 
     public Sale(String Id) {
         userId = Id;
@@ -788,7 +792,14 @@ public class Sale extends javax.swing.JPanel {
 
     private void txt_qtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_qtyKeyReleased
         // TODO add your handling code here:
-        calc();
+
+        if (Integer.parseInt(txt_avbqty.getText()) >= Integer.parseInt(txt_qty.getText())) {
+            calc();
+        } else {
+            JOptionPane.showMessageDialog(this, "Available Quantity Is : " + txt_avbqty.getText());
+            txt_qty.setText("1");
+        }
+
     }//GEN-LAST:event_txt_qtyKeyReleased
 
     private void rad_priceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_priceMouseClicked
@@ -805,7 +816,7 @@ public class Sale extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
-            txt_inv_paid.requestFocusInWindow();
+            txt_inv_paid.grabFocus();
 
         }
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -835,6 +846,7 @@ public class Sale extends javax.swing.JPanel {
                         txt_qty.setText("1");
                         calc();
                         rowRepeat();
+                        clear();
                     }
 
                 } else {
@@ -859,6 +871,7 @@ public class Sale extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         rowRepeat();
+        clear();
 
 
     }//GEN-LAST:event_rSButtonHover3ActionPerformed
@@ -994,45 +1007,26 @@ public class Sale extends javax.swing.JPanel {
     private void btn_billPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_billPrintActionPerformed
         // TODO add your handling code here:
 
-        try {
-            System.out.println("ssss");
-            // Load the compiled .jasper file
-            String reportFilePath = "G:/Jesper Report/MyReports/Invoice.jrxml";
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/v-pos", "root", "1234");
-
-            JasperDesign jasperDesign = JRXmlLoader.load(reportFilePath);
-            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-
-            HashMap<String, Object> param = new HashMap<>();
-
-            param.put("Name", "pamkaaaa");
-            param.put("Name", "lakkkkk");
-
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, param, con);
-
-            // Export the report to desired format (PDF, HTML, etc.)
-            JasperViewer.viewReport(jasperPrint);
-            JasperExportManager.exportReportToPdfFile(jasperPrint, "invoice.pdf");
-
-        } catch (JRException e) {
-            e.printStackTrace();
-        } catch (SQLException ex) {
-            Logger.getLogger(Sale.class.getName()).log(Level.SEVERE, null, ex);
+        if (!txt_inv_balance.getText().equals("-0")) {
+            sale();
+        } else {
+            JOptionPane.showMessageDialog(this, "No To Be The Paid Amount Is Lower Than Total Amount");
         }
 
     }//GEN-LAST:event_btn_billPrintActionPerformed
 
     private void txt_inv_paidKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_inv_paidKeyPressed
         // TODO add your handling code here:
-        
-             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-               
-                 if(!txt_inv_balance.getText().equals("-0")){
-                   sale();
-                 }else{
-                 JOptionPane.showMessageDialog(this, "No To Be The Paid Amount Is Lower Than Total Amount");}
-                   
-             }
+
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            if (!txt_inv_balance.getText().equals("-0")) {
+                sale();
+            } else {
+                JOptionPane.showMessageDialog(this, "No To Be The Paid Amount Is Lower Than Total Amount");
+            }
+
+        }
 
     }//GEN-LAST:event_txt_inv_paidKeyPressed
 
@@ -1367,36 +1361,38 @@ public class Sale extends javax.swing.JPanel {
 
         byte avbStatus = 0;
 
-        if (rowCount != 0) {
-            String tbleQty = null;
+        if (Integer.parseInt(txt_qty.getText()) > 0) {
+            if (rowCount != 0) {
+                String tbleQty = null;
 
-            int qty = 0;
+                int qty = 0;
 
-            int selectQty = Integer.parseInt(txt_qty.getText());
-            Vector v = new Vector();
+                int selectQty = Integer.parseInt(txt_qty.getText());
+                Vector v = new Vector();
 
-            for (int i = 0; rowCount > i; i++) {
+                for (int i = 0; rowCount > i; i++) {
 
-                String itemId = dtm.getValueAt(i, 0).toString();
+                    String itemId = dtm.getValueAt(i, 0).toString();
 
-                if (txt_itemcode.getText().equals(itemId)) {
+                    if (txt_itemcode.getText().equals(itemId)) {
 
-                    avbStatus = 1;
-                    tbleQty = dtm.getValueAt(i, 2).toString();
-                    dtm.removeRow(i);
-                    break;
+                        avbStatus = 1;
+                        tbleQty = dtm.getValueAt(i, 2).toString();
+                        dtm.removeRow(i);
+                        break;
+                    }
+
                 }
 
-            }
+                if (avbStatus == 1) {
+                    addInvoicetable(Integer.parseInt(tbleQty));
+                } else {
+                    addInvoicetable(0);
+                }
 
-            if (avbStatus == 1) {
-                addInvoicetable(Integer.parseInt(tbleQty));
             } else {
                 addInvoicetable(0);
             }
-
-        } else {
-            addInvoicetable(0);
         }
     }
 
@@ -1405,59 +1401,68 @@ public class Sale extends javax.swing.JPanel {
         dtm = (DefaultTableModel) table_purchaseitem.getModel();
         int rowCount = dtm.getRowCount();
 
-        double amount = 0;
-        double profit = 0;
+        if (rowCount != 0) {
 
-        for (int i = 0; rowCount > i; i++) {
+            double amount = 0;
+            double profit = 0;
 
-            amount = amount + Double.parseDouble(dtm.getValueAt(i, 3).toString());
-            profit = profit + Double.parseDouble(dtm.getValueAt(i, 4).toString());
+            for (int i = 0; rowCount > i; i++) {
 
+                amount = amount + Double.parseDouble(dtm.getValueAt(i, 3).toString());
+                profit = profit + Double.parseDouble(dtm.getValueAt(i, 4).toString());
+
+            }
+
+            txtx_inv_amount.setText(String.valueOf(amount));
+            txt_inv_profit.setText(String.valueOf(profit));
         }
-
-        txtx_inv_amount.setText(String.valueOf(amount));
-        txt_inv_profit.setText(String.valueOf(profit));
 
     }
 
     private void invoiceCalc() {
-        String famount = "";
-        double finalAmount = 0.0;
+        dtm = (DefaultTableModel) table_purchaseitem.getModel();
+        int rowCount = dtm.getRowCount();
 
-        double discount = Double.parseDouble(txt_inv_discount.getText());
-        double amount = Double.parseDouble(txtx_inv_amount.getText());
-        int qty = Integer.parseInt(txt_qty.getText());
+        if (rowCount != 0) {
+            String famount = "";
+            double finalAmount = 0.0;
 
-        if (rad_inv_price.isSelected()) {
-            finalAmount = amount - discount;
-        } else if (rad_inv_perc.isSelected() && Integer.parseInt(txt_discount.getText()) <= 100) {
-            finalAmount = amount / 100 * discount;
-            finalAmount = amount - finalAmount;
-        } else {
-            finalAmount = -1;
+            double discount = Double.parseDouble(txt_inv_discount.getText());
+            double amount = Double.parseDouble(txtx_inv_amount.getText());
+
+            if (rad_inv_price.isSelected()) {
+                finalAmount = amount - discount;
+            } else if (rad_inv_perc.isSelected() && Integer.parseInt(txt_discount.getText()) <= 100) {
+                finalAmount = amount / 100 * discount;
+                finalAmount = amount - finalAmount;
+            } else {
+                finalAmount = -1;
+            }
+
+            if (finalAmount >= 0) {
+                famount = String.valueOf(finalAmount);
+                txt_inv_tot.setText(famount);
+            } else {
+                JOptionPane.showMessageDialog(this, "Discount ???");
+                txt_inv_tot.setText(famount);
+                txt_inv_discount.setText("0");
+            }
+
+            if (!txt_inv_paid.getText().equals("")) {
+                double paidAmount = Double.parseDouble(txt_inv_paid.getText());
+
+                if (paidAmount >= finalAmount) {
+
+                    double finalP = paidAmount - finalAmount;
+                    String sFimal = String.valueOf(finalP);
+                    txt_inv_balance.setText(sFimal);
+
+                } else {
+                    txt_inv_balance.setText("-0");
+                }
+            }
+
         }
-
-        if (finalAmount >= 0) {
-            famount = String.valueOf(finalAmount);
-            txt_inv_tot.setText(famount);
-        } else {
-            JOptionPane.showMessageDialog(this, "Discount ???");
-            txt_inv_tot.setText(famount);
-            txt_inv_discount.setText("0");
-        }
-
-        double paidAmount = Double.parseDouble(txt_inv_paid.getText());
-
-        if (paidAmount >= finalAmount) {
-
-            double finalP = paidAmount - finalAmount;
-            String sFimal = String.valueOf(finalP);
-            txt_inv_balance.setText(sFimal);
-
-        } else {
-            txt_inv_balance.setText("-0");
-        }
-
     }
 
     private void sale() {
@@ -1466,13 +1471,19 @@ public class Sale extends javax.swing.JPanel {
         double amount = Double.parseDouble(txtx_inv_amount.getText());
         double discount = amount - Double.parseDouble(txt_inv_tot.getText());
         double total = Double.parseDouble(txt_inv_tot.getText());
-        double pay = amount - Double.parseDouble(txt_inv_paid.getText());
+        double pay = Double.parseDouble(txt_inv_paid.getText());
         double profit = Double.parseDouble(txt_inv_profit.getText());
         int qty = 0;
         double sellingPrice = 0.00;
         int warrenty = 0;
         String product = "";
         int itemId = 0;
+
+        double invAmount = Double.parseDouble(txtx_inv_amount.getText());
+        double invDiscount = amount - Double.parseDouble(txt_inv_tot.getText());
+        double invTotal = Double.parseDouble(txt_inv_tot.getText());
+        double invPay = Double.parseDouble(txt_inv_paid.getText());
+        double balance = Double.parseDouble(txt_inv_balance.getText());
 
         String customerId = txt_customer.getText();
 
@@ -1486,49 +1497,113 @@ public class Sale extends javax.swing.JPanel {
             Connection con = DB.getDBConnection();
             if (con == null) {
                 System.out.println("Connection Faild");
-            }else{
-            DB.push(query);
-
-            query = "select Id from sale where Id=(SELECT LAST_INSERT_ID())";
-
-            ResultSet rs = DB.search(query);
-
-            if (rs.next()) {
-                lastInsertId = rs.getLong("Id");
-
-            }
-
-            dtm = (DefaultTableModel) table_purchaseitem.getModel();
-            int rowCount = dtm.getRowCount();
-            int i = 0;
-
-            while (i < rowCount) {
-
-                amount = Double.parseDouble(dtm.getValueAt(i, 1).toString());
-                qty = Integer.parseInt(dtm.getValueAt(i, 2).toString());
-                total = Double.parseDouble(dtm.getValueAt(i, 3).toString());
-                discount = Double.parseDouble(dtm.getValueAt(i, 5).toString());
-                product = dtm.getValueAt(i, 6).toString() + " " + dtm.getValueAt(i, 7).toString() + " " + dtm.getValueAt(i, 8).toString() + " " + dtm.getValueAt(i, 9).toString();
-                sellingPrice = Double.parseDouble(dtm.getValueAt(i, 3).toString());
-                warrenty = Integer.parseInt(dtm.getValueAt(i, 10).toString());
-                itemId = Integer.parseInt(dtm.getValueAt(i, 0).toString());
-
-                query = "INSERT INTO `sold_item`(`RetailPrice`, `Quantity`, `Total`, `DiscountFroItem`, `ProductDescription`, `SellingPrice`, `Warrenty`, `sale_Id`, `item_Id`) "
-                        + "VALUES ('" + amount + "','" + qty + "','" + total + "','" + discount + "','" + product + "','" + sellingPrice + "','" + warrenty + "','" + lastInsertId + "','" + itemId + "')";
-
+            } else {
                 DB.push(query);
 
-                query = "UPDATE `available_quantity` SET `Quantity`= `Quantity`-'" + qty + "' WHERE `item_Id`='" + itemId + "'";
-                DB.push(query);
+                query = "select Id from sale where Id=(SELECT LAST_INSERT_ID())";
 
-                i++;
-            }
-            JOptionPane.showMessageDialog(this, "Compleated>>>>>>");
+                ResultSet rs = DB.search(query);
+
+                if (rs.next()) {
+                    lastInsertId = rs.getLong("Id");
+
+                }
+
+                dtm = (DefaultTableModel) table_purchaseitem.getModel();
+                int rowCount = dtm.getRowCount();
+                int i = 0;
+
+                while (i < rowCount) {
+
+                    amount = Double.parseDouble(dtm.getValueAt(i, 1).toString());
+                    qty = Integer.parseInt(dtm.getValueAt(i, 2).toString());
+                    total = Double.parseDouble(dtm.getValueAt(i, 3).toString());
+                    discount = Double.parseDouble(dtm.getValueAt(i, 5).toString());
+                    product = dtm.getValueAt(i, 6).toString() + " " + dtm.getValueAt(i, 7).toString() + " " + dtm.getValueAt(i, 8).toString() + " " + dtm.getValueAt(i, 9).toString();
+                    sellingPrice = Double.parseDouble(dtm.getValueAt(i, 3).toString());
+                    warrenty = Integer.parseInt(dtm.getValueAt(i, 10).toString());
+                    itemId = Integer.parseInt(dtm.getValueAt(i, 0).toString());
+
+                    query = "INSERT INTO `sold_item`(`RetailPrice`, `Quantity`, `Total`, `DiscountFroItem`, `ProductDescription`, `SellingPrice`, `Warrenty`, `sale_Id`, `item_Id`) "
+                            + "VALUES ('" + amount + "','" + qty + "','" + total + "','" + discount + "','" + product + "','" + sellingPrice + "','" + warrenty + "','" + lastInsertId + "','" + itemId + "')";
+
+                    DB.push(query);
+
+                    query = "UPDATE `available_quantity` SET `Quantity`= `Quantity`-'" + qty + "' WHERE `item_Id`='" + itemId + "'";
+                    DB.push(query);
+
+                    i++;
+                }
+                JOptionPane.showMessageDialog(this, "Compleated........");
+
+                //Jasper Bill
+                billGenerate(lastInsertId, invAmount, invDiscount, invTotal, invPay, balance);
+
+                //Jasper Bill End
+                dtm = (DefaultTableModel) table_purchaseitem.getModel();
+                dtm.setRowCount(0);
             }
         } catch (Exception e) {
 
             e.printStackTrace();
         }
 
+    }
+
+    private void billGenerate(long invId, double total, double discount, double grandTotal, double paid, double balance) {
+        java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("HH:mm:ss");
+        displaydate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(new Date());
+        displaytime = simpleDateFormat.format(new Date());
+        dateTime = displaydate + " " + displaytime;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Load the compiled .jasper file
+            String reportFilePath = "G:/Jesper Report/MyReports/Invoice.jrxml";
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/v-pos", "root", "1234");
+            JasperDesign jdesign = JRXmlLoader.load(reportFilePath);
+
+            String query = "Select * FROM sold_item WHERE sale_Id = '" + invId + "'";
+
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+
+            jdesign.setQuery(updateQuery);
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(jdesign);
+
+            HashMap<String, Object> param = new HashMap<>();
+
+            param.put("DateTime", dateTime);
+            param.put("InvNo", invId);
+            param.put("Total", total);
+            param.put("Discount", discount);
+            param.put("GrandTotal", grandTotal);
+            param.put("Paid", paid);
+            param.put("Balance", balance);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, param, con);
+
+            JasperViewer.viewReport(jasperPrint);
+
+        } catch (JRException e) {
+            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(Sale.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Sale.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void clear() {
+        txt_barCode.setText("");
+        txt_avbqty.setText("");
+        txt_itemcode.setText("");
+        txt_discount.setText("0");
+        txt_qty.setText("");
+        txt_amount.setText("");
+        txt_price.setText("");
+        rad_price.doClick();
     }
 }

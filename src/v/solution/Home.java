@@ -12,6 +12,9 @@ public class Home extends javax.swing.JFrame {
 
     JpanelLoader jpanelload = new JpanelLoader();
     static String userId;
+    String displaytime;
+    String displaydate;
+    String dateTime;
 
     public Home(String Id) {
         userId = Id;
@@ -27,9 +30,9 @@ public class Home extends javax.swing.JFrame {
         new Timer(10, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("HH:mm:ss");
-                String displaytime = simpleDateFormat.format(new Date());
-                String displaydate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date());
-
+                displaytime = simpleDateFormat.format(new Date());
+                displaydate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(new Date());
+                dateTime = displaydate + " " + displaytime;
                 lbl_date.setText(displaydate);
                 lbl_time.setText(displaytime);
 
