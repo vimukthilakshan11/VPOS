@@ -143,6 +143,7 @@ public class Product extends javax.swing.JPanel {
 
         txt_product.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
+        btn_save.setBackground(new java.awt.Color(93, 167, 219));
         btn_save.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/save.png"))); // NOI18N
         btn_save.setText("Save");
@@ -152,6 +153,7 @@ public class Product extends javax.swing.JPanel {
             }
         });
 
+        btn_update.setBackground(new java.awt.Color(93, 167, 219));
         btn_update.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/update.png"))); // NOI18N
         btn_update.setText("Update");
@@ -161,6 +163,7 @@ public class Product extends javax.swing.JPanel {
             }
         });
 
+        btn_delete.setBackground(new java.awt.Color(93, 167, 219));
         btn_delete.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/delete.png"))); // NOI18N
         btn_delete.setText("Delete Selected");
@@ -182,6 +185,7 @@ public class Product extends javax.swing.JPanel {
         rad_inactive.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         rad_inactive.setText("Inactive");
 
+        btn_clear.setBackground(new java.awt.Color(93, 167, 219));
         btn_clear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_clear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/cleaning.png"))); // NOI18N
         btn_clear.setText("Clear");

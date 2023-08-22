@@ -121,6 +121,7 @@ public class Invoice extends javax.swing.JPanel {
                 "Inv. No.", "Date", "Time", "Total", "Cus. ID", "Discount", "Pay", "Final Amount"
             }
         ));
+        rSTableMetro1.setRowHeight(30);
         jScrollPane1.setViewportView(rSTableMetro1);
 
         jLabel6.setBackground(new java.awt.Color(102, 102, 102));
