@@ -40,6 +40,7 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import validation.*;
 
 import v.DB.DB;
 
@@ -787,18 +788,15 @@ public class Sale extends javax.swing.JPanel {
 
     private void txt_discountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_discountKeyReleased
         // TODO add your handling code here:
+
         calc();
     }//GEN-LAST:event_txt_discountKeyReleased
 
     private void txt_qtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_qtyKeyReleased
         // TODO add your handling code here:
 
-        if (Integer.parseInt(txt_avbqty.getText()) >= Integer.parseInt(txt_qty.getText())) {
-            calc();
-        } else {
-            JOptionPane.showMessageDialog(this, "Available Quantity Is : " + txt_avbqty.getText());
-            txt_qty.setText("1");
-        }
+        calc();
+
 
     }//GEN-LAST:event_txt_qtyKeyReleased
 
@@ -920,8 +918,7 @@ public class Sale extends javax.swing.JPanel {
         if (txt_inv_discount.getText().equals("0")) {
             txt_inv_discount.setText("");
         }
-        invoiceAmount();
-        invoiceCalc();
+
     }//GEN-LAST:event_txt_inv_discountFocusGained
 
     private void txt_inv_discountFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_inv_discountFocusLost
@@ -941,7 +938,7 @@ public class Sale extends javax.swing.JPanel {
         if (txt_inv_paid.getText().equals("0")) {
             txt_inv_paid.setText("");
         }
-        invoiceCalc();
+
     }//GEN-LAST:event_txt_inv_paidFocusGained
 
     private void txt_inv_paidFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_inv_paidFocusLost
@@ -949,7 +946,7 @@ public class Sale extends javax.swing.JPanel {
         if (txt_inv_paid.getText().equals("")) {
             txt_inv_paid.setText("0");
         }
-        invoiceCalc();
+
     }//GEN-LAST:event_txt_inv_paidFocusLost
 
     private void btn_noCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_noCustomerActionPerformed
@@ -1018,11 +1015,13 @@ public class Sale extends javax.swing.JPanel {
     private void txt_inv_paidKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_inv_paidKeyPressed
         // TODO add your handling code here:
 
+    
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
             if (!txt_inv_balance.getText().equals("-0")) {
                 sale();
             } else {
+
                 JOptionPane.showMessageDialog(this, "No To Be The Paid Amount Is Lower Than Total Amount");
             }
 
@@ -1323,35 +1322,54 @@ public class Sale extends javax.swing.JPanel {
 
     private void calc() {
 
-        if (txt_discount.getText().equals("") || txt_qty.getText().equals("")) {
+        if (NumberValidation.validateNumber(txt_qty.getText())) {
+
+            if (Integer.parseInt(txt_avbqty.getText()) >= Integer.parseInt(txt_qty.getText())) {
+
+                if (CurrencyValidation.validateCurrency(txt_discount.getText())) {
+                    if (txt_discount.getText().equals("") || txt_qty.getText().equals("")) {
+
+                    } else {
+
+                        double finalAmount = 0.0;
+                        String famount = "";
+                        double itemPrice = Double.parseDouble(txt_price.getText());
+                        int qty = Integer.parseInt(txt_qty.getText());
+                        double discount = Double.parseDouble(txt_discount.getText());
+
+                        double amount = itemPrice * qty;
+
+                        if (rad_price.isSelected()) {
+                            finalAmount = amount - discount;
+                        } else if (rad_perc.isSelected() && Integer.parseInt(txt_discount.getText()) <= 100) {
+                            finalAmount = amount / 100 * discount;
+                            finalAmount = amount - finalAmount;
+                        } else {
+                            finalAmount = -1;
+                        }
+
+                        if (finalAmount >= 0) {
+                            famount = String.valueOf(finalAmount);
+                            txt_amount.setText(famount);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Discount ???");
+                            txt_amount.setText(famount);
+                            txt_discount.setText("0");
+                        }
+
+                    }
+                } else {
+
+                    JOptionPane.showMessageDialog(this, "wrong discount input");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Available Quantity Is : " + txt_avbqty.getText());
+                txt_qty.setText("1");
+            }
         } else {
-            double finalAmount = 0.0;
-            String famount = "";
-            double itemPrice = Double.parseDouble(txt_price.getText());
-            int qty = Integer.parseInt(txt_qty.getText());
-            double discount = Double.parseDouble(txt_discount.getText());
-
-            double amount = itemPrice * qty;
-
-            if (rad_price.isSelected()) {
-                finalAmount = amount - discount;
-            } else if (rad_perc.isSelected() && Integer.parseInt(txt_discount.getText()) <= 100) {
-                finalAmount = amount / 100 * discount;
-                finalAmount = amount - finalAmount;
-            } else {
-                finalAmount = -1;
-            }
-
-            if (finalAmount >= 0) {
-                famount = String.valueOf(finalAmount);
-                txt_amount.setText(famount);
-            } else {
-                JOptionPane.showMessageDialog(this, "Discount ???");
-                txt_amount.setText(famount);
-                txt_discount.setText("0");
-            }
-
+            JOptionPane.showMessageDialog(this, "wrong qty input");
         }
+
     }
 
     private void rowRepeat() {
@@ -1420,48 +1438,60 @@ public class Sale extends javax.swing.JPanel {
     }
 
     private void invoiceCalc() {
-        dtm = (DefaultTableModel) table_purchaseitem.getModel();
-        int rowCount = dtm.getRowCount();
 
-        if (rowCount != 0) {
-            String famount = "";
-            double finalAmount = 0.0;
+        if (CurrencyValidation.validateCurrency(txt_inv_discount.getText())) {
 
-            double discount = Double.parseDouble(txt_inv_discount.getText());
-            double amount = Double.parseDouble(txtx_inv_amount.getText());
+            if (CurrencyValidation.validateCurrency(txt_inv_paid.getText())) {
+                dtm = (DefaultTableModel) table_purchaseitem.getModel();
+                int rowCount = dtm.getRowCount();
 
-            if (rad_inv_price.isSelected()) {
-                finalAmount = amount - discount;
-            } else if (rad_inv_perc.isSelected() && Integer.parseInt(txt_discount.getText()) <= 100) {
-                finalAmount = amount / 100 * discount;
-                finalAmount = amount - finalAmount;
-            } else {
-                finalAmount = -1;
-            }
+                if (rowCount != 0) {
+                    String famount = "";
+                    double finalAmount = 0.0;
 
-            if (finalAmount >= 0) {
-                famount = String.valueOf(finalAmount);
-                txt_inv_tot.setText(famount);
-            } else {
-                JOptionPane.showMessageDialog(this, "Discount ???");
-                txt_inv_tot.setText(famount);
-                txt_inv_discount.setText("0");
-            }
+                    double discount = Double.parseDouble(txt_inv_discount.getText());
+                    double amount = Double.parseDouble(txtx_inv_amount.getText());
 
-            if (!txt_inv_paid.getText().equals("")) {
-                double paidAmount = Double.parseDouble(txt_inv_paid.getText());
+                    if (rad_inv_price.isSelected()) {
+                        finalAmount = amount - discount;
+                    } else if (rad_inv_perc.isSelected() && Integer.parseInt(txt_discount.getText()) <= 100) {
+                        finalAmount = amount / 100 * discount;
+                        finalAmount = amount - finalAmount;
+                    } else {
+                        finalAmount = -1;
+                    }
 
-                if (paidAmount >= finalAmount) {
+                    if (finalAmount >= 0) {
+                        famount = String.valueOf(finalAmount);
+                        txt_inv_tot.setText(famount);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Discount ???");
+                        txt_inv_tot.setText(famount);
+                        txt_inv_discount.setText("0");
+                    }
 
-                    double finalP = paidAmount - finalAmount;
-                    String sFimal = String.valueOf(finalP);
-                    txt_inv_balance.setText(sFimal);
+                    if (!txt_inv_paid.getText().equals("")) {
+                        double paidAmount = Double.parseDouble(txt_inv_paid.getText());
 
-                } else {
-                    txt_inv_balance.setText("-0");
+                        if (paidAmount >= finalAmount) {
+
+                            double finalP = paidAmount - finalAmount;
+                            String sFimal = String.valueOf(finalP);
+                            txt_inv_balance.setText(sFimal);
+
+                        } else {
+                            txt_inv_balance.setText("-0");
+                        }
+                    }
+
                 }
-            }
+            } else {
 
+                JOptionPane.showMessageDialog(this, "wrong paid amount input");
+            }
+        } else {
+
+            JOptionPane.showMessageDialog(this, "wrong discount input");
         }
     }
 

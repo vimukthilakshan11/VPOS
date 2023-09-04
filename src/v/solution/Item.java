@@ -20,6 +20,9 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import v.DB.DB;
+import validation.CurrencyValidation;
+import validation.EmailValidation;
+import validation.NumberValidation;
 
 public class Item extends javax.swing.JPanel {
 
@@ -548,103 +551,109 @@ public class Item extends javax.swing.JPanel {
     }//GEN-LAST:event_product_comboActionPerformed
 
     private void save_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_btnActionPerformed
-        int pId = 0;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        String itemId = "";
-        String barCode = txt_barcode.getText();
-        String sellingPrice = txt_sellingprice.getText();
-        String warrenty = txt_warrenty.getText();
-        int quantity = Integer.parseInt(txt_qty.getText());
-        String updateStatus = txt_updateStatus.getText();
-        String purchasePrice = txt_purchasePrice.getText();
+        boolean statusC = checkValidate();
 
-        long lastInsertId = -1;
+        if (statusC) {
 
-        if (!product_combo.getSelectedItem().toString().equals("Product") && !barCode.equals("") && !sellingPrice.equals("") && !warrenty.equals("") && quantity != 0 && !txt_purchasePrice.getText().equals("")) {
+            int pId = 0;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-            if (jCheckBox1.isSelected() && manudate.getDatoFecha() != null && exdate.getDatoFecha() != null) {
+            String itemId = "";
+            String barCode = txt_barcode.getText();
+            String sellingPrice = txt_sellingprice.getText();
+            String warrenty = txt_warrenty.getText();
+            int quantity = Integer.parseInt(txt_qty.getText());
+            String updateStatus = txt_updateStatus.getText();
+            String purchasePrice = txt_purchasePrice.getText();
 
-                double profit = Double.parseDouble(sellingPrice) - Double.parseDouble(purchasePrice);
+            long lastInsertId = -1;
 
-                String brand = product_combo.getSelectedItem().toString();
-                String productId[] = brand.split("-", 0);
-                pId = Integer.parseInt(productId[0]);
+            if (!product_combo.getSelectedItem().toString().equals("Product") && !barCode.equals("") && !sellingPrice.equals("") && !warrenty.equals("") && quantity != 0 && !txt_purchasePrice.getText().equals("")) {
 
-                String fmanuDate = formatter.format(manudate.getDatoFecha());
-                String fexDate = formatter.format(exdate.getDatoFecha());
+                if (jCheckBox1.isSelected() && manudate.getDatoFecha() != null && exdate.getDatoFecha() != null) {
 
-                int status = 1;
-                if (rad_active.isSelected()) {
-                } else {
-                    status = 0;
-                }
+                    double profit = Double.parseDouble(sellingPrice) - Double.parseDouble(purchasePrice);
 
-                String query = "INSERT INTO `item`(`Product_Id`, `Barcode`, `SellingPrice`, `Warrenty`, `ManufactureDate`, `ExpireDate`, `UpdateStatus`, `PurchasingPrice`,`Profit`, `Status`) VALUES ('" + pId + "','" + barCode + "','" + sellingPrice + "','" + warrenty + "','" + fmanuDate + "','" + fexDate + "','" + updateStatus + "','" + txt_purchasePrice.getText() + "' ,'" + profit + "','" + status + "')";
+                    String brand = product_combo.getSelectedItem().toString();
+                    String productId[] = brand.split("-", 0);
+                    pId = Integer.parseInt(productId[0]);
 
-                try {
+                    String fmanuDate = formatter.format(manudate.getDatoFecha());
+                    String fexDate = formatter.format(exdate.getDatoFecha());
 
-                    DB.push(query);
-
-                    query = "select Id from item where Id=(SELECT LAST_INSERT_ID())";
-
-                    ResultSet rs = DB.search(query);
-
-                    if (rs.next()) {
-                        lastInsertId = rs.getLong("Id");
-
+                    int status = 1;
+                    if (rad_active.isSelected()) {
+                    } else {
+                        status = 0;
                     }
 
-                    query = "INSERT INTO available_quantity (Quantity, item_Id) VALUES ('" + quantity + "','" + lastInsertId + "')";
-                    DB.push(query);
+                    String query = "INSERT INTO `item`(`Product_Id`, `Barcode`, `SellingPrice`, `Warrenty`, `ManufactureDate`, `ExpireDate`, `UpdateStatus`, `PurchasingPrice`,`Profit`, `Status`) VALUES ('" + pId + "','" + barCode + "','" + sellingPrice + "','" + warrenty + "','" + fmanuDate + "','" + fexDate + "','" + updateStatus + "','" + txt_purchasePrice.getText() + "' ,'" + profit + "','" + status + "')";
 
-                    JOptionPane.showMessageDialog(this, "Saved...");
-                    clear();
-                    tableProduct();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    try {
+
+                        DB.push(query);
+
+                        query = "select Id from item where Id=(SELECT LAST_INSERT_ID())";
+
+                        ResultSet rs = DB.search(query);
+
+                        if (rs.next()) {
+                            lastInsertId = rs.getLong("Id");
+
+                        }
+
+                        query = "INSERT INTO available_quantity (Quantity, item_Id) VALUES ('" + quantity + "','" + lastInsertId + "')";
+                        DB.push(query);
+
+                        JOptionPane.showMessageDialog(this, "Saved...");
+                        clear();
+                        tableProduct();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    double profit = Double.parseDouble(sellingPrice) - Double.parseDouble(purchasePrice);
+
+                    String brand = product_combo.getSelectedItem().toString();
+                    String productId[] = brand.split("-", 0);
+                    pId = Integer.parseInt(productId[0]);
+
+                    int status = 1;
+                    if (rad_active.isSelected()) {
+                    } else {
+                        status = 0;
+                    }
+
+                    String query = "INSERT INTO `item`(`Product_Id`, `Barcode`, `SellingPrice`, `Warrenty`, `UpdateStatus`, `PurchasingPrice`,`Profit`, `Status`) VALUES ('" + pId + "','" + barCode + "','" + sellingPrice + "','" + warrenty + "','" + updateStatus + "','" + txt_purchasePrice.getText() + "' ,'" + profit + "','" + status + "')";
+
+                    try {
+
+                        DB.push(query);
+
+                        query = "select Id from item where Id=(SELECT LAST_INSERT_ID());";
+
+                        ResultSet rs = DB.search(query);
+
+                        if (rs.next()) {
+                            lastInsertId = rs.getLong("Id");
+
+                        }
+
+                        query = "INSERT INTO available_quantity (Quantity, item_Id) VALUES ('" + quantity + "','" + lastInsertId + "')";
+                        DB.push(query);
+
+                        JOptionPane.showMessageDialog(this, "Saved...");
+                        tableProduct();
+                        clear();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+
             } else {
-                double profit = Double.parseDouble(sellingPrice) - Double.parseDouble(purchasePrice);
-
-                String brand = product_combo.getSelectedItem().toString();
-                String productId[] = brand.split("-", 0);
-                pId = Integer.parseInt(productId[0]);
-
-                int status = 1;
-                if (rad_active.isSelected()) {
-                } else {
-                    status = 0;
-                }
-
-                String query = "INSERT INTO `item`(`Product_Id`, `Barcode`, `SellingPrice`, `Warrenty`, `UpdateStatus`, `PurchasingPrice`,`Profit`, `Status`) VALUES ('" + pId + "','" + barCode + "','" + sellingPrice + "','" + warrenty + "','" + updateStatus + "','" + txt_purchasePrice.getText() + "' ,'" + profit + "','" + status + "')";
-
-                try {
-
-                    DB.push(query);
-
-                    query = "select Id from item where Id=(SELECT LAST_INSERT_ID());";
-
-                    ResultSet rs = DB.search(query);
-
-                    if (rs.next()) {
-                        lastInsertId = rs.getLong("Id");
-
-                    }
-
-                    query = "INSERT INTO available_quantity (Quantity, item_Id) VALUES ('" + quantity + "','" + lastInsertId + "')";
-                    DB.push(query);
-
-                    JOptionPane.showMessageDialog(this, "Saved...");
-                    tableProduct();
-                    clear();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                JOptionPane.showMessageDialog(this, "Missing Details...");
             }
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Missing Details...");
         }
     }//GEN-LAST:event_save_btnActionPerformed
 
@@ -656,6 +665,12 @@ public class Item extends javax.swing.JPanel {
 
     private void update_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_btnActionPerformed
         // TODO add your handling code here:
+        boolean statusC = checkValidate();
+
+        if (statusC) {
+
+        }
+
     }//GEN-LAST:event_update_btnActionPerformed
 
     private void txt_pSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_pSearchKeyReleased
@@ -1066,5 +1081,35 @@ public class Item extends javax.swing.JPanel {
         txt_warrenty.setText("0");
         rad_active.doClick();
         product_combo.setSelectedIndex(0);
+    }
+
+    private boolean checkValidate() {
+
+        boolean status = false;
+        if (NumberValidation.validateNumber(txt_updateStatus.getText())) {
+            if (CurrencyValidation.validateCurrency(txt_purchasePrice.getText())) {
+                if (CurrencyValidation.validateCurrency(txt_sellingprice.getText())) {
+                    if (NumberValidation.validateNumber(txt_warrenty.getText())) {
+                        if (NumberValidation.validateNumber(txt_qty.getText())) {
+
+                            status = true;
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Incorrect Quantity Format");
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Incorrect Warrenty Format");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect Selling Price Format");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Incorrect Purchasing Format");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Incorrect Update Limit Format");
+        }
+        return status;
+
     }
 }

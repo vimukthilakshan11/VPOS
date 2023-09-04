@@ -17,6 +17,7 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import v.DB.DB;
+import validation.*;
 
 /**
  *
@@ -154,6 +155,11 @@ public class Customer extends javax.swing.JPanel {
         txt_balance.setText("0");
 
         txt_email.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_email.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_emailKeyReleased(evt);
+            }
+        });
 
         txt_nic.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
@@ -423,107 +429,114 @@ public class Customer extends javax.swing.JPanel {
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
         // TODO add your handling code here:
-        String query = "SELECT * FROM customer WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
-        int alreadyStatus = 0;
-        try {
-            rs = DB.search(query);
-            if (rs.next()) {
-                alreadyStatus = 1;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        boolean status = checkValidate();
 
-        if (alreadyStatus == 0) {
-            if (txt_address.getText().equals("") || txt_balance.getText().equals("") ||
-                    txt_email.getText().equals("") || txt_fname.getText().equals("") ||
-                    txt_lname.getText().equals("") || txt_mobile.getText().equals("") || 
-                    txt_nic.getText().equals("") ) {
-                JOptionPane.showMessageDialog(this, "Missiong Details");
-            } else {
+        if (status) {
+                    String query = "SELECT * FROM customer WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
+                    int alreadyStatus = 0;
+                    try {
+                        rs = DB.search(query);
+                        if (rs.next()) {
+                            alreadyStatus = 1;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                String activeStatus = "";
-                if (rad_active.isSelected()) {
-                    activeStatus = "1";
-                } else {
-                    activeStatus = "0";
-                }
-                String query2 = "INSERT INTO `customer`(`FName`, `LName`, `Address`, `TelephoneNo`, `NIC`, `JoinedDate`, `Email`, `Balance`, `Note`, `ActiveStatus`) VALUES ("
-                        + "'" + txt_fname.getText() + "',"
-                        + "'" + txt_lname.getText() + "','" + txt_address.getText() + "',"
-                        + "'" + txt_mobile.getText() + "','" + txt_nic.getText() + "',"
-                        + "'" + txt_joingdate.currentYear + "-" + txt_joingdate.currentMonth + "-" + txt_joingdate.realDay + "','" + txt_email.getText() + "',"
-                        + "'" + txt_balance.getText() + "','" + txt_note.getText() + "',"
-                        + "'" + activeStatus + "')";
-                try {
-                    DB.push(query2);
-                    JOptionPane.showMessageDialog(this, "successfully saved");
-                    
-                    clear();
-                    customerdata();
-                } catch (Exception ex) {
-                    Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "This Customer is Already Exists");
-        }
+                    if (alreadyStatus == 0) {
+                        if (txt_address.getText().equals("") || txt_balance.getText().equals("")
+                                || txt_email.getText().equals("") || txt_fname.getText().equals("")
+                                || txt_lname.getText().equals("") || txt_mobile.getText().equals("")
+                                || txt_nic.getText().equals("")) {
+                            JOptionPane.showMessageDialog(this, "Missiong Details");
+                        } else {
 
+                            String activeStatus = "";
+                            if (rad_active.isSelected()) {
+                                activeStatus = "1";
+                            } else {
+                                activeStatus = "0";
+                            }
+                            String query2 = "INSERT INTO `customer`(`FName`, `LName`, `Address`, `TelephoneNo`, `NIC`, `JoinedDate`, `Email`, `Balance`, `Note`, `ActiveStatus`) VALUES ("
+                                    + "'" + txt_fname.getText() + "',"
+                                    + "'" + txt_lname.getText() + "','" + txt_address.getText() + "',"
+                                    + "'" + txt_mobile.getText() + "','" + txt_nic.getText() + "',"
+                                    + "'" + txt_joingdate.currentYear + "-" + txt_joingdate.currentMonth + "-" + txt_joingdate.realDay + "','" + txt_email.getText() + "',"
+                                    + "'" + txt_balance.getText() + "','" + txt_note.getText() + "',"
+                                    + "'" + activeStatus + "')";
+                            try {
+                                DB.push(query2);
+                                JOptionPane.showMessageDialog(this, "successfully saved");
 
+                                clear();
+                                customerdata();
+                            } catch (Exception ex) {
+                                Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "This Customer is Already Exists");
+                    }
+
+                } 
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
         // TODO add your handling code here:
-        String query = "SELECT * FROM customer WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
-        int alreadyStatus = 0;
-        try {
-            rs = DB.search(query);
-            if (rs.next()) {
-                alreadyStatus = 1;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        if (alreadyStatus == 1) {
+        boolean status = checkValidate();
 
-            int option = JOptionPane.showConfirmDialog(this, "SURE ?");
-            String activeStatus = null;
-            if (rad_active.isSelected()) {
-                activeStatus = "1";
-            } else {
-                activeStatus = "0";
-            }
+        if (status) {
+                    String query = "SELECT * FROM customer WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
+                    int alreadyStatus = 0;
+                    try {
+                        rs = DB.search(query);
+                        if (rs.next()) {
+                            alreadyStatus = 1;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-            if (option == 0) {
+                    if (alreadyStatus == 1) {
 
-                String query3 = "UPDATE `customer` SET "
-                        + "`FName`='" + txt_fname.getText() + "',"
-                        + "`LName`='" + txt_lname.getText() + "',"
-                        + "`Address`='" + txt_address.getText() + "',"
-                        + "`TelephoneNo`='" + txt_mobile.getText() + "',"
-                        + "`NIC`='" + txt_nic.getText() + "',"
-                        + "`JoinedDate`='" + txt_joingdate.currentYear + "-" + txt_joingdate.currentMonth + "-" + txt_joingdate.realDay + "',"
-                        + "`Email`='" + txt_email.getText() + "',"
-                        + "`Balance`='" + txt_balance.getText() + "',"
-                        + "`Note`='" + txt_note.getText() + "',"
-                        + "`ActiveStatus`='" + activeStatus + "' "
-                        + "WHERE nic = '" + txt_nic.getText() + "'";
+                        int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+                        String activeStatus = null;
+                        if (rad_active.isSelected()) {
+                            activeStatus = "1";
+                        } else {
+                            activeStatus = "0";
+                        }
 
-                try {
-                    DB.push(query3);
-                    JOptionPane.showMessageDialog(this, "Successfully Updated");
-                    customerdata();
-                    clear();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+                        if (option == 0) {
 
-        } else {
-            JOptionPane.showMessageDialog(this, "Nothing To Update");
-        }
+                            String query3 = "UPDATE `customer` SET "
+                                    + "`FName`='" + txt_fname.getText() + "',"
+                                    + "`LName`='" + txt_lname.getText() + "',"
+                                    + "`Address`='" + txt_address.getText() + "',"
+                                    + "`TelephoneNo`='" + txt_mobile.getText() + "',"
+                                    + "`NIC`='" + txt_nic.getText() + "',"
+                                    + "`JoinedDate`='" + txt_joingdate.currentYear + "-" + txt_joingdate.currentMonth + "-" + txt_joingdate.realDay + "',"
+                                    + "`Email`='" + txt_email.getText() + "',"
+                                    + "`Balance`='" + txt_balance.getText() + "',"
+                                    + "`Note`='" + txt_note.getText() + "',"
+                                    + "`ActiveStatus`='" + activeStatus + "' "
+                                    + "WHERE nic = '" + txt_nic.getText() + "'";
 
+                            try {
+                                DB.push(query3);
+                                JOptionPane.showMessageDialog(this, "Successfully Updated");
+                                customerdata();
+                                clear();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Nothing To Update");
+                    }
+                } 
 
     }//GEN-LAST:event_btn_updateActionPerformed
 
@@ -573,33 +586,39 @@ public class Customer extends javax.swing.JPanel {
     }//GEN-LAST:event_txt_searchKeyReleased
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-        
-         dtm = (DefaultTableModel) table_customer.getModel();
+
+        dtm = (DefaultTableModel) table_customer.getModel();
         int r = -1;
         r = table_customer.getSelectedRow();
         if (r == -1) {
             JOptionPane.showMessageDialog(this, "First Select A Customer In A Table");
         } else {
-        
-        int option = JOptionPane.showConfirmDialog(this, "SURE ?");
 
-        if (option == 0) {
-            String cId = null;
-            int selectedRow = table_customer.getSelectedRow();
-            dtm = (DefaultTableModel) table_customer.getModel();
-            cId = dtm.getValueAt(selectedRow, 0).toString();
+            int option = JOptionPane.showConfirmDialog(this, "SURE ?");
 
-            String query = "UPDATE customer SET status = '0' WHERE Id = " + cId + "";
-            try {
-                DB.push(query);
-                JOptionPane.showMessageDialog(this, "Successfully Deleted");
-                customerdata();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (option == 0) {
+                String cId = null;
+                int selectedRow = table_customer.getSelectedRow();
+                dtm = (DefaultTableModel) table_customer.getModel();
+                cId = dtm.getValueAt(selectedRow, 0).toString();
+
+                String query = "UPDATE customer SET status = '0' WHERE Id = " + cId + "";
+                try {
+                    DB.push(query);
+                    JOptionPane.showMessageDialog(this, "Successfully Deleted");
+                    customerdata();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-        }
     }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void txt_emailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_emailKeyReleased
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_txt_emailKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -683,9 +702,9 @@ public class Customer extends javax.swing.JPanel {
                 v.add(address);
                 v.add(mobile);
                 v.add(nic);
-                 v.add(JDate);
+                v.add(JDate);
                 v.add(email);
-               
+
                 v.add(balance);
                 v.add(activestatus);
 
@@ -704,5 +723,27 @@ public class Customer extends javax.swing.JPanel {
         table_customer.setRowSorter(tr);
 
         tr.setRowFilter(RowFilter.regexFilter(query));
+    }
+    
+        private boolean checkValidate() {
+
+        boolean status = false;
+        if (CurrencyValidation.validateCurrency(txt_balance.getText())) {
+            if (NumberValidation.validateNumber(txt_mobile.getText())) {
+                if (EmailValidation.validateEmail(txt_email.getText())) {
+
+                    status = true;
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect Email Address Format");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Incorrect Mobile Number Format");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Incorrect Balance currency Format");
+        }
+        return status;
+
     }
 }

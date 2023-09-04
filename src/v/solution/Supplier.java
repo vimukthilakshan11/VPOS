@@ -16,6 +16,9 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import v.DB.DB;
+import validation.CurrencyValidation;
+import validation.EmailValidation;
+import validation.NumberValidation;
 
 /**
  *
@@ -28,6 +31,7 @@ public class Supplier extends javax.swing.JPanel {
      */
     ResultSet rs;
     DefaultTableModel dtm;
+
     public Supplier() {
         initComponents();
         supplierTable();
@@ -362,48 +366,51 @@ public class Supplier extends javax.swing.JPanel {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-        String query = "SELECT * FROM supplier WHERE RegisterNo = '" + txt_registerNumber.getText() + "' AND status = '1'";
-        int alreadyStatus = 0;
-        try {
-            rs = DB.search(query);
-            if (rs.next()) {
-                alreadyStatus = 1;
+        boolean status = checkValidate();
+
+        if (status) {
+            String query = "SELECT * FROM supplier WHERE RegisterNo = '" + txt_registerNumber.getText() + "' AND status = '1'";
+            int alreadyStatus = 0;
+            try {
+                rs = DB.search(query);
+                if (rs.next()) {
+                    alreadyStatus = 1;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        if (alreadyStatus == 0) {
-            if (txt_address.getText().equals("") || txt_companyName.getText().equals("") || txt_email.getText().equals("") || txt_registerNumber.getText().equals("") || txt_name.getText().equals("") || txt_mobile.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Missiong Details");
-            } else {
-
-                String activeStatus = "";
-                if (rad_active.isSelected()) {
-                    activeStatus = "1";
+            if (alreadyStatus == 0) {
+                if (txt_address.getText().equals("") || txt_companyName.getText().equals("") || txt_email.getText().equals("") || txt_registerNumber.getText().equals("") || txt_name.getText().equals("") || txt_mobile.getText().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Missiong Details");
                 } else {
-                    activeStatus = "0";
+
+                    String activeStatus = "";
+                    if (rad_active.isSelected()) {
+                        activeStatus = "1";
+                    } else {
+                        activeStatus = "0";
+                    }
+                    String query2 = "INSERT INTO `supplier`(`Name`, `Address`, `TelephoneNo`, `CompanyName`, `RegisterNo`,`activeStatus`, `Email`) VALUES ("
+                            + "'" + txt_name.getText() + "',"
+                            + "'" + txt_address.getText() + "','" + txt_mobile.getText() + "',"
+                            + "'" + txt_companyName.getText() + "','" + txt_registerNumber.getText() + "',"
+                            + "'" + activeStatus + "',"
+                            + "'" + txt_email.getText() + "')";
+                    try {
+                        DB.push(query2);
+                        JOptionPane.showMessageDialog(this, "successfully saved");
+                        supplierTable();
+                        clear();
+                    } catch (Exception ex) {
+                        Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                String query2 = "INSERT INTO `supplier`(`Name`, `Address`, `TelephoneNo`, `CompanyName`, `RegisterNo`,`activeStatus`, `Email`) VALUES ("
-                        + "'" + txt_name.getText() + "',"
-                        + "'" + txt_address.getText() + "','" + txt_mobile.getText() + "',"
-                        + "'" + txt_companyName.getText() + "','" + txt_registerNumber.getText() + "',"
-                        + "'" + activeStatus + "',"
-                        + "'" + txt_email.getText() + "')";
-                try {
-                    DB.push(query2);
-                    JOptionPane.showMessageDialog(this, "successfully saved");
-                    supplierTable();
-                    clear();
-                } catch (Exception ex) {
-                    Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            } else {
+                JOptionPane.showMessageDialog(this, "This Supplier is Already Exists");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "This Supplier is Already Exists");
+
         }
-
-
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void txt_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyReleased
@@ -414,30 +421,31 @@ public class Supplier extends javax.swing.JPanel {
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
-         dtm = (DefaultTableModel) table_supplier.getModel();
+        dtm = (DefaultTableModel) table_supplier.getModel();
         int r = -1;
         r = table_supplier.getSelectedRow();
         if (r == -1) {
             JOptionPane.showMessageDialog(this, "First Select A Employee In A Table");
         } else {
-         int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+            int option = JOptionPane.showConfirmDialog(this, "SURE ?");
 
-        if (option == 0) {
-            String supId = null;
-            int selectedRow = table_supplier.getSelectedRow();
-            dtm = (DefaultTableModel) table_supplier.getModel();
-            supId = dtm.getValueAt(selectedRow, 0).toString();
+            if (option == 0) {
+                String supId = null;
+                int selectedRow = table_supplier.getSelectedRow();
+                dtm = (DefaultTableModel) table_supplier.getModel();
+                supId = dtm.getValueAt(selectedRow, 0).toString();
 
-            String query = "UPDATE supplier SET status = '0' WHERE Id = " + supId + "";
-            try {
-                DB.push(query);
-                JOptionPane.showMessageDialog(this, "Successfully Deleted");
-                supplierTable();
-                clear();
-            } catch (Exception e) {
-                e.printStackTrace();
+                String query = "UPDATE supplier SET status = '0' WHERE Id = " + supId + "";
+                try {
+                    DB.push(query);
+                    JOptionPane.showMessageDialog(this, "Successfully Deleted");
+                    supplierTable();
+                    clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }}
+        }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearActionPerformed
@@ -448,7 +456,7 @@ public class Supplier extends javax.swing.JPanel {
 
     private void table_supplierMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_supplierMouseClicked
         // TODO add your handling code here:
-                String activeStatus = "";
+        String activeStatus = "";
         String supId = "";
         int selectedRow = table_supplier.getSelectedRow();
         dtm = (DefaultTableModel) table_supplier.getModel();
@@ -478,53 +486,56 @@ public class Supplier extends javax.swing.JPanel {
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
         // TODO add your handling code here:
-         String query = "SELECT * FROM supplier WHERE RegisterNo = '" + txt_registerNumber.getText() + "' AND status = '1'";
-        int alreadyStatus = 0;
-        try {
-            rs = DB.search(query);
-            if (rs.next()) {
-                alreadyStatus = 1;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        boolean status = checkValidate();
 
-        if (alreadyStatus == 1) {
-
-            int option = JOptionPane.showConfirmDialog(this, "SURE ?");
-            String activeStatus = null;
-            if (rad_active.isSelected()) {
-                activeStatus = "1";
-            } else {
-                activeStatus = "0";
-            }
-
-            if (option == 0) {
-
-                String query3 = "UPDATE `supplier` SET "
-                        + "`Name`='" + txt_name.getText() + "',"
-                        + "`Address`='" + txt_address.getText() + "',"
-                        + "`TelephoneNo`='" + txt_mobile.getText() + "',"
-                        + "`CompanyName`='" + txt_companyName.getText() + "',"
-                        + "`RegisterNo`='" + txt_registerNumber.getText() + "',"
-                        + "`activeStatus`='" +activeStatus+ "',"
-                        + "`Email`='" + txt_email.getText() + "'"
-                        + "WHERE RegisterNo = '" + txt_registerNumber.getText() + "'";
-
-                try {
-                    DB.push(query3);
-                    JOptionPane.showMessageDialog(this, "Successfully Updated");
-                    supplierTable();
-                    clear();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if (status) {
+            String query = "SELECT * FROM supplier WHERE RegisterNo = '" + txt_registerNumber.getText() + "' AND status = '1'";
+            int alreadyStatus = 0;
+            try {
+                rs = DB.search(query);
+                if (rs.next()) {
+                    alreadyStatus = 1;
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-        } else {
-            JOptionPane.showMessageDialog(this, "Nothing To Update");
-        }
+            if (alreadyStatus == 1) {
 
+                int option = JOptionPane.showConfirmDialog(this, "SURE ?");
+                String activeStatus = null;
+                if (rad_active.isSelected()) {
+                    activeStatus = "1";
+                } else {
+                    activeStatus = "0";
+                }
+
+                if (option == 0) {
+
+                    String query3 = "UPDATE `supplier` SET "
+                            + "`Name`='" + txt_name.getText() + "',"
+                            + "`Address`='" + txt_address.getText() + "',"
+                            + "`TelephoneNo`='" + txt_mobile.getText() + "',"
+                            + "`CompanyName`='" + txt_companyName.getText() + "',"
+                            + "`RegisterNo`='" + txt_registerNumber.getText() + "',"
+                            + "`activeStatus`='" + activeStatus + "',"
+                            + "`Email`='" + txt_email.getText() + "'"
+                            + "WHERE RegisterNo = '" + txt_registerNumber.getText() + "'";
+
+                    try {
+                        DB.push(query3);
+                        JOptionPane.showMessageDialog(this, "Successfully Updated");
+                        supplierTable();
+                        clear();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Nothing To Update");
+            }
+        }
     }//GEN-LAST:event_btn_updateActionPerformed
 
 
@@ -570,7 +581,6 @@ private void clear() {
         txt_search.setText("");
     }
 
-
     private void supplierTable() {
 
         dtm = (DefaultTableModel) table_supplier.getModel();
@@ -590,8 +600,6 @@ private void clear() {
                 String mobile = rs.getString("TelephoneNo");
                 String activeStatus = rs.getString("activeStatus");
                 String regNumber = rs.getString("RegisterNo");
-                
-
 
                 v.add(ccode);
                 v.add(name);
@@ -619,5 +627,24 @@ private void clear() {
 
         tr.setRowFilter(RowFilter.regexFilter(query));
     }
-}
 
+    private boolean checkValidate() {
+
+        boolean status = false;
+
+        if (NumberValidation.validateNumber(txt_mobile.getText())) {
+            if (EmailValidation.validateEmail(txt_email.getText())) {
+
+                status = true;
+            } else {
+                JOptionPane.showMessageDialog(this, "Incorrect Email Address Format");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Incorrect Mobile Number Format");
+        }
+
+        return status;
+
+    }
+}

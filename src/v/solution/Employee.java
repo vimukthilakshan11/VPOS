@@ -16,6 +16,9 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import v.DB.DB;
+import validation.CurrencyValidation;
+import validation.EmailValidation;
+import validation.NumberValidation;
 
 /**
  *
@@ -492,62 +495,71 @@ public class Employee extends javax.swing.JPanel {
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
         // TODO add your handling code here:
-                String query3 = "SELECT * FROM employee WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
-        int alreadyStatus = 0;
-        try {
-            rs = DB.search(query3);
-            if (rs.next()) {
-                alreadyStatus = 1;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        if (alreadyStatus == 0) {
-        String activeStatus = "";
-        String gender = txt_gender.getSelectedItem().toString();
-        String position = combo_posisiton.getSelectedItem().toString();
-        String[] posisionId = position.split("-");
-        String posisionId2 = posisionId[0];
+        boolean status = checkValidate();
 
-        String joinedDate = txt_joineddate.currentYear + "-" + txt_joineddate.currentMonth + "-" + txt_joineddate.realDay;
-        String birthDate = txt_birthdate.currentYear + "-" + txt_birthdate.currentMonth + "-" + txt_birthdate.realDay;
+        if (status) {
 
-        if (rad_active.isSelected()) {
-            activeStatus = "1";
-        } else {
-            activeStatus = "0";
-        }
-
-        if (combo_posisiton.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Select Employee Position");
-        } else {
-            if (txt_address.getText().equals("") || txt_fname.getText().equals("")
-                    || gender.equals("Gender") || txt_lname.getText().equals("")
-                    || txt_mobile.getText().equals("") || txt_nic.getText().equals("")) {
-
-                JOptionPane.showMessageDialog(this, "Missiong Details");
-            } else {
-                String query = "INSERT INTO `employee`(`EmployeePosition_id`,"
-                        + " `Fname`, `Lname`, `Address`, `TelephoneNo`, `NIC`,"
-                        + " `DOB`, `JoinedDate`, `Email`, `Gender`, `BankName`,"
-                        + " `BankNumber`, `Note`, `ActiveStatus`) VALUES ("
-                        + "'" + posisionId2 + "','" + txt_fname.getText() + "','" + txt_lname.getText() + "','" + txt_address.getText() + "',"
-                        + "'" + txt_mobile.getText() + "','" + txt_nic.getText() + "','" + birthDate + "','" + joinedDate + "',"
-                        + "'" + txt_email.getText() + "','" + gender + "','" + txt_bankname.getText() + "','" + txt_accountnumber.getText() + "',"
-                        + "'" + txt_note.getText() + "','" + activeStatus + "')";
-
-                try {
-                    DB.push(query);
-                    JOptionPane.showMessageDialog(this, "successfully saved");
-                    clear();
-                    employeedata();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            String query3 = "SELECT * FROM employee WHERE nic = '" + txt_nic.getText() + "' AND status = '1'";
+            int alreadyStatus = 0;
+            try {
+                rs = DB.search(query3);
+                if (rs.next()) {
+                    alreadyStatus = 1;
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
+            if (alreadyStatus == 0) {
+                String activeStatus = "";
+                String gender = txt_gender.getSelectedItem().toString();
+                String position = combo_posisiton.getSelectedItem().toString();
+                String[] posisionId = position.split("-");
+                String posisionId2 = posisionId[0];
+
+                String joinedDate = txt_joineddate.currentYear + "-" + txt_joineddate.currentMonth + "-" + txt_joineddate.realDay;
+                String birthDate = txt_birthdate.currentYear + "-" + txt_birthdate.currentMonth + "-" + txt_birthdate.realDay;
+
+                if (rad_active.isSelected()) {
+                    activeStatus = "1";
+                } else {
+                    activeStatus = "0";
+                }
+
+                if (combo_posisiton.getSelectedIndex() == 0) {
+                    JOptionPane.showMessageDialog(this, "Select Employee Position");
+                } else {
+                    if (txt_address.getText().equals("") || txt_fname.getText().equals("")
+                            || gender.equals("Gender") || txt_lname.getText().equals("")
+                            || txt_mobile.getText().equals("") || txt_nic.getText().equals("")) {
+
+                        JOptionPane.showMessageDialog(this, "Missiong Details");
+                    } else {
+                        String query = "INSERT INTO `employee`(`EmployeePosition_id`,"
+                                + " `Fname`, `Lname`, `Address`, `TelephoneNo`, `NIC`,"
+                                + " `DOB`, `JoinedDate`, `Email`, `Gender`, `BankName`,"
+                                + " `BankNumber`, `Note`, `ActiveStatus`) VALUES ("
+                                + "'" + posisionId2 + "','" + txt_fname.getText() + "','" + txt_lname.getText() + "','" + txt_address.getText() + "',"
+                                + "'" + txt_mobile.getText() + "','" + txt_nic.getText() + "','" + birthDate + "','" + joinedDate + "',"
+                                + "'" + txt_email.getText() + "','" + gender + "','" + txt_bankname.getText() + "','" + txt_accountnumber.getText() + "',"
+                                + "'" + txt_note.getText() + "','" + activeStatus + "')";
+
+                        try {
+                            DB.push(query);
+                            JOptionPane.showMessageDialog(this, "successfully saved");
+                            clear();
+                            employeedata();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "This Employee is Already Exists");
+            }
+
         }
-        }else{ JOptionPane.showMessageDialog(this, "This Employee is Already Exists");}
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
@@ -576,7 +588,7 @@ public class Employee extends javax.swing.JPanel {
                 }
             }
         }
-    
+
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void tbl_employeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_employeeMouseClicked
@@ -639,78 +651,84 @@ public class Employee extends javax.swing.JPanel {
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
         // TODO add your handling code here:
-                String gender1 = txt_gender.getSelectedItem().toString();
-         if (combo_posisiton.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Select Employee Position");
-        } else {
-            if (txt_address.getText().equals("") || txt_fname.getText().equals("")
-                    || gender1.equals("Gender") || txt_lname.getText().equals("")
-                    || txt_mobile.getText().equals("") || txt_nic.getText().equals("")) {
 
-                JOptionPane.showMessageDialog(this, "Missiong Details");
+        boolean status = checkValidate();
+
+        if (status) {
+            String gender1 = txt_gender.getSelectedItem().toString();
+            if (combo_posisiton.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(this, "Select Employee Position");
             } else {
-        
-        String gender = txt_gender.getSelectedItem().toString();
-        String position = combo_posisiton.getSelectedItem().toString();
-        String[] posisionId = position.split("-");
-        String posisionId2 = posisionId[0];
+                if (txt_address.getText().equals("") || txt_fname.getText().equals("")
+                        || gender1.equals("Gender") || txt_lname.getText().equals("")
+                        || txt_mobile.getText().equals("") || txt_nic.getText().equals("")) {
 
-        String joinedDate = txt_joineddate.currentYear + "-" + txt_joineddate.currentMonth + "-" + txt_joineddate.realDay;
-        String birthDate = txt_birthdate.currentYear + "-" + txt_birthdate.currentMonth + "-" + txt_birthdate.realDay;
+                    JOptionPane.showMessageDialog(this, "Missiong Details");
+                } else {
 
-        String query = "SELECT * FROM employee WHERE NIC = '" + txt_nic.getText() + "' AND status = '1'";
-        int alreadyStatus = 0;
-        try {
-            rs = DB.search(query);
-            if (rs.next()) {
-                alreadyStatus = 1;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    String gender = txt_gender.getSelectedItem().toString();
+                    String position = combo_posisiton.getSelectedItem().toString();
+                    String[] posisionId = position.split("-");
+                    String posisionId2 = posisionId[0];
 
-        if (alreadyStatus == 1) {
+                    String joinedDate = txt_joineddate.currentYear + "-" + txt_joineddate.currentMonth + "-" + txt_joineddate.realDay;
+                    String birthDate = txt_birthdate.currentYear + "-" + txt_birthdate.currentMonth + "-" + txt_birthdate.realDay;
 
-            int option = JOptionPane.showConfirmDialog(this, "Update Is Sure ?");
-            String activeStatus = null;
-            if (rad_active.isSelected()) {
-                activeStatus = "1";
-            } else {
-                activeStatus = "0";
-            }
+                    String query = "SELECT * FROM employee WHERE NIC = '" + txt_nic.getText() + "' AND status = '1'";
+                    int alreadyStatus = 0;
+                    try {
+                        rs = DB.search(query);
+                        if (rs.next()) {
+                            alreadyStatus = 1;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-            if (option == 0) {
+                    if (alreadyStatus == 1) {
 
-                String query3 = "UPDATE `employee` SET "
-                        + "`EmployeePosition_id`='" + posisionId2 + "',"
-                        + "`Fname`='" + txt_fname.getText() + "',"
-                        + "`Lname`='" + txt_lname.getText() + "',"
-                        + "`Address`='" + txt_address.getText() + "',"
-                        + "`TelephoneNo`='" + txt_mobile.getText() + "',"
-                        + "`NIC`='" + txt_nic.getText() + "',"
-                        + "`DOB`='" + birthDate + "',"
-                        + "`JoinedDate`='" + joinedDate + "',"
-                        + "`Email`='" + txt_email.getText() + "',"
-                        + "`Gender`='" + gender + "',"
-                        + "`BankName`='" + txt_bankname.getText() + "',"
-                        + "`BankNumber`='" + txt_accountnumber.getText() + "',"
-                        + "`Note`='" + txt_note.getText() + "',"
-                        + "`ActiveStatus`='" + activeStatus + "' WHERE nic = '"+txt_nic.getText()+"'";
+                        int option = JOptionPane.showConfirmDialog(this, "Update Is Sure ?");
+                        String activeStatus = null;
+                        if (rad_active.isSelected()) {
+                            activeStatus = "1";
+                        } else {
+                            activeStatus = "0";
+                        }
 
-                try {
-                    DB.push(query3);
-                    JOptionPane.showMessageDialog(this, "Successfully Updated");
-                    employeedata();
-                    clear();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        if (option == 0) {
+
+                            String query3 = "UPDATE `employee` SET "
+                                    + "`EmployeePosition_id`='" + posisionId2 + "',"
+                                    + "`Fname`='" + txt_fname.getText() + "',"
+                                    + "`Lname`='" + txt_lname.getText() + "',"
+                                    + "`Address`='" + txt_address.getText() + "',"
+                                    + "`TelephoneNo`='" + txt_mobile.getText() + "',"
+                                    + "`NIC`='" + txt_nic.getText() + "',"
+                                    + "`DOB`='" + birthDate + "',"
+                                    + "`JoinedDate`='" + joinedDate + "',"
+                                    + "`Email`='" + txt_email.getText() + "',"
+                                    + "`Gender`='" + gender + "',"
+                                    + "`BankName`='" + txt_bankname.getText() + "',"
+                                    + "`BankNumber`='" + txt_accountnumber.getText() + "',"
+                                    + "`Note`='" + txt_note.getText() + "',"
+                                    + "`ActiveStatus`='" + activeStatus + "' WHERE nic = '" + txt_nic.getText() + "'";
+
+                            try {
+                                DB.push(query3);
+                                JOptionPane.showMessageDialog(this, "Successfully Updated");
+                                employeedata();
+                                clear();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Nothing To Update. Check NIC Number");
+                    }
                 }
             }
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Nothing To Update. Check NIC Number");
         }
-            }}
     }//GEN-LAST:event_btn_updateActionPerformed
 
 
@@ -846,4 +864,25 @@ public class Employee extends javax.swing.JPanel {
         }
     }
 
+    private boolean checkValidate() {
+
+        boolean status = false;
+        if (NumberValidation.validateNumber(txt_accountnumber.getText())) {
+            if (NumberValidation.validateNumber(txt_mobile.getText())) {
+                if (EmailValidation.validateEmail(txt_email.getText())) {
+
+                    status = true;
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect Email Address Format");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Incorrect Mobile Number Format");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Incorrect Balance currency Format");
+        }
+        return status;
+
+    }
 }
