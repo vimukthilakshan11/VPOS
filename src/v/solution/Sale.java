@@ -1590,7 +1590,7 @@ public class Sale extends javax.swing.JPanel {
             Class.forName("com.mysql.jdbc.Driver");
 
             // Load the compiled .jasper file
-            String reportFilePath = "G:/Jesper Report/MyReports/Invoice.jrxml";
+            String reportFilePath = "F:\\My Projects\\VPOS\\src\\reports\\MyReports\\Invoice.jrxml";
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/v-pos", "root", "1234");
             JasperDesign jdesign = JRXmlLoader.load(reportFilePath);
 

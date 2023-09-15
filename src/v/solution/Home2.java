@@ -5,6 +5,7 @@
 package v.solution;
 
 import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
 import v.DB.DB;
 
 /**
@@ -16,6 +17,8 @@ public class Home2 extends javax.swing.JPanel {
     /**
      * Creates new form Home2
      */
+    
+    ResultSet rs;
     public Home2() {
         initComponents();
         getCustomerCount();
@@ -26,7 +29,9 @@ public class Home2 extends javax.swing.JPanel {
         getSaleCount();
         getExincomeCount();
         getExCostCount();
-        
+        getinvoiceCount();
+        getReturnItemCount();
+
     }
 
     /**
@@ -45,7 +50,7 @@ public class Home2 extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        txt_return = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -53,7 +58,7 @@ public class Home2 extends javax.swing.JPanel {
         jPanel7 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
+        txt_customerCount2 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -69,7 +74,7 @@ public class Home2 extends javax.swing.JPanel {
         jPanel11 = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
+        txt_totInv = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
@@ -84,7 +89,6 @@ public class Home2 extends javax.swing.JPanel {
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
         jLabel1.setBackground(new java.awt.Color(0, 223, 162));
         jLabel1.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -124,26 +128,25 @@ public class Home2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_coustomerCount, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addComponent(txt_coustomerCount, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
         );
 
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 370));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
-        jLabel9.setBackground(new java.awt.Color(0, 223, 162));
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/customer3 (2).jpg"))); // NOI18N
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/returns.png"))); // NOI18N
         jLabel9.setOpaque(true);
 
         jLabel10.setFont(new java.awt.Font("Serif", 1, 18)); // NOI18N
-        jLabel10.setText("CUSTOMER COUNT ");
+        jLabel10.setText("Return Item");
 
-        jLabel11.setFont(new java.awt.Font("Showcard Gothic", 0, 36)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel11.setText("155");
+        txt_return.setFont(new java.awt.Font("Showcard Gothic", 0, 36)); // NOI18N
+        txt_return.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        txt_return.setText("155");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -159,7 +162,7 @@ public class Home2 extends javax.swing.JPanel {
                         .addComponent(jLabel9))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_return, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(5, 5, 5))
         );
         jPanel5Layout.setVerticalGroup(
@@ -170,13 +173,12 @@ public class Home2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addComponent(txt_return, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
         );
 
         add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 370, -1, 370));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
         jLabel12.setBackground(new java.awt.Color(255, 255, 255));
         jLabel12.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -196,14 +198,11 @@ public class Home2 extends javax.swing.JPanel {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txt_supplierCount, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(77, 115, Short.MAX_VALUE))
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_supplierCount, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(77, 121, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -216,13 +215,12 @@ public class Home2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_supplierCount, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addComponent(txt_supplierCount, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
         );
 
         add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 0, 310, 370));
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
         jLabel15.setBackground(new java.awt.Color(0, 223, 162));
         jLabel15.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -233,9 +231,9 @@ public class Home2 extends javax.swing.JPanel {
         jLabel16.setFont(new java.awt.Font("Serif", 1, 18)); // NOI18N
         jLabel16.setText("CUSTOMER COUNT ");
 
-        jLabel17.setFont(new java.awt.Font("Showcard Gothic", 0, 36)); // NOI18N
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel17.setText("155");
+        txt_customerCount2.setFont(new java.awt.Font("Showcard Gothic", 0, 36)); // NOI18N
+        txt_customerCount2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        txt_customerCount2.setText("155");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -251,7 +249,7 @@ public class Home2 extends javax.swing.JPanel {
                         .addComponent(jLabel15))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_customerCount2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(5, 5, 5))
         );
         jPanel7Layout.setVerticalGroup(
@@ -262,13 +260,12 @@ public class Home2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addComponent(txt_customerCount2, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
         );
 
         add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 370, -1, 370));
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel8.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
         jLabel18.setBackground(new java.awt.Color(255, 255, 255));
         jLabel18.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -288,14 +285,11 @@ public class Home2 extends javax.swing.JPanel {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txt_employeeCount, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(77, 105, Short.MAX_VALUE))
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_employeeCount, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(77, 111, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -308,13 +302,12 @@ public class Home2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_employeeCount, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addComponent(txt_employeeCount, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
         );
 
         add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 0, 300, 370));
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel9.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
         jLabel21.setBackground(new java.awt.Color(255, 255, 255));
         jLabel21.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -334,13 +327,10 @@ public class Home2 extends javax.swing.JPanel {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txt_exIncome, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txt_exIncome, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -354,13 +344,12 @@ public class Home2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_exIncome, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addComponent(txt_exIncome, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
         );
 
         add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, -1, 370));
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel10.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
         jLabel24.setBackground(new java.awt.Color(255, 255, 255));
         jLabel24.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -380,13 +369,10 @@ public class Home2 extends javax.swing.JPanel {
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txt_exCost, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txt_exCost, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -400,26 +386,25 @@ public class Home2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_exCost, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addComponent(txt_exCost, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
         );
 
         add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 370, -1, 370));
 
         jPanel11.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel11.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
-        jLabel27.setBackground(new java.awt.Color(0, 223, 162));
+        jLabel27.setBackground(new java.awt.Color(255, 255, 255));
         jLabel27.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/customer3 (2).jpg"))); // NOI18N
+        jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v/solution/image/invoices.png"))); // NOI18N
         jLabel27.setOpaque(true);
 
         jLabel28.setFont(new java.awt.Font("Serif", 1, 18)); // NOI18N
-        jLabel28.setText("CUSTOMER COUNT ");
+        jLabel28.setText("Total Invoices");
 
-        jLabel29.setFont(new java.awt.Font("Showcard Gothic", 0, 36)); // NOI18N
-        jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel29.setText("155");
+        txt_totInv.setFont(new java.awt.Font("Showcard Gothic", 0, 36)); // NOI18N
+        txt_totInv.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        txt_totInv.setText("155");
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -435,7 +420,7 @@ public class Home2 extends javax.swing.JPanel {
                         .addComponent(jLabel27))
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_totInv, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(5, 5, 5))
         );
         jPanel11Layout.setVerticalGroup(
@@ -446,13 +431,12 @@ public class Home2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addComponent(txt_totInv, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
         );
 
         add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 370, -1, 370));
 
         jPanel12.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
         jLabel30.setBackground(new java.awt.Color(255, 255, 255));
         jLabel30.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -472,14 +456,11 @@ public class Home2 extends javax.swing.JPanel {
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txt_invCount, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(77, 115, Short.MAX_VALUE))
+                    .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_invCount, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(77, 121, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
                 .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -498,7 +479,6 @@ public class Home2 extends javax.swing.JPanel {
         add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 0, 310, -1));
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel13.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
 
         jLabel33.setBackground(new java.awt.Color(255, 255, 255));
         jLabel33.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
@@ -507,7 +487,7 @@ public class Home2 extends javax.swing.JPanel {
         jLabel33.setOpaque(true);
 
         jLabel34.setFont(new java.awt.Font("Serif", 1, 18)); // NOI18N
-        jLabel34.setText("ALL PRODUCT COUNT HERE ");
+        jLabel34.setText("ALL PRODUCT COUNT ");
 
         txt_ProductCount.setFont(new java.awt.Font("Showcard Gothic", 0, 36)); // NOI18N
         txt_ProductCount.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -518,14 +498,11 @@ public class Home2 extends javax.swing.JPanel {
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txt_ProductCount, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(5, 31, Short.MAX_VALUE))
+                    .addComponent(txt_ProductCount, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 37, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
                 .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -538,7 +515,7 @@ public class Home2 extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_ProductCount, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                .addComponent(txt_ProductCount, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
         );
 
         add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 0, 310, 370));
@@ -556,12 +533,10 @@ public class Home2 extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -571,7 +546,6 @@ public class Home2 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel33;
@@ -590,20 +564,24 @@ public class Home2 extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JLabel txt_ProductCount;
     private javax.swing.JLabel txt_coustomerCount;
+    private javax.swing.JLabel txt_customerCount2;
     private javax.swing.JLabel txt_employeeCount;
     private javax.swing.JLabel txt_exCost;
     private javax.swing.JLabel txt_exIncome;
     private javax.swing.JLabel txt_invCount;
+    private javax.swing.JLabel txt_return;
     private javax.swing.JLabel txt_supplierCount;
+    private javax.swing.JLabel txt_totInv;
     // End of variables declaration//GEN-END:variables
 
     private void getCustomerCount() {
-       String query = "SELECT COUNT(Id) FROM customer WHERE Status = '1'";
+        String query = "SELECT COUNT(Id) FROM customer WHERE Status = '1'";
         try {
-            ResultSet rs  = DB.search(query);
-            if(rs.next()){
-            int rowCount = rs.getInt(1);
-            txt_coustomerCount.setText(String.valueOf(rowCount));
+            rs = DB.search(query);
+            if (rs.next()) {
+                int rowCount = rs.getInt(1);
+                txt_coustomerCount.setText(String.valueOf(rowCount));
+                txt_customerCount2.setText(String.valueOf(rowCount));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -611,12 +589,12 @@ public class Home2 extends javax.swing.JPanel {
     }
 
     private void getEmployeeCount() {
-       String query = "SELECT COUNT(Id) FROM employee WHERE Status = '1'";
+        String query = "SELECT COUNT(Id) FROM employee WHERE Status = '1'";
         try {
-            ResultSet rs  = DB.search(query);
-            if(rs.next()){
-            int rowCount = rs.getInt(1);
-            txt_employeeCount.setText(String.valueOf(rowCount));
+            rs = DB.search(query);
+            if (rs.next()) {
+                int rowCount = rs.getInt(1);
+                txt_employeeCount.setText(String.valueOf(rowCount));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -624,12 +602,12 @@ public class Home2 extends javax.swing.JPanel {
     }
 
     private void getSuppCount() {
-              String query = "SELECT COUNT(Id) FROM supplier WHERE Status = '1'";
+        String query = "SELECT COUNT(Id) FROM supplier WHERE Status = '1'";
         try {
-            ResultSet rs  = DB.search(query);
-            if(rs.next()){
-            int rowCount = rs.getInt(1);
-            txt_supplierCount.setText(String.valueOf(rowCount));
+            rs = DB.search(query);
+            if (rs.next()) {
+                int rowCount = rs.getInt(1);
+                txt_supplierCount.setText(String.valueOf(rowCount));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -637,12 +615,12 @@ public class Home2 extends javax.swing.JPanel {
     }
 
     private void getProductCount() {
-           String query = "SELECT COUNT(Id) FROM product WHERE Status = '1'";
+        String query = "SELECT COUNT(Id) FROM product WHERE Status = '1'";
         try {
-            ResultSet rs  = DB.search(query);
-            if(rs.next()){
-            int rowCount = rs.getInt(1);
-            txt_ProductCount.setText(String.valueOf(rowCount));
+            rs = DB.search(query);
+            if (rs.next()) {
+                int rowCount = rs.getInt(1);
+                txt_ProductCount.setText(String.valueOf(rowCount));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -650,12 +628,12 @@ public class Home2 extends javax.swing.JPanel {
     }
 
     private void getInvCount() {
-           String query = "SELECT COUNT(Id) FROM product WHERE Status = '1'";
+        String query = "SELECT COUNT(Id) FROM product WHERE Status = '1'";
         try {
-            ResultSet rs  = DB.search(query);
-            if(rs.next()){
-            int rowCount = rs.getInt(1);
-            txt_ProductCount.setText(String.valueOf(rowCount));
+            rs = DB.search(query);
+            if (rs.next()) {
+                int rowCount = rs.getInt(1);
+                txt_ProductCount.setText(String.valueOf(rowCount));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -663,12 +641,12 @@ public class Home2 extends javax.swing.JPanel {
     }
 
     private void getSaleCount() {
-                  String query = "SELECT COUNT(Id) FROM sale WHERE Status = '1'";
+        String query = "SELECT COUNT(Id) FROM sale WHERE Status = '1'";
         try {
-            ResultSet rs  = DB.search(query);
-            if(rs.next()){
-            int rowCount = rs.getInt(1);
-            txt_invCount.setText(String.valueOf(rowCount));
+            rs = DB.search(query);
+            if (rs.next()) {
+                int rowCount = rs.getInt(1);
+                txt_invCount.setText(String.valueOf(rowCount));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -676,11 +654,53 @@ public class Home2 extends javax.swing.JPanel {
     }
 
     private void getExincomeCount() {
-      txt_exIncome.setText("0");
+        txt_exIncome.setText("0");
     }
 
     private void getExCostCount() {
         txt_exCost.setText("0");
     }
+
+    private void getinvoiceCount() {
+
         
+
+        String pId;
+            int invCount = 0;
+        try {
+
+            String query = "SELECT * FROM sale WHERE status = '1'";
+            rs = DB.search(query);
+
+            while (rs.next()) {
+                invCount++;
+            }
+            txt_totInv.setText(String.valueOf(invCount));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getReturnItemCount() {
+               
+
+        String pId;
+            int returnCount = 0;
+        try {
+
+            String query = "SELECT * FROM return_item WHERE status = '1'";
+            rs = DB.search(query);
+
+            while (rs.next()) {
+                returnCount++;
+            }
+            
+            txt_return.setText(String.valueOf(returnCount));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+
+

@@ -308,6 +308,7 @@ public class Login extends javax.swing.JFrame {
         String dbusername = "";
         String dbpassword = "";
         String userProfileId = "";
+        String employeeId = "";
 
         if (txt_password.getText().equals("") || txt_username.getText().equals("")) {
 
@@ -329,14 +330,14 @@ public class Login extends javax.swing.JFrame {
                     dbusername = rs.getString("UserName");
                     dbpassword = rs.getString("Password");
                     userProfileId = rs.getString("Id");
-
+                    employeeId = rs.getString("employee_Id");
                 } else {
                     log.error("Wrong username Password.");
                     JOptionPane.showMessageDialog(this, "userame or password doesn't match");
                 }
 
                 if (userName.equals(dbusername) && encrpp.equals(dbpassword)) {
-                    Home home = new Home(userProfileId);
+                    Home home = new Home(userProfileId,employeeId);
                     home.setVisible(true);
 
                     this.dispose();
